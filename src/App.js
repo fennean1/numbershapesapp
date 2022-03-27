@@ -3,7 +3,7 @@ import ActivityCard from "./ActivityCard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const Home = () => (
-  <div><p>Helloo!</p></div>
+  <div><p>Hello!</p></div>
 )
 
 const Main = () => (
