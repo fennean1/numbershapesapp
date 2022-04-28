@@ -1,15 +1,17 @@
 import './App.css';
 import ActivityCard from "./ActivityCard";
+import Tabs from "./Tabs";
+import ActivityPage from './ActivityPage';
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-const Home = () => (
-  <div><p>Hello!</p></div>
-)
+
 
 const Main = () => (
   <Routes>
     <Route path="/schematest/:item/*" element={<ActivityCard/>} />
-    <Route path="/" element={<Home/>} />
+    <Route path="/" element={<Tabs/>} />
+    <Route path="/activity/:name" element={<ActivityPage/>} />
   </Routes>
 )
 

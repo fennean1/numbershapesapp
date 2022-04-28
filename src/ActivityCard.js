@@ -14,13 +14,16 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/Favorite";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import * as Activities from "./schema.js";
 import VideocamRoundedIcon from "@mui/icons-material/Videocam";
 //import FullScreenDialog from "./FullScreenDialog";
 import { List, ListItem } from "@mui/material";
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
 import { Routes, Route, useParams, useNavigate} from "react-router-dom";
 
-console.log("activities", Object.keys(Activities));
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,7 +36,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function SchemaTest(props) {
+export default function ActivityCard(props) {
   // CONTROLLER / HOOKS
 
   const [open, setDialogOpen] = React.useState(false);
@@ -57,16 +60,12 @@ export default function SchemaTest(props) {
   };
 
   // DATA
-  const { pathname } = useLocation();
 
-
-  const { item } = useParams();
-
-  const data = Activities[item];
+  const data = props.data
 
   // Deconstructing Data
-  const _subHeader =
-    data.TIME && data.TIME.from + " - " + data.TIME.to + " " + data.TIME.unit;
+  const time = data.TIME && data.TIME.from
+  const _subHeader = time + " minutes"
   const _title = data.TITLE && data.TITLE;
   const _description = data.DESCRIPTION && data.DESCRIPTION;
 
@@ -79,13 +78,11 @@ export default function SchemaTest(props) {
   };
 
 
-
-
   function renderLinks() {
     return data.LINKS.map((l,i) => {
       return (
         <ListItem key = {i}>
-          <Link  style={linkStyle} to={"/preview" + l.address}>
+          <Link style={linkStyle} to={"/preview" + l.address}>
             {l.title}
           </Link>
         </ListItem>
@@ -96,14 +93,9 @@ export default function SchemaTest(props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            <img src="https://res.cloudinary.com/duim8wwno/image/upload/v1640540480/HeadShot_pjlf0l.jpg" />
-          </Avatar>
-        }
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <AccessTimeIcon />
           </IconButton>
         }
         title={_title}
@@ -116,7 +108,7 @@ export default function SchemaTest(props) {
         alt="Paella dish"
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography component={'div'} style = {{paddingBottom: "5%"}}variant="body2" color="text.secondary">
           {_description}
         </Typography>
       </CardContent>
