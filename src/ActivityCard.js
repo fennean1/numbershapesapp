@@ -15,7 +15,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/Favorite";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import * as Activities from "./schema.js";
+import * as Activities from "./db.js";
 import VideocamRoundedIcon from "@mui/icons-material/Videocam";
 //import FullScreenDialog from "./FullScreenDialog";
 import { List, ListItem } from "@mui/material";

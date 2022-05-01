@@ -1,9 +1,6 @@
 export const normalizeCords = cords => {
-  console.log("cords",cords)
   let xCords = cords.map((c)=>{return c[0]})
   let yCords = cords.map((c)=>{return c[1]})
-  console.log("xCords",xCords)
-  console.log("yCords",yCords)
   let xMax = Math.max(...xCords)
   let xMin = Math.min(...xCords)
   let yMax = Math.max(...yCords)
@@ -71,7 +68,6 @@ export const generateRandomCoordinates = (num) => {
       let nodes = getNodesForCoordinate(curr)
       let filteredNodes = nodes.filter(node => {
         let key = generateCoordinateKey(node)
-        console.log("not in dict",!dict[key])
         return !dict[key]
       })
       console.log("nodes are empty",filteredNodes == null)

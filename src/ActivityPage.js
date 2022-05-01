@@ -13,6 +13,13 @@ import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import Slides from "./Slides";
+import IconLink from "./IconLink";
+import IconLinkList from "./IconLinkList";
+import Subitizer from "./Interactives/Subitizer";
+import { Routes, Route, useParams, useNavigate} from "react-router-dom";
+import InteractiveSelect from "./InteractiveSelect";
+import { INTERACTIVE_TYPES } from "./const";
+import * as DB from "./db.js"
 
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 
@@ -25,12 +32,30 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 - Notes
 - More Info
 
+TODOS
+
+- Remove createjs dependency
+- "Switch" component for interactives (Interactive.TYPE)
+-  
+
 */
 
-export default function ActivityPage() {
+export default function ActivityPage(props) {
+
+  const {name} = useParams()
+  console.log("item",name)
+
+  const data = DB.prototype
+  
+  console.log("data",data)
+
+  const iconlinks = data.LINKS.map(l=>{
+    return (<IconLink {...l}/>)
+  })
+
   return (
-    <Container maxWidth = "md" fixed>
-        <Divider textAlign="center">
+    <Container maxWidth="md" fixed>
+      <Divider textAlign="center">
         <h2>Intro</h2>{" "}
       </Divider>
       <Divider textAlign="center">
@@ -50,6 +75,10 @@ export default function ActivityPage() {
       <Divider textAlign="center">
         <h2>Links</h2>{" "}
       </Divider>
+      <IconLinkList data = {data.LINKS}/>
+      <InteractiveSelect type = {INTERACTIVE_TYPES.NUMBER_LINE} setup = {"interactivesetup"}/>
+
+
     </Container>
   );
 }

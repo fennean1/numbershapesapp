@@ -1,26 +1,7 @@
-const MATH_PRACTICES = {}
+import * as CONST from "./const.js"
 
-const STANDARDS_CC = {}
-
-const STANDARDS_OTHER = {}
-
-const STEP_TYPES = {
-  IMAGE: "icon",
-  DISCUSSION: "icon",
-  GAME: "icon",
-  TEMPERATURE: "icon",
-}
-
-const TAGS = {
-  FRACTIONS: "Fractions"
-}
-
-const SIZES = {SMALL_GROUP: "Small Group",
-WHOLE_CLASS: "Whole Class",
-}
-
-
-const MATH_FOR_LOVE_FIELDS = []
+const {ACTORS} = CONST
+const {LINK_TYPES} = CONST
 
 export const dot_rate_problem = {
     id: "dot_rate_problem",
@@ -365,6 +346,17 @@ Additional Info:
 - Practices
 */
 
+export const prototype = {
+  HEADER: {TITLE: "Title",SHORT_TEXT: "More about it."},
+  INTRO: {text: "Hello this is our intro and such!"},
+  SLIDES: [{text: "hello",url: "https"}],
+  INTERACTIVE: {TYPE: "sometype", setup: "some setup"}, // sent to "Interactive Selector"
+  QUCK_START: {STEPS: [{meta: "something",description: "something"}],META: "something"},
+  SAMPLE_TALK: [{actor: ACTORS.TEACHER ,text: "Hello!"}],
+  LINKS: [{type:LINK_TYPES.IMAGE,text:"This is a file",url: "https://res.cloudinary.com/duim8wwno/image/upload/v1640540480/HeadShot_pjlf0l.jpg"},{type:LINK_TYPES.FILE,text:"This is a file",url: "https://res.cloudinary.com/duim8wwno/image/upload/v1640540480/HeadShot_pjlf0l.jpg"}],
+  MORE_INFO: ["tags","strategies","standards"]
+}
+
 export const PROTOTYPE = {
     ID: "0000",
     ICON: "https://res.cloudinary.com/duim8wwno/image/upload/v1640540480/HeadShot_pjlf0l.jpg",
@@ -388,7 +380,7 @@ export const PROTOTYPE = {
     STRATEGIES: ["Hello"],
     SUMMARY: {assessment: "",consolidation: "", extension: ""},
     TIME: {from: 10,to: 20, unit: "minutes"},
-    SIZE: SIZES.SMALL_GROUP,
+    SIZE: "Small Group",
     DELIVERABLES: "",
     MATH_PRACTICES: [{2: "Reason Abstractly and Quantitatively"}],
     DIALOG: [{actor: "student",text: "says this"},{actor: "teacher",text: "says this"},{actor: "teacher",text: "says this"}],

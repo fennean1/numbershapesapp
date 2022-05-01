@@ -19,16 +19,31 @@ const SIZES = {SMALL_GROUP: "Small Group",
 WHOLE_CLASS: "Whole Class",
 }
 
+const ACTORS = {
+  TEACHER: "TEACHER",
+  STUDENT: "STUDENT",
+  GROUP: "GROUP",
+}
+
+const LINK_TYPES = {
+  PDF: "PDF",
+  INTERACTIVE: "INTERACTIVE",
+  TWITTER: "TWITTER",
+  IMAGE: "IMAGE",
+  SLIDES: "SLIDES",
+  ARTICLE: "ARTICLE",
+  
+}
 
 const MATH_FOR_LOVE_FIELDS = []
 
 const prototype = {
-  HEADER: {},
-  INTRO: {},
-  SLIDES: {},
-  INTERACTIVE: {},
-  QUCK_START: {},
-  SAMPLE_TALK: {},
+  HEADER: {TITLE: "Title",SHORT_TEXT: "More about it."},
+  INTRO: {text: "Hello this is our intro and such!"},
+  SLIDES: [{TEXT: "hello",URL: "https"}],
+  INTERACTIVE: {TYPE: "sometype", setup: "some setup"}, // sent to "Interactive Selector"
+  QUCK_START: {STEPS: [{meta: "something",description: "something"}],META: "something"},
+  SAMPLE_TALK: [{actor: ACTORS.TEACHER ,text: "Hello!"}],
   LINKS: ["type","text","url"],
   MORE_INFO: ["tags","strategies","standards"]
 }
