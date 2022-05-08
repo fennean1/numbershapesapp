@@ -61,7 +61,7 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-      <ActivityGrid data = {Activities.FIRST_GRADE}/>
+      <FirstGrade/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <Steps/>

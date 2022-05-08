@@ -2,7 +2,7 @@ import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { ListItemIcon } from "@mui/material";
+import { ListItemIcon,ListItemButton } from "@mui/material";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
@@ -17,8 +17,11 @@ import IconLink from "./IconLink";
 export default function IconLinkList(props) {
   // Data: type,
 
-  const iconlinks = props.data.map(l => {
-    return (<IconLink {...l} />);
+  const iconlinks = props.data.map((l,i) => {
+    return (
+      <ListItemButton>
+        <IconLink key = {i} {...l} />
+    </ListItemButton>);
   })
 
   return(<List>{iconlinks}</List>);

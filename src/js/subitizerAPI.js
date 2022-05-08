@@ -247,7 +247,7 @@ export const init = (app, setup) => {
         window.createjs.Ease.getPowInOut(4)
       );
       })
-      if (setup.props.type == SUBITIZER_TYPES.SPLAT){
+      if (setup.type == SUBITIZER_TYPES.SPLAT){
         console.log("Moving Splat")
         moveSplat(BALL_STATES.LINE)
       }
@@ -266,7 +266,7 @@ export const init = (app, setup) => {
               window.createjs.Ease.getPowInOut(4)
             ).call(()=>this.interactive = true);
       }
-      if (setup.props.type == SUBITIZER_TYPES.SPLAT){
+      if (setup.type == SUBITIZER_TYPES.SPLAT){
         moveSplat(BALL_STATES.RANDOM,randomCords)
       }
     }
@@ -345,7 +345,7 @@ export const init = (app, setup) => {
         window.createjs.Ease.getPowInOut(4)
       );
       })
-      if (setup.props.type == SUBITIZER_TYPES.SPLAT){
+      if (setup.type == SUBITIZER_TYPES.SPLAT){
         moveSplat(BALL_STATES.FRAME)
       }
     }
@@ -407,7 +407,7 @@ export const init = (app, setup) => {
 
       for (let i = 0;i<=k;i++){
         let aBall = i == k ? new PIXI.Sprite.from(PotOfGold) : new PIXI.Sprite.from(Coin)
-        if (i==k && setup.props.type == SUBITIZER_TYPES.NORMAL){
+        if (i==k && setup.type == SUBITIZER_TYPES.NORMAL){
           aBall.on('pointerdown',giveFeedBack)
         }
         aBalls.push(aBall)
@@ -433,7 +433,7 @@ export const init = (app, setup) => {
         let rand = randBetween(0,EGGS.length)
         CounterImage = EGGS[rand]
         let aBall = new PIXI.Sprite.from(CounterImage)
-        if (i==k && setup.props.type == SUBITIZER_TYPES.NORMAL){
+        if (i==k && setup.type == SUBITIZER_TYPES.NORMAL){
           aBall.on('pointerdown',giveFeedBack)
         }
         aBalls.push(aBall)
@@ -525,7 +525,7 @@ export const init = (app, setup) => {
     // Type needs to come from setup.type
     function initBallsFromType(type){
     if (equation) {destroy(equation)}
-    let PIVOT = SUBITIZER_TYPES.PIVOT == setup.props.type
+    let PIVOT = SUBITIZER_TYPES.PIVOT == setup.type
     SubtractionImage = PIVOT ? PinkRing : BlueRing
     CounterImage = PIVOT ? PinkBall : BlueBall
     AdditionImage = PIVOT ? GreenBall : OrangeBall
@@ -590,7 +590,8 @@ export const init = (app, setup) => {
     function init(){
       destroy(balls)
 
-      let newBalls = initBallsFromType(setup.props.type)
+      console.log("setup.type",setup)
+      let newBalls = initBallsFromType(setup.type)
       
       let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
       let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
@@ -608,7 +609,7 @@ export const init = (app, setup) => {
             app.stage.addChild(b)
       }
 
-      if (setup.props.type == SUBITIZER_TYPES.SPLAT){
+      if (setup.type == SUBITIZER_TYPES.SPLAT){
           includeSplat(randomCords)
       }
 
@@ -629,7 +630,7 @@ export const init = (app, setup) => {
         this.interactive = false
         destroy(balls)
 
-        let newBalls = initBallsFromType(setup.props.type)
+        let newBalls = initBallsFromType(setup.type)
         
         let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
         let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
@@ -647,7 +648,7 @@ export const init = (app, setup) => {
               app.stage.addChild(b)
         }
 
-        if (setup.props.type == SUBITIZER_TYPES.SPLAT){
+        if (setup.type == SUBITIZER_TYPES.SPLAT){
             includeSplat(randomCords)
         }
 

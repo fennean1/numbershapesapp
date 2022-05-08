@@ -22,16 +22,26 @@ TODOS:
 - site map
   K,1,2,3+
 
+  - K
+    Card Games
+  - 1
+    Eggs
+    Subtraction
+  - 2
+    Multiplication Chart
+  - 3+
+    Powers (7x7x7-7)
+
+
 
 */
 
 
 const Main = () => (
   <Routes>
-    <Route path="/schematest/:item/*" element={<ActivityCard/>} />
     <Route path="/interactive" element={<Interactive/>} />
     <Route path="/" element={<Tabs/>} />
-    <Route path="/activity/:name" element={<ActivityPage/>} />
+    <Route path="/activity/:activityname" element={<ActivityPage/>} />
   </Routes>
 )
 

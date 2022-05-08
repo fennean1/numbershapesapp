@@ -14,23 +14,18 @@ app.renderer.autoDensity = true;
 export default function Interactive(props) {
   let elementRef;
 
-  console.log("interactive props",props)
   useEffect(() => {
-    console.log("useEffect")
 
     const setup = {
       height: elementRef.clientHeight,
       width: elementRef.clientWidth,
-      features: props.setup.features,
-      props: props
+      ...props.setup
     };
 
     app.renderer.resize(
       elementRef.clientWidth,
       elementRef.clientHeight
     );
-
-  console.log("props",props)
 
     props.script.init(app,setup)
 

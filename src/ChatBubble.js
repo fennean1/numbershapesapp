@@ -1,29 +1,18 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { IconButton } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import FaceIcon from "@mui/icons-material/Face";
 import PersonIcon from "@mui/icons-material/Person";
 import Box from '@mui/material/Box';
+import {ACTORS} from "./const.js"
 
 export default function Bubble(props) {
 
-
-  
-
   const studentIcon = <FaceIcon />;
   const teacherIcon = <PersonIcon />;
-  console.log("props", props);
+  console.log("props.role",props.role)
 
-  const x = props.role == "student" ? (
-    <ListItem style={{display:'flex', justifyContent:'flex-end'}} disablePadding ={true}>
+  const x = props.role == ACTORS.STUDENT ? (<ListItem style={{display:'flex', justifyContent:'flex-end'}} disablePadding ={true}>
     <Box
         component="div"
         sx={{
@@ -43,7 +32,7 @@ export default function Bubble(props) {
       </Box>
       <IconButton edge="end" aria-label="delete">
                       {studentIcon}
-                    </IconButton>
+        </IconButton>
     </ListItem>
   ) : (
     <ListItem disablePadding = {true}>

@@ -52,7 +52,7 @@ export default function ActivityCard(props) {
     console.log("handleOpenDialog");
     if (open) {
       console.log("navigating")
-      navigateTo("/SchemaTest/PROTOTYPE_2")
+      navigateTo("/activity/prototype")
       setDialogOpen(false);
     } else {
       setDialogOpen(true)
@@ -66,8 +66,9 @@ export default function ActivityCard(props) {
   // Deconstructing Data
   const time = data.TIME && data.TIME.from
   const _subHeader = time + " minutes"
-  const _title = data.TITLE && data.TITLE;
-  const _description = data.DESCRIPTION && data.DESCRIPTION;
+  const _title = data.HEADER.TITLE && data.HEADER.TITLE;
+  const _description = data.HEADER.SHORT_TEXT && data.HEADER.SHORT_TEXT;
+  const _thumbnail = data.SLIDES[0].url
 
   // UI
 
@@ -104,7 +105,7 @@ export default function ActivityCard(props) {
       <CardMedia
         component="img"
         height="194"
-        image="https://res.cloudinary.com/duim8wwno/image/upload/v1630352928/Spotlight%20Game/Untitled_presentation_gkxy3u.svg"
+        image= {_thumbnail}
         alt="Paella dish"
       />
       <CardContent>
