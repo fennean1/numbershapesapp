@@ -1,27 +1,25 @@
 import * as React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { ListItemIcon,ListItemButton } from "@mui/material";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ImageIcon from "@mui/icons-material/Image";
-import WorkIcon from "@mui/icons-material/Work";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { IconButton } from "@mui/material";
-import FaceIcon from "@mui/icons-material/Face";
-import { Face } from "@mui/icons-material";
+import { useNavigate,Link } from "react-router-dom";
+import { List, ListItemIcon,ListItemButton } from "@mui/material";
 import IconLink from "./IconLink";
 
 export default function IconLinkList(props) {
   // Data: type,
 
+  let navigate = useNavigate(); 
+  const routeChange = (l) =>{ 
+    console.log("hello...")
+    console.log(l)
+    navigate(l.url,{replace: true});
+  }
+
   const iconlinks = props.data.map((l,i) => {
-    return (
-      <ListItemButton>
+    return (<Link style={{ color: 'inherit', textDecoration: 'inherit'}}to={{
+      pathname: "/courses"}}>
+        <ListItemButton>
         <IconLink key = {i} {...l} />
-    </ListItemButton>);
+        </ListItemButton>
+    </Link>);
   })
 
   return(<List>{iconlinks}</List>);

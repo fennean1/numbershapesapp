@@ -50,6 +50,7 @@ export const init = (app, setup) => {
     // Const
     let CENTER_STAGE_X = setup.width/2
     let CENTER_STAGE_Y = setup.height/2
+    let fS = setup.width/20
     const COIN = new PIXI.Texture.from(Coin)
     const POT_OF_GOLD = new PIXI.Texture.from(PotOfGold)
 
@@ -92,7 +93,6 @@ export const init = (app, setup) => {
     newShapeButton.width = 5*dx/2 
     newShapeButton.height = dx/2
     newShapeButton.interactive = true
-    newShapeButton.buttonMode = true
     newShapeButton.on('pointerdown',newShape)
     app.stage.addChild(newShapeButton)
 
@@ -186,7 +186,7 @@ export const init = (app, setup) => {
       let textObjects = seq.map((c)=>{
         let cs = c.toString(10)
         let t = new PIXI.Text(cs,{fontFamily: 
-        "Chalkboard SE",fontSize: 50})
+        "Chalkboard SE",fontSize: fS})
         return t
       })
       console.log("text Objects",textObjects)
@@ -197,11 +197,8 @@ export const init = (app, setup) => {
       let prevWidth = 0
       let nextX = CENTER_STAGE_X - width/2
       textObjects.forEach((o,i)=> {
-        console.log("o.width",o.width)
-        console.log("o.x",o.x)
-        console.log("prevWidth",prevWidth)
         o.x = nextX
-        o.y = 50
+        o.y = fS
         nextX = o.x + o.width + 20
         console.log("o.x++",o.x)
       })

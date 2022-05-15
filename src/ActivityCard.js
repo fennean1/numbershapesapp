@@ -78,7 +78,6 @@ export default function ActivityCard(props) {
     color: "blue",
   };
 
-
   function renderLinks() {
     return data.LINKS.map((l,i) => {
       return (

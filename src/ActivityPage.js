@@ -34,31 +34,31 @@ export default function ActivityPage(props) {
 
   return (
     <Container maxWidth="md" fixed>
-      <Divider textAlign="center">
-        <h2>Intro</h2>{" "}
-      </Divider>
-      <Typography>
+       <Typography style = {{margin: "auto",padding: "5%"}} component="div" variant = "h4">
+        {data.HEADER.TITLE}
+      </Typography>
+      <Typography style = {{paddingLeft: "5%", paddingRight: "5%"}} >
         {data.INTRO.TEXT}
       </Typography>
-      <Divider textAlign="center">
-        <h2>Slides</h2>{" "}
+      <Divider style = {{padding: 20}} textAlign="center">
+       SLIDES 
       </Divider>
-      <div>
         <Slides data = {data.SLIDES} className="carousel" />
-      </div>
-      <Divider textAlign="center">
-        <h2>Quick Launch</h2>{" "}
+      <Divider style = {{padding: 20}} textAlign="center">
+        QUICK LAUNCH
       </Divider>
-      <Steps />
-      <Divider textAlign="center">
-        <h2>Links</h2>{" "}
+      <Steps list = {data.QUICK_START.STEPS}/>
+      {data.INTERACTIVE && (<div><Divider style = {{padding: 20}} textAlign="center">
+        INTERACTIVE
+      </Divider>
+      <div style = {{width: "100%", height: "55vw"}}>
+        <InteractiveSelect type = {data.INTERACTIVE.TYPE}/>
+      </div></div>)}
+      <Divider style = {{padding: 20}} textAlign="center">
+        LINKS
       </Divider>
       <IconLinkList data = {data.LINKS}/>
-      <Divider textAlign="center">
-        <h2>Interactive</h2>{" "}
-      </Divider>
-      <InteractiveSelect type = {data.INTERACTIVE.TYPE} setup = {data.INTERACTIVE.SETUP}/>
-
+     
 
     </Container>
   );

@@ -27,14 +27,20 @@ export default function Interactive(props) {
       elementRef.clientHeight
     );
 
+      console.log("setup",setup)
+
     props.script.init(app,setup)
 
     elementRef.appendChild(app.view)
     
   return ()=>{console.log("unmounting")}},[]);
+  
+  const fullScreenStyle = {height: "100vh",width: "100vw"}
+  const defaultStyle = {height: "100%",width: "100%"}
+  const screenStyle = props.fullScreen ? fullScreenStyle : defaultStyle
 
   return (
-    <div style = {{height: "100vh"}}
+    <div style = {screenStyle}
       ref={(me) => {
         elementRef = me;
       }}

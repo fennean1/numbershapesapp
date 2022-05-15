@@ -3,8 +3,10 @@ import ActivityCard from "./ActivityCard";
 import Tabs from "./Tabs";
 import ActivityPage from './ActivityPage';
 import Interactive from "./Interactive"
-
+import AllGrades from './AllGrades';
+import Subitizer from './Interactives/Subitizer';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from './LandingPage';
 
 /*
 
@@ -39,9 +41,13 @@ TODOS:
 
 const Main = () => (
   <Routes>
-    <Route path="/interactive" element={<Interactive/>} />
-    <Route path="/" element={<Tabs/>} />
-    <Route path="/activity/:activityname" element={<ActivityPage/>} />
+    <Route
+      exact
+      path="interactives/:activityname"
+      element={<Subitizer fullScreen = {true}/>}
+    />
+    <Route path="/" element={<LandingPage/>} />
+    <Route path="/activities/:activityname" element={<ActivityPage/>} />
   </Routes>
 )
 

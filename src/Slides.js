@@ -9,6 +9,7 @@ import SwipeableViews from "react-swipeable-views";
 import Chat from "./Chat";
 import Grid from "@mui/material/Grid";
 
+
 function SwipeableTextMobileStepper(props) {
   const images = props.data.map((s) => {
     const slide = {
