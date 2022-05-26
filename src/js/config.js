@@ -9,9 +9,8 @@ import red_circle from "../assets/RedCircle.png"
 import empty_circle from "../assets/EmptyCircle.png"
 import plus_ten from "../assets/PlusTen.png"
 import minus_ten from "../assets/MinusTen.png"
-import plus_one from "../assets/PlusOne.png"
+
 import minus_one from "../assets/MinusOne.png"
-import plus_five from "../assets/PlusFive.png"
 import minus_five from "../assets/MinusFive.png"
 import plus_three from "../assets/PlusThree.png"
 import minus_three from "../assets/MinusThree.png"
@@ -44,7 +43,6 @@ import yellow_ring from "../assets/YellowRingIcon.png"
 import yellow_circle from "../assets/YellowCircle.png"
 import chalk_board from "../assets/Chalkboard.png"
 import star from "../assets/Cloud.png"
-import space_gradient from "../assets/space-gradient.png"
 import pink_space_ship from "../assets/PinkSpaceShip.png"
 import blue_space_ship from "../assets/BlueSpaceShip.png"
 import pink_square_pin from "../assets/PinkSquarePin.png"
@@ -64,11 +62,10 @@ export const ASSETS = {
     EMPTY_CIRCLE: empty_circle,
     PLUS_TEN: plus_ten,
     MINUS_TEN: minus_ten,
-    PLUS_FIVE: plus_five,
     MINUS_FIVE: minus_five,
     PLUS_THREE: plus_three,
     MINUS_THREE: minus_three,
-    PLUS_ONE: plus_one,
+
     MINUS_ONE: minus_one,
     UNLOCKED_LOCK: unlocked_lock,
     LOCKED_LOCK: locked_lock,
@@ -99,7 +96,7 @@ export const ASSETS = {
     YELLOW_CIRCLE: yellow_circle,
     CHALK_BOARD: chalk_board,
     STAR: star,
-    SPACE_GRADIENT: space_gradient,
+
     BLUE_SPACE_SHIP: blue_space_ship,
     PINK_SPACE_SHIP: pink_space_ship,
     PINK_SQUARE_PIN: pink_square_pin,

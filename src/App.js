@@ -1,12 +1,9 @@
 import './App.css';
-import ActivityCard from "./ActivityCard";
-import Tabs from "./Tabs";
-import ActivityPage from './ActivityPage';
-import Interactive from "./Interactive"
-import AllGrades from './AllGrades';
-import Subitizer from './Interactives/Subitizer';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './LandingPage';
+import ActivityPage from './ActivityPage';
+import Subitizer from './Interactives/Subitizer';
+import MatchGame from "./Interactives/MatchGame"
 
 /*
 
@@ -43,8 +40,13 @@ const Main = () => (
   <Routes>
     <Route
       exact
-      path="interactives/:activityname"
+      path="interactives/subitizer/:activityname"
       element={<Subitizer fullScreen = {true}/>}
+    />
+    <Route
+      exact
+      path="interactives/match_game/:activityname"
+      element={<MatchGame fullScreen = {true}/>}
     />
     <Route path="/" element={<LandingPage/>} />
     <Route path="/activities/:activityname" element={<ActivityPage/>} />

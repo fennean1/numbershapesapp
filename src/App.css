@@ -2,6 +2,42 @@
   text-align: center;
 }
 
+.shadow {
+  -moz-box-shadow:    inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow:         inset 0 0 10px #000000;
+}
+
+.divider {
+  color: #fc2b66;
+  font-weight: bold;
+}
+
+.debug {
+  background-color: #fc2b66;
+  border-color: #000000;
+  border-width: 1pt;
+}
+
+.rounded  {
+  border-radius: 20px; 
+  border: #282c34;
+  border: 10px;
+}
+
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 30vh;
+}
+
+.center {
+  display: flex;
+  margin: auto;
+  width: 100%;
+  justify-content: center
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

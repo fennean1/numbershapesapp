@@ -3,6 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
 
 export default function Steps(props) {
 
@@ -12,7 +13,7 @@ export default function Steps(props) {
 
     return (<ListItem key = {i}>
       <Typography style = {{marginRight: "5%"}} variant = "h5">
-        {i+1}
+      <CheckIcon color = "primary"/>
       </Typography>
       <ListItemText primary={s.description}  />
     </ListItem>)

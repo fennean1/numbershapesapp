@@ -4,7 +4,7 @@ import AllGrades from "./AllGrades";
 
 export default function LandingPage() {
   return (
-    <Container>
+    <Container className = "main">
       <img style = {{padding: "3%",display: "flex",width: "60%",height: "auto",margin: "auto"}}src= {require("./assets/NumberShapesBannerLogo.png")} />
       <AllGrades />
     </Container>

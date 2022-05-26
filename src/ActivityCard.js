@@ -10,17 +10,14 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ExpandMoreIcon from "@mui/icons-material/Favorite";
-import MoreVertIcon from "@mui/icons-material/Favorite";
+
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import * as Activities from "./db.js";
-import VideocamRoundedIcon from "@mui/icons-material/Videocam";
-//import FullScreenDialog from "./FullScreenDialog";
+
+
 import { List, ListItem } from "@mui/material";
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Chat from "./Chat.js";
 
 import { Routes, Route, useParams, useNavigate} from "react-router-dom";
 
@@ -48,27 +45,18 @@ export default function ActivityCard(props) {
     setExpanded(!expanded);
   };
 
-  function handleOpenDialog() {
-    console.log("handleOpenDialog");
-    if (open) {
-      console.log("navigating")
-      navigateTo("/activity/prototype")
-      setDialogOpen(false);
-    } else {
-      setDialogOpen(true)
-    }
-  };
-
   // DATA
 
   const data = props.data
 
   // Deconstructing Data
   const time = data.TIME && data.TIME.from
-  const _subHeader = time + " minutes"
   const _title = data.HEADER.TITLE && data.HEADER.TITLE;
   const _description = data.HEADER.SHORT_TEXT && data.HEADER.SHORT_TEXT;
   const _thumbnail = data.SLIDES[0].url
+  const _talk = data.SLIDES[0].sample_talk
+  //const _subHeader = time + " minutes"
+  const _subHeader = _description
 
   // UI
 
@@ -77,18 +65,6 @@ export default function ActivityCard(props) {
     textDecoration: "none",
     color: "blue",
   };
-
-  function renderLinks() {
-    return data.LINKS.map((l,i) => {
-      return (
-        <ListItem key = {i}>
-          <Link style={linkStyle} to={"/preview" + l.address}>
-            {l.title}
-          </Link>
-        </ListItem>
-      );
-    });
-  }
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -103,36 +79,32 @@ export default function ActivityCard(props) {
       />
       <CardMedia
         component="img"
-        height="194"
+        height="250"
         image= {_thumbnail}
-        alt="Paella dish"
+        style = {{borderRadius: 5}}
       />
       <CardContent>
-        <Typography component={'div'} style = {{paddingBottom: "5%"}}variant="body2" color="text.secondary">
-          {_description}
-        </Typography>
+
+
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <Link style={linkStyle} to={"preview/something/else"}>
-          <IconButton onClick={handleOpenDialog} aria-label="share">
-            <VideocamRoundedIcon />
-          </IconButton>
-        </Link>
+        <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to = {"/activities/"+data.ID}>
+        <Button variant="text">
+        Start
+      </Button>
+      </Link>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          <MoreVertIcon />
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <List>{renderLinks()}</List>
+        <CardContent className = "scroll">
+          <Chat talk = {_talk}/>
         </CardContent>
       </Collapse>
     </Card>

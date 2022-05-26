@@ -12,7 +12,7 @@ export default function Bubble(props) {
   const teacherIcon = <PersonIcon />;
   console.log("props.role",props.role)
 
-  const x = props.role == ACTORS.STUDENT ? (<ListItem style={{display:'flex', justifyContent:'flex-end'}} disablePadding ={true}>
+  const x = props.role == ACTORS.STUDENT ? (<ListItem style={{display:'flex', paddingLeft: "20pt", justifyContent:'flex-end'}} disablePadding ={true}>
     <Box
         component="div"
         sx={{
@@ -35,7 +35,7 @@ export default function Bubble(props) {
         </IconButton>
     </ListItem>
   ) : (
-    <ListItem disablePadding = {true}>
+    <ListItem style={{display:'flex', paddingRight: "20pt"}} disablePadding = {true}>
             <IconButton edge="start" aria-label="delete">
                       {teacherIcon}
                     </IconButton>

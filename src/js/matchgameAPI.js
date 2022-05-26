@@ -33,8 +33,6 @@ let homeButton;
 
 let cardPool;
 
-let features;
-
 let cards = []
 let balls = []
 let cardBank;
@@ -68,6 +66,7 @@ class CardPool {
     console.log('this.textures.length',this.textures.length)
   }
 
+  // Start Here
   getCardBankKeysFromType(type){
     let keys = []
     switch(type){
@@ -328,12 +327,6 @@ function init(){
   homeButton.on('pointerdown',()=>app.goHome())
   app.stage.addChild(homeButton)
 
-
-  // Load Features
-  if (setup.props.features){
-    features = setup.props.features
-  }
-
     
   cardBank = [BLUE,RED,PINK,PURPLE,GREEN,ORANGE,NUMERAL]
 
@@ -346,7 +339,7 @@ function init(){
     return row
   })
 
-  cardPool = new CardPool(features.type)
+  cardPool = new CardPool(setup.type)
 
   for (let i = 0;i<5;i++){
     let newRow = []

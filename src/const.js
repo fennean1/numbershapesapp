@@ -1,6 +1,6 @@
 export const INTERACTIVE_TYPES = {
-  SPACE_SHIPS: "SPACE_SHIPS",
-  SUBITIZER: "SUBITIZER"
+  SUBITIZER: "subitizer",
+  MATCH_GAME: "match_game"
 }
 
 export const ACTORS = {
@@ -17,6 +17,7 @@ export const LINK_TYPES = {
   FILE: "FILE",
   SLIDES: "SLIDES",
   ARTICLE: "ARTICLE",  
+  GAME: "GAME",
 }
 
 
@@ -31,6 +32,14 @@ export const STEP_TYPES = {
   DISCUSSION: "icon",
   GAME: "icon",
   TEMPERATURE: "icon",
+}
+
+export const SETUPS = {
+  hidden_eggs: {type: 6},
+  subtraction_spheres: {type: 3},
+  card_matching: {type: "MEDIUM_MATCHING"},
+  card_matching_advanced: {type: "ADVANCED_MATCHING"},
+  card_matching_basic: {type: "BASIC_MATCHING"}
 }
 
 export const TAGS = {
