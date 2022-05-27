@@ -23,6 +23,7 @@ import OrangeEgg from '../assets/OrangeEgg.png'
 import GreenEgg from '../assets/GreenEgg.png'
 import BlueEgg from '../assets/BlueEgg.png'
 import RedEgg from '../assets/RedEgg.png'
+import { Tween } from "gsap/gsap-core";
 
 
 
@@ -50,19 +51,20 @@ export const init = (app, setup) => {
     // Const
     let CENTER_STAGE_X = setup.width/2
     let CENTER_STAGE_Y = setup.height/2
-    let fS = setup.width/20
+    let fS = Math.min(setup.width,setup.height)/20
+    const minDim = Math.min(setup.width,setup.height)
     const COIN = new PIXI.Texture.from(Coin)
-    const POT_OF_GOLD = new PIXI.Texture.from(PotOfGold)
-
+   
     // Vars
-    let dx = setup.height/10
+    let dx = minDim/10
     let balls = []
     let a = null 
     let b = null 
     let SubtractionImage = BlueRing
     let CounterImage = BlueBall
     let AdditionImage = OrangeBall
-    let equation = null
+    let equation = new PIXI.Text("",{fontFamily: 
+      "Chalkboard SE",fontSize: fS})
     let showEquation = false
     let kBalls = []
     let potOfGoldIndex = 0
@@ -144,18 +146,11 @@ export const init = (app, setup) => {
 
     
     function revealEquation(){
-        if (equation) {
+
           showEquation = !showEquation
           let newAlpha = showEquation ? 1 : 0
-          equation.forEach(e => {
-              window.createjs.Tween.get(e).to({
-                alpha: newAlpha
-              },
-              1000,
-              window.createjs.Ease.getPowInOut(4)
-            );
-          });
-        }
+
+          Tween.to(equation,{alpha: newAlpha})
     }
 
     let lineButton = new PIXI.Sprite.from(LineButton)
@@ -180,6 +175,22 @@ export const init = (app, setup) => {
     }
 
     function makeEquation(seq) {
+      console.log("make Equation input",seq)
+
+   
+      let s = seq.reduce((p,c)=>p+" "+c)
+
+      equation.text = s
+      
+      const l = equation.width 
+      equation.x = setup.width/2 - l/2
+      equation.y = l/2
+      app.stage.addChild(equation)
+
+      return equation
+
+      console.log("s",s)
+
       showEquation = false
       let balls = seq.reduce((sum,num)=> {return sum+num})
       let width = 50*seq.length
@@ -200,7 +211,6 @@ export const init = (app, setup) => {
         o.x = nextX
         o.y = fS
         nextX = o.x + o.width + 20
-        console.log("o.x++",o.x)
       })
       return textObjects
     }
@@ -213,6 +223,8 @@ export const init = (app, setup) => {
       let bBalls = []
 
       equation = makeEquation([a,"-",b,"=",a-b])
+      equation.alpha = 0
+      showEquation = false
 
       for (let i = 0;i<(a-b);i++){
         let aBall = new PIXI.Sprite.from(CounterImage)
@@ -521,7 +533,7 @@ export const init = (app, setup) => {
 
     // Type needs to come from setup.type
     function initBallsFromType(type){
-    if (equation) {destroy(equation)}
+   
     let PIVOT = SUBITIZER_TYPES.PIVOT == setup.type
     SubtractionImage = PIVOT ? PinkRing : BlueRing
     CounterImage = PIVOT ? PinkBall : BlueBall

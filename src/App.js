@@ -1,10 +1,10 @@
 import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,useLocation } from "react-router-dom";
 import LandingPage from './LandingPage';
 import ActivityPage from './ActivityPage';
 import Subitizer from './Interactives/Subitizer';
 import MatchGame from "./Interactives/MatchGame"
-
+import { useEffect } from "react";
 /*
 
 TODOS: 
@@ -35,6 +35,16 @@ TODOS:
 
 */
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 
 const Main = () => (
   <Routes>
@@ -56,7 +66,8 @@ const Main = () => (
 const App = () => {
   return (
     <BrowserRouter>
-       <Main />
+    <ScrollToTop/>
+    <Main />
     </BrowserRouter>
   );
 }

@@ -55,7 +55,7 @@ export default function ActivityPage(props) {
         <InteractiveSelect type = {data.INTERACTIVE.TYPE}/>
       </div></div>)}
       <div className = "center" >
-        <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to = {interactivelink}>
+        <Link target = "_blank" style={{ color: 'inherit', textDecoration: 'inherit'}} to = {interactivelink}>
         <Button style = {{width: "100px", display: 'flex'}} variant="contained">
           Open
         </Button>

@@ -68,14 +68,9 @@ export const hidden_eggs = {
   },
   LINKS: [
     {
-      type: LINK_TYPES.IMAGE,
-      text: "This is a file",
-      url: "https://res.cloudinary.com/duim8wwno/image/upload/v1640540480/HeadShot_pjlf0l.jpg",
-    },
-    {
-      type: LINK_TYPES.FILE,
-      text: "This is a file",
-      url: "https://res.cloudinary.com/duim8wwno/image/upload/v1640540480/HeadShot_pjlf0l.jpg",
+      type: LINK_TYPES.PDF,
+      text: "Addition Search Worksheet",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653620561/AdditionSearch_h4ipkd.pdf",
     },
   ],
   INFO: { GRADE: "FirstGrade" },
