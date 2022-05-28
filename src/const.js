@@ -18,6 +18,7 @@ export const LINK_TYPES = {
   SLIDES: "SLIDES",
   ARTICLE: "ARTICLE",  
   GAME: "GAME",
+  IOS_APP: "IOS_APP"
 }
 
 

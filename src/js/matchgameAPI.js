@@ -325,7 +325,7 @@ function init(){
   homeButton.y = DX/4
   homeButton.interactive = true
   homeButton.on('pointerdown',()=>app.goHome())
-  app.stage.addChild(homeButton)
+  //app.stage.addChild(homeButton)
 
     
   cardBank = [BLUE,RED,PINK,PURPLE,GREEN,ORANGE,NUMERAL]

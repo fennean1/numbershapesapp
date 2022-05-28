@@ -268,6 +268,12 @@ export const card_matching = {
       text: "Matching Cards Printout",
       url: "https://res.cloudinary.com/numbershapes/image/upload/v1653752139/NumberCards_saoqov.pdf",
     },
+    {
+      type: LINK_TYPES.IOS_APP,
+      text: "App Store Link for NumberShapes Game",
+      url: "https://apps.apple.com/us/app/numbershapes/id1444912086",
+    },
   ],
   INFO: { GRADE: "FirstGrade" },
 };
+
