@@ -13,6 +13,12 @@
   font-weight: bold;
 }
 
+.main {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 10%
+}
+
 .debug {
   background-color: #fc2b66;
   border-color: #000000;

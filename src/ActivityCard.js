@@ -54,7 +54,7 @@ export default function ActivityCard(props) {
   const _title = data.HEADER.TITLE && data.HEADER.TITLE;
   const _description = data.HEADER.SHORT_TEXT && data.HEADER.SHORT_TEXT;
   const _thumbnail = data.SLIDES[0].url
-  const _talk = data.SLIDES[0].sample_talk
+  const _talk = data.EXEMPLAR_TALK
   //const _subHeader = time + " minutes"
   const _subHeader = _description
 
@@ -69,11 +69,6 @@ export default function ActivityCard(props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <AccessTimeIcon />
-          </IconButton>
-        }
         title={_title}
         subheader={_subHeader}
       />
@@ -90,7 +85,7 @@ export default function ActivityCard(props) {
       <CardActions disableSpacing>
         <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to = {"/activities/"+data.ID}>
         <Button variant="text">
-        Start
+        Open
       </Button>
       </Link>
         <ExpandMore

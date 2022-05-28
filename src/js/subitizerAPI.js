@@ -175,7 +175,6 @@ export const init = (app, setup) => {
     }
 
     function makeEquation(seq) {
-      console.log("make Equation input",seq)
 
    
       let s = seq.reduce((p,c)=>p+" "+c)
@@ -189,30 +188,6 @@ export const init = (app, setup) => {
 
       return equation
 
-      console.log("s",s)
-
-      showEquation = false
-      let balls = seq.reduce((sum,num)=> {return sum+num})
-      let width = 50*seq.length
-      let textObjects = seq.map((c)=>{
-        let cs = c.toString(10)
-        let t = new PIXI.Text(cs,{fontFamily: 
-        "Chalkboard SE",fontSize: fS})
-        return t
-      })
-      console.log("text Objects",textObjects)
-      textObjects.forEach((o,i) => {
-        o.alpha = 0
-        app.stage.addChild(o)
-      })
-      let prevWidth = 0
-      let nextX = CENTER_STAGE_X - width/2
-      textObjects.forEach((o,i)=> {
-        o.x = nextX
-        o.y = fS
-        nextX = o.x + o.width + 20
-      })
-      return textObjects
     }
 
     function getSubtractionBalls(pivot,delta){
