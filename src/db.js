@@ -31,11 +31,15 @@ export const hidden_eggs = {
     TITLE: "Hidden Eggs",
     SHORT_TEXT: "Breaking Numbers Apart",
   },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1652018182/Activities/Hidden%20Eggs/Screen_Shot_2022-05-08_at_9.54.15_AM_i701ut.png",
   EXEMPLAR_TALK: [
     { actor: ACTORS.TEACHER, text: "How many altogether?" },
     { actor: ACTORS.STUDENT, text: "There are eight altogether!" },
     { actor: ACTORS.TEACHER, text: "How many do you think are hidden?" },
-    { actor: ACTORS.STUDENT, text: "I can only see four so that means four more are hidden!" },
+    {
+      actor: ACTORS.STUDENT,
+      text: "I can only see four so that means four more are hidden!",
+    },
   ],
   INTRO: {
     TEXT: "In this activity learners use the number of visible eggs and the total to find how many are hidden.",
@@ -85,7 +89,7 @@ export const hidden_eggs = {
   },
   LINKS: [
     {
-      type: LINK_TYPES.PDF,
+      type: LINK_TYPES.FILE,
       text: "Addition Search Worksheet",
       url: "https://res.cloudinary.com/numbershapes/image/upload/v1653620561/AdditionSearch_h4ipkd.pdf",
     },
@@ -100,6 +104,7 @@ export const subtraction_spheres = {
     TITLE: "Subtraction Spheres",
     SHORT_TEXT: "Take-Away Subtraction.",
   },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1653269443/Screen_Shot_2022-05-22_at_6.18.55_PM_tp4y5x.png",
   EXEMPLAR_TALK: [
     { actor: ACTORS.TEACHER, text: "How many are missing?" },
     { actor: ACTORS.STUDENT, text: "I see four that are empty!" },
@@ -184,6 +189,7 @@ export const card_matching = {
     TITLE: "Card Matching",
     SHORT_TEXT: "Number Recognition & Counting.",
   },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1653271866/Screen_Shot_2022-05-22_at_10.09.31_PM_h04klf.png",
   EXEMPLAR_TALK: [
     {
       actor: ACTORS.TEACHER,
@@ -277,3 +283,99 @@ export const card_matching = {
   INFO: { GRADE: "FirstGrade" },
 };
 
+export const multiplication_groups = {
+  KEY: "CB12",
+  ID: "multiplication_groups",
+  HEADER: {
+    TITLE: "Multiplication Groups",
+    SHORT_TEXT: "Visual Grouping.",
+  },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1653841851/Screen_Shot_2022-05-29_at_12.28.48_PM_pbw6r9.png",
+  EXEMPLAR_TALK: [
+    {
+      actor: ACTORS.TEACHER,
+      text: "What do the circle buttons do?",
+    },
+    {
+      actor: ACTORS.STUDENT,
+      text: "They change how much is in each group!",
+    },
+    {
+      actor: ACTORS.TEACHER,
+      text: "What do the square buttons do?",
+    },
+    {
+      actor: ACTORS.STUDENT,
+      text: "They change the number of groups.",
+    },
+  ],
+  INTRO: {
+    TEXT: "In this activity, students learn how to visualize multiplication as repeated groups.",
+  },
+  SLIDES: [
+    {
+      sample_talk: [
+        {
+          actor: ACTORS.TEACHER,
+          text: "What do the circle buttons do?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "They change how many are in each group.",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653842435/Website_Image_Factory_1_btvhhm.png",
+    },
+    {
+      sample_talk: [
+        { actor: ACTORS.TEACHER, text: "What do the square buttons do?" },
+        {
+          actor: ACTORS.STUDENT,
+          text: "They change the number of groups!",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653842435/Website_Image_Factory_2_ji6vlx.png",
+    },
+    {
+      sample_talk: [
+        { actor: ACTORS.TEACHER, text: "What are two ways to show 6x8?" },
+        {
+          actor: ACTORS.STUDENT,
+          text: "Six groups of eight or eight groups of six!",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653842435/Website_Image_Factory_d3majd.png",
+    },
+  ],
+  INTERACTIVE: {
+    TYPE: CONST.INTERACTIVE_TYPES.MULTIPLICATION,
+    SETUP: CONST.SETUPS.multiplication,
+  }, // sent to "Interactive Selector"
+  QUICK_START: {
+    STEPS: [
+      {
+        meta: "something",
+        description: "Explore the Multiplication Interactive",
+      },
+      {
+        meta: "something",
+        description:
+          "Discuss the differences between the square buttons and the circle buttons.",
+      },
+    ],
+    META: "something",
+  },
+  LINKS: [
+    {
+      type: LINK_TYPES.FILE,
+      text: "Multiplication Poster",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653767740/MultplicationPosterPDF_godt8l.pdf",
+    },
+    {
+      type: LINK_TYPES.IOS_APP,
+      text: "App Store Link for Multiplication Fact Game",
+      url: "https://apps.apple.com/us/app/multiplication-fact-workout/id1085400375",
+    },
+  ],
+  INFO: { GRADE: "FirstGrade" },
+};

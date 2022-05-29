@@ -53,7 +53,7 @@ export default function ActivityCard(props) {
   const time = data.TIME && data.TIME.from
   const _title = data.HEADER.TITLE && data.HEADER.TITLE;
   const _description = data.HEADER.SHORT_TEXT && data.HEADER.SHORT_TEXT;
-  const _thumbnail = data.SLIDES[0].url
+  const _thumbnail = data.CARD_IMAGE
   const _talk = data.EXEMPLAR_TALK
   //const _subHeader = time + " minutes"
   const _subHeader = _description

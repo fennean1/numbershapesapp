@@ -2,6 +2,8 @@ import React from "react";
 import { INTERACTIVE_TYPES } from "./const.js";
 import MatchGame from "./Interactives/MatchGame.js";
 import Subitizer from "./Interactives/Subitizer";
+import Multiplication from "./Interactives/Multiplication";
+
 
 export default function InteractiveSelect(props) {
   return (
@@ -11,6 +13,9 @@ export default function InteractiveSelect(props) {
         )}
         {props.type == INTERACTIVE_TYPES.MATCH_GAME && (
           <MatchGame {...props} />
+        )}
+        {props.type == INTERACTIVE_TYPES.MULTIPLICATION && (
+          <Multiplication {...props} />
         )}
     </div>
   );

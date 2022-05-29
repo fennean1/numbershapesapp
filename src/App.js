@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route,useLocation } from "react-router-dom";
 import LandingPage from './LandingPage';
 import ActivityPage from './ActivityPage';
 import Subitizer from './Interactives/Subitizer';
+import Multiplication from './Interactives/Multiplication';
 import MatchGame from "./Interactives/MatchGame"
+import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 /*
 
@@ -48,6 +50,16 @@ function ScrollToTop() {
 
 const Main = () => (
   <Routes>
+        <Route
+      exact
+      path="interactives/fractionlist"
+      element={<FractionList fullScreen = {true}/>}
+    />
+    <Route
+      exact
+      path="interactives/multiplication/:activityname"
+      element={<Multiplication fullScreen = {true}/>}
+    />
     <Route
       exact
       path="interactives/subitizer/:activityname"

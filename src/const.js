@@ -1,6 +1,9 @@
+
+// NAME MUST MATCH ROUTE OF INTERACTIVE!!!!!!!!
 export const INTERACTIVE_TYPES = {
   SUBITIZER: "subitizer",
-  MATCH_GAME: "match_game"
+  MATCH_GAME: "match_game",
+  MULTIPLICATION: "multiplication"
 }
 
 export const ACTORS = {
@@ -36,6 +39,7 @@ export const STEP_TYPES = {
 }
 
 export const SETUPS = {
+  multiplication_groups: {},
   hidden_eggs: {type: 6},
   subtraction_spheres: {type: 3},
   card_matching: {type: "MEDIUM_MATCHING"},

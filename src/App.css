@@ -13,6 +13,21 @@
   font-weight: bold;
 }
 
+.grow {
+  flex-grow: 1;
+  text-align: center;
+  vertical-align: center;
+}
+
+.flexMe {
+  display: flex;
+  flex-direction: "row";
+}
+
+.listItems {
+  flex-direction: row;
+}
+
 .main {
   width: 80%;
   margin: auto;

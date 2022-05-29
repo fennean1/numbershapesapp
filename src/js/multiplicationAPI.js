@@ -1,27 +1,14 @@
 // Problem que setup
 import * as PIXI from "pixi.js";
 import { TweenMax } from "gsap";
-import * as randomCoordinates from "./randomCoordinates.js";
 import { getWidthAndHeightOfNumberShape,getWidthAndHeightOfCompositeNumberShape } from "./numbershapes.js";
-import Clouds from "../assets/blue-gradient.png";
+import Clouds from "../assets/Clouds.png";
 import BlueBall from "../assets/BlueBall.png";
-import OrangeBall from "../assets/OrangeBall.png";
-import BlueRing from "../assets/BlueRing.png";
-import PinkBall from "../assets/PinkBall.png";
 import MoreAppsButton from "../assets/MoreAppsButton.png";
-import SpecialBall from "../assets/SpecialBall.png";
-import PotOfGold from "../assets/PotOfGold.png";
 import Coin from "../assets/Coin.png";
-import PurpleEgg from "../assets/PurpleEgg.png";
-import YellowEgg from "../assets/YellowEgg.png";
-import OrangeEgg from "../assets/OrangeEgg.png";
-import GreenEgg from "../assets/GreenEgg.png";
-import BlueEgg from "../assets/BlueEgg.png";
-import RedEgg from "../assets/RedEgg.png";
 import whiteCircle from "../assets/WhiteCircle.png";
 import whiteTriangle from "../assets/WhiteTriangle.png";
 import whitePentagon from "../assets/WhitePentagon.png";
-import blueCircle from "../assets/BlueCircle.png";
 
 import { Selector } from "./api.js";
 
@@ -31,7 +18,6 @@ import Minus from "../assets/Minus.png";
 import SquarePlus from "../assets/SquarePlus.png";
 import SquareMinus from "../assets/SquareMinus.png";
 
-import * as numbershapes from "./numbershapes.js";
 import { NUMBERSHAPES } from "./numbershapes.js";
 
 
@@ -114,7 +100,7 @@ export const init = (app, setup) => {
   const BTN_MULTIPLIER = 2;
 
   let addShapeButton = new PIXI.Sprite.from(SquarePlus);
-  addShapeButton.x = window.innerWidth - dx * (BTN_MULTIPLIER + 1);
+  addShapeButton.x = setup.width - dx * (BTN_MULTIPLIER + 1);
   addShapeButton.y = dx;
   addShapeButton.width = dx * BTN_MULTIPLIER;
   addShapeButton.height = dx * BTN_MULTIPLIER;
@@ -126,7 +112,7 @@ export const init = (app, setup) => {
   app.stage.addChild(addShapeButton);
 
   let removeShapeButton = new PIXI.Sprite.from(SquareMinus);
-  removeShapeButton.x = window.innerWidth - dx * (BTN_MULTIPLIER + 1);
+  removeShapeButton.x =setup.width - dx * (BTN_MULTIPLIER + 1);
   removeShapeButton.y = dx + dx * (BTN_MULTIPLIER + 1);
   removeShapeButton.width = dx * BTN_MULTIPLIER;
   removeShapeButton.height = dx * BTN_MULTIPLIER;
