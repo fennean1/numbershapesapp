@@ -4,6 +4,12 @@ import { TweenMax, TimelineLite, Power2, Elastic, CSSPlugin, TweenLite, Timeline
 import {NUMBERS} from "../AssetManager.js"
 import * as CONST from "./config.js";
 
+
+export const getRandomInt = max => {
+  return Math.floor(Math.random() * Math.floor(max));
+};
+
+
 export class Row extends PIXI.Container{
   constructor(){
     super()
@@ -17,6 +23,32 @@ export class Vector extends PIXI.Sprite {
   }
 
   draw(){
+
+  }
+}
+
+
+export function getRandomArray(I,J,n){
+  let spots = []
+  for (let i = 0;i<I;i++){
+    for (let j = 0;j<J;j++){
+      spots.push([i,j])
+    }
+  }
+
+  let coordinates = []
+
+  for (let k = 0;k<n;k++){
+    let m = getRandomInt(spots.length-1)
+    coordinates.push(...spots.splice(m,1))
+  }
+
+  return coordinates
+}
+
+
+export class Card extends PIXI.Container {
+  constructor(){
 
   }
 }
@@ -2927,10 +2959,6 @@ export class Button extends PIXI.Sprite {
     this.clickCallbackl(this.value)
   }
 }
-
-export const getRandomInt = max => {
-  return Math.floor(Math.random() * Math.floor(max));
-};
 
 export const shuffle = arr => {
   let n = arr.length - 1

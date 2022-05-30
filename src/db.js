@@ -22,7 +22,6 @@ Additional Info:
   - Practices
 */
 
-//const hidden_eggs_slides =
 
 export const hidden_eggs = {
   KEY: "AB13",
@@ -324,7 +323,7 @@ export const multiplication_groups = {
           text: "They change how many are in each group.",
         },
       ],
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653842435/Website_Image_Factory_1_btvhhm.png",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653937943/Screen_Shot_2022-05-30_at_3.10.36_PM_wsfahs.png",
     },
     {
       sample_talk: [
@@ -334,7 +333,7 @@ export const multiplication_groups = {
           text: "They change the number of groups!",
         },
       ],
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653842435/Website_Image_Factory_2_ji6vlx.png",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653937944/Screen_Shot_2022-05-30_at_3.10.28_PM_xumtdw.png",
     },
     {
       sample_talk: [
@@ -376,6 +375,12 @@ export const multiplication_groups = {
       text: "App Store Link for Multiplication Fact Game",
       url: "https://apps.apple.com/us/app/multiplication-fact-workout/id1085400375",
     },
+    {
+      type: LINK_TYPES.FILE,
+      text: "Multiplication Search Worksheet.",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653620561/Multiplication_l761yo.pdf",
+    },
   ],
   INFO: { GRADE: "FirstGrade" },
 };
+

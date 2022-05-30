@@ -5,6 +5,7 @@ import ActivityPage from './ActivityPage';
 import Subitizer from './Interactives/Subitizer';
 import Multiplication from './Interactives/Multiplication';
 import MatchGame from "./Interactives/MatchGame"
+import Crush from "./Interactives/Crush"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 /*
@@ -54,6 +55,11 @@ const Main = () => (
       exact
       path="interactives/fractionlist"
       element={<FractionList fullScreen = {true}/>}
+    />
+    <Route
+      exact
+      path="interactives/crush"
+      element={<Crush fullScreen = {true}/>}
     />
     <Route
       exact

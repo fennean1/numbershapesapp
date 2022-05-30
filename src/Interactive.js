@@ -10,6 +10,7 @@ const app = new PIXI.Application(0, 0, {
 app.renderer.backgroundColor = 0xffffff;
 app.renderer.resolution = window.devicePixelRatio;
 app.renderer.autoDensity = true;
+PIXI.settings.scaleMode = PIXI.SCALE_MODES.NEAREST
 
 export default function Interactive(props) {
   let elementRef;
