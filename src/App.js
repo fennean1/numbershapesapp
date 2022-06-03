@@ -8,6 +8,7 @@ import MatchGame from "./Interactives/MatchGame"
 import Crush from "./Interactives/Crush"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
+import InteractiveSVG from "./Interactives/InteractiveSVG"
 /*
 
 TODOS: 
@@ -55,6 +56,11 @@ const Main = () => (
       exact
       path="interactives/fractionlist"
       element={<FractionList fullScreen = {true}/>}
+    />
+            <Route
+      exact
+      path="interactives/svgtest"
+      element={<InteractiveSVG fullScreen = {true}/>}
     />
     <Route
       exact

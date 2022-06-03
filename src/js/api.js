@@ -39,7 +39,7 @@ export function getRandomArray(I,J,n){
   let coordinates = []
 
   for (let k = 0;k<n;k++){
-    let m = getRandomInt(spots.length-1)
+    let m = getRandomInt(spots.length)
     coordinates.push(...spots.splice(m,1))
   }
 
