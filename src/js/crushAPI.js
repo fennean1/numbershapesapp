@@ -2,9 +2,12 @@
 import * as PIXI from "pixi.js";
 import Clouds from "../assets/Clouds.png";
 import BlueBall from "../assets/PinkBall.png"
+import StartButton from "../assets/GoButton.png"
+import Heart from "../assets/Heart.png"
 
 import {getRandomArray,getRandomInt} from "./api.js"
-import { Tween } from "gsap/gsap-core";
+import { Timeline, Tween } from "gsap/gsap-core";
+import * as l from "./crushlevels.js"
 
 const level = {
   grid: [2,2],
@@ -36,16 +39,25 @@ const level4 = {
 
 
 
-const levels = [level,level2,level3,level4]
+const levels = l.crushlevels
 
 const mod = levels.length
 
-
-let levelCounter = 0
+let levelCounter = 1
+let lifeCounter = 9
 
 export const init = (app, setup) => {
 
   let pool;
+
+  let startButton;
+  let levelText;
+  let endOfGameModal;
+  let helpModal;
+  let livesHeart;
+  let livesText;
+
+  let tlHeartBeat = new Timeline({paused: true})
 
   let VIEW_WIDTH = setup.width
   let VIEW_HEIGHT = setup.height
@@ -57,27 +69,32 @@ export const init = (app, setup) => {
   let gridUnitsHigh = (maxMeshDimension+2)*level.grid[1]
   let gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
 
-
   let UNIT = MIN_DIM/gridUnitsMax
   let SPACE_BETWEEN_CARDS = UNIT/4
   let CARD_WIDTH = (maxMeshDimension+1)*UNIT
   let GRID_WIDTH = (CARD_WIDTH)*level.grid[0] + SPACE_BETWEEN_CARDS*(level.grid[0]-1)
   let GRID_HEIGHT = (CARD_WIDTH)*level.grid[1] + SPACE_BETWEEN_CARDS*(level.grid[1]-1)
   let delta = CARD_WIDTH+SPACE_BETWEEN_CARDS
+  
+  let heartScale;
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
 
   function newLevel(e){
-    if (e.target.isOffCard == true){
-    levelCounter++
-    const newLevel = levels[levelCounter%mod]
-    updateLayoutParams(setup.width,setup.height,newLevel)
-    pool.loadLevel(newLevel)
-    setTimeout(t=>{
-      dealCards(pool)
-    },500)
-  }
+      if (e.target.isOffCard == true){
+        levelCounter++
+          updateLevel()
+          const newLevel = levels[levelCounter%mod]
+          updateLayoutParams(setup.width,setup.height,newLevel)
+          pool.loadLevel(newLevel)
+          setTimeout(t=>{
+            dealCards(pool)
+          },500) 
+      } else {
+        lifeCounter--
+        updateLives()
+      }
   }
 
   class Card extends PIXI.Graphics {
@@ -163,6 +180,7 @@ export const init = (app, setup) => {
       this.cards.forEach(c=>{
         app.stage.removeChild(c)
         c.inPlay = false
+        c.isOffCard = false
       })
   
       let acc = 0 
@@ -243,9 +261,6 @@ export const init = (app, setup) => {
     gridUnitsWide = (maxMeshDimension+2)*newLevel.grid[0]
     gridUnitsHigh = (maxMeshDimension+2)*newLevel.grid[1]
     gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
-  
-    console.log("hello",newLevel.mesh[0],newLevel.mesh[1])
-    console.log("cardwidth",CARD_WIDTH)
 
     UNIT = MIN_DIM/gridUnitsMax
     SPACE_BETWEEN_CARDS = UNIT/4
@@ -256,6 +271,20 @@ export const init = (app, setup) => {
   
     originX = VIEW_WIDTH/2 - GRID_WIDTH/2
     originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
+  }
+
+  function startGame(){
+    pool = new CardPool(level)
+
+    const onComplete = ()=>{
+      dealCards(pool)
+    }
+
+    Tween.to(livesText,{duration: 2,alpha: 1,ease: "elastic"})
+    Tween.to(livesHeart,{duration: 2,alpha: 1,ease: "elastic"})
+    Tween.to(levelText,{duration: 2,alpha: 1,ease: "elastic"})
+
+    Tween.to(this,{y:-this.height,onComplete: onComplete})
   }
 
   function dealCards(pool){
@@ -271,6 +300,18 @@ export const init = (app, setup) => {
     })
   }
 
+  function updateLevel(){
+    levelText.text = "Level: " + levelCounter
+  }
+
+  function updateLives(){
+    livesText.text = lifeCounter
+    tlHeartBeat.restart() 
+    tlHeartBeat.pause()
+    tlHeartBeat.play()
+  }
+
+
   function load(){
 
     let backGround = new PIXI.Sprite.from(Clouds)
@@ -282,6 +323,46 @@ export const init = (app, setup) => {
     backGround.height = setup.height;
     app.stage.addChild(backGround);
 
+    startButton = new PIXI.Sprite.from(StartButton)
+    startButton.anchor.set(0.5)
+    startButton.interactive = true
+    startButton.x = setup.width/2
+    startButton.y = setup.height/2 
+    startButton.width = CARD_WIDTH*1.5
+    startButton.height = CARD_WIDTH*1.5
+    startButton.on('pointerdown',startGame)
+    app.stage.addChild(startButton)
+
+
+    livesText = new PIXI.Text(lifeCounter,{fontSize: CARD_WIDTH/8})
+    livesText.x =  0.02*setup.height
+    livesText.y = 0.02*setup.height
+    app.stage.addChild(livesText)
+
+    livesHeart = new PIXI.Sprite.from(Heart)
+    livesHeart.width = CARD_WIDTH/8
+    livesHeart.height = CARD_WIDTH/8
+    livesHeart.anchor.set(0.5,0.45)
+    app.stage.addChild(livesHeart)
+    livesHeart.y = 0.02*setup.height+livesHeart.height/2
+    livesHeart.x = livesText.x + livesText.width*2.2
+
+    levelText = new PIXI.Text("Level: 1",{fontSize: CARD_WIDTH/8})
+    levelText.anchor.x = 0.5
+    levelText.x = setup.width/2
+    levelText.y = 0.02*setup.height
+    app.stage.addChild(levelText)
+
+    levelText.alpha = 0
+    livesHeart.alpha = 0
+    livesText.alpha = 0
+
+    let heartWidth = livesHeart.width
+
+
+    tlHeartBeat.to(livesHeart,{width: heartWidth*0.5,height: heartWidth*1.1,duration: 0.25})
+    tlHeartBeat.to(livesHeart,{width: heartWidth*1.1,height: heartWidth*0.5,duration: 0.25})
+    tlHeartBeat.to(livesHeart,{width: heartWidth,height: heartWidth,duration: 0.5,ease: "elastic"})
  
     for (let i=0;i<2;i++){
       for (let j=0;j<2;j++){
@@ -292,13 +373,6 @@ export const init = (app, setup) => {
         //app.stage.addChild(t)
       }
     }
-
-    pool = new CardPool(level)
-
-    setTimeout(t=>{
-      dealCards(pool)
-    },3000)
-
   }
 
   load();

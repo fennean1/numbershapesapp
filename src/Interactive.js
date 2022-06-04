@@ -36,7 +36,7 @@ export default function Interactive(props) {
     
   return ()=>{console.log("unmounting")}},[]);
   
-  const fullScreenStyle = {height: "100vh",width: "100vw"}
+  const fullScreenStyle = {height: window.innerHeight,width: "100vw"}
   const defaultStyle = {height: "100%",width: "100%"}
   const screenStyle = props.fullScreen ? fullScreenStyle : defaultStyle
 
