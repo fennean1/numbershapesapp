@@ -4,7 +4,7 @@ export const INTERACTIVE_TYPES = {
   SUBITIZER: "subitizer",
   MATCH_GAME: "match_game",
   MULTIPLICATION: "multiplication",
-  SAMI: "sami"
+  SAAMI: "saami"
 }
 
 export const ACTORS = {
@@ -46,7 +46,7 @@ export const SETUPS = {
   card_matching: {type: "MEDIUM_MATCHING"},
   card_matching_advanced: {type: "ADVANCED_MATCHING"},
   card_matching_basic: {type: "BASIC_MATCHING"},
-  sami: {type: "GAME_MODE"}
+  saami: {type: "GAME_MODE"}
 }
 
 export const TAGS = {

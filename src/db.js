@@ -22,11 +22,11 @@ Additional Info:
   - Practices
 */
 
-export const sami = {
+export const saami = {
   KEY: "CB12",
-  ID: "sami",
+  ID: "saami",
   HEADER: {
-    TITLE: "Sami",
+    TITLE: "Saami",
     SHORT_TEXT: "Numbers Game",
   },
   CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1654439209/CrushHelp_sjscc5.png",
@@ -45,7 +45,7 @@ export const sami = {
     },
   ],
   INTRO: {
-    TEXT: "Sami is a numbers game where players search for a number that's different from the rest.",
+    TEXT: "Saami is a numbers game where players search for a number that's different from the rest.",
   },
   SLIDES: [
     {
@@ -63,33 +63,23 @@ export const sami = {
     },
   ],
   INTERACTIVE: {
-    TYPE: CONST.INTERACTIVE_TYPES.SAMI,
-    SETUP: CONST.SETUPS.SAMI,
+    TYPE: CONST.INTERACTIVE_TYPES.SAAMI,
+    SETUP: CONST.SETUPS.SAAMI,
   }, // sent to "Interactive Selector"
   QUICK_START: {
     STEPS: [
       {
         meta: "something",
-        description: "Play Sami!",
+        description: "Play Saami!",
       },
     ],
     META: "something",
   },
   LINKS: [
     {
-      type: LINK_TYPES.FILE,
-      text: "Multiplication Poster",
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653767740/MultplicationPosterPDF_godt8l.pdf",
-    },
-    {
       type: LINK_TYPES.IOS_APP,
-      text: "App Store Link for Multiplication Fact Game",
-      url: "https://apps.apple.com/us/app/multiplication-fact-workout/id1085400375",
-    },
-    {
-      type: LINK_TYPES.FILE,
-      text: "Multiplication Search Worksheet.",
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653620561/Multiplication_l761yo.pdf",
+      text: "App Store Link for NumberShapes Game",
+      url: "https://apps.apple.com/us/app/numbershapes/id1444912086",
     },
   ],
   INFO: { GRADE: "FirstGrade" },

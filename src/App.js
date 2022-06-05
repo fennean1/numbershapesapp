@@ -64,7 +64,7 @@ const Main = () => (
     />
     <Route
       exact
-      path="interactives/sami/:activityname"
+      path="interactives/saami/:activityname"
       element={<Crush fullScreen = {true}/>}
     />
     <Route

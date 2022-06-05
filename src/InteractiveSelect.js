@@ -18,7 +18,7 @@ export default function InteractiveSelect(props) {
         {props.type == INTERACTIVE_TYPES.MULTIPLICATION && (
           <Multiplication {...props} />
         )}
-                {props.type == INTERACTIVE_TYPES.SAMI && (
+                {props.type == INTERACTIVE_TYPES.SAAMI && (
           <Crush {...props} />
         )}
     </div>
