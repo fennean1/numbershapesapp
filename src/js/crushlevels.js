@@ -116,21 +116,21 @@ export const L8 = {
   grid: [3,2],
   value: 5,
   delta: 1,
-  mesh: [3,3]
+  mesh: [4,3]
 }
 
 export const L9 = {
   grid: [3,2],
   value: 6,
   delta: 2,
-  mesh: [3,3]
+  mesh: [5,2]
 }
 
 export const L10 = {
   grid: [3,3],
   value: 8,
   delta: 1,
-  mesh: [3,3]
+  mesh: [3,4]
 }
 
 export const L11 = {
@@ -275,6 +275,102 @@ export const L30 = {
   delta: 1,
   mesh: [4,4]
 }
+
+export const L31 = {
+  grid: [4,4],
+  value: 4,
+  delta: 1,
+  mesh: [4,4]
+}
+
+export const L32 = {
+  grid: [4,4],
+  value: 8,
+  delta: 3,
+  mesh: [4,4]
+}
+
+export const L33 = {
+  grid: [4,4],
+  value: 7,
+  delta: 1,
+  mesh: [4,4]
+}
+
+export const L34 = {
+  grid: [4,4],
+  value: 9,
+  delta: 4,
+  mesh: [4,4]
+}
+
+export const L35 = {
+  grid: [3,3],
+  value: 9,
+  delta: 1,
+  mesh: [5,5]
+}
+
+export const L36 = {
+  grid: [3,3],
+  value: 10,
+  delta: 2,
+  mesh: [5,5]
+}
+
+export const L37 = {
+  grid: [3,3],
+  value: 15,
+  delta: 3,
+  mesh: [5,5]
+}
+
+export const L38 = {
+  grid: [3,4],
+  value: 14,
+  delta: 4,
+  mesh: [5,5]
+}
+
+export const L39 = {
+  grid: [3,4],
+  value: 18,
+  delta: 4,
+  mesh: [5,5]
+}
+
+export const L40 = {
+  grid: [4,4],
+  value: 8,
+  delta: 3,
+  mesh: [5,5]
+}
+
+export const L42 = {
+  grid: [4,4],
+  value: 8,
+  delta: 1,
+  mesh: [4,4]
+}
+
+export const L43 = {
+  grid: [4,4],
+  value: 9,
+  delta: 1,
+  mesh: [4,4]
+}
+
+export const L44 = {
+  grid: [4,4],
+  value: 10,
+  delta: 1,
+  mesh: [4,4]
+}
+
+
+
+
+
 
 
 
