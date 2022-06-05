@@ -44,7 +44,7 @@ const levels = l.crushlevels
 const mod = levels.length
 
 let levelCounter = 1
-let lifeCounter = 9
+let lifeCounter = 2
 
 export const init = (app, setup) => {
 
@@ -53,9 +53,11 @@ export const init = (app, setup) => {
   let startButton;
   let levelText;
   let endOfGameModal;
+  let endOfGameText;
   let helpModal;
   let livesHeart;
   let livesText;
+
 
   let tlHeartBeat = new Timeline({paused: true})
 
@@ -83,8 +85,8 @@ export const init = (app, setup) => {
 
   function newLevel(e){
       if (e.target.isOffCard == true){
-        levelCounter++
-          updateLevel()
+          levelCounter++
+          updateLevelDescriptor()
           const newLevel = levels[levelCounter%mod]
           updateLayoutParams(setup.width,setup.height,newLevel)
           pool.loadLevel(newLevel)
@@ -92,9 +94,43 @@ export const init = (app, setup) => {
             dealCards(pool)
           },500) 
       } else {
+        const onComplete = ()=>{
+          if (lifeCounter == 0){
+            endGame()
+          }
+        }
+        Tween.to(e.target,{onComplete: onComplete,rotation: 1,y: setup.height*2})
         lifeCounter--
         updateLives()
       }
+
+  }
+
+  function endGame(){
+    console.log("end of game")
+    Tween.to(endOfGameModal,{y: 0,duration: 2,ease: "elastic"})
+    Tween.to(endOfGameText,{y: setup.height/2,duration: 2,ease: "elastic"})
+    endOfGameText.text = "Level " + levelCounter
+    app.stage.addChild(endOfGameModal)
+    app.stage.addChild(endOfGameText)
+  }
+
+  function restartGame(){
+
+    const onComplete = ()=>{
+      app.stage.removeChild(endOfGameModal)
+      dealCards(pool)
+    }
+    Tween.to(endOfGameModal,{duration: 1,y: 1.1*setup.height,onComplete: onComplete,ease: "elastic"})
+    Tween.to(endOfGameText,{duration: 1,y: 1.1*setup.height,ease: "elastic"})
+    levelCounter = 1
+    lifeCounter = 9
+    
+    livesText.text = lifeCounter
+    updateLevelDescriptor()
+    const newLevel = levels[levelCounter%mod]
+    updateLayoutParams(setup.width,setup.height,newLevel)
+    pool.loadLevel(newLevel)
   }
 
   class Card extends PIXI.Graphics {
@@ -180,6 +216,7 @@ export const init = (app, setup) => {
       this.cards.forEach(c=>{
         app.stage.removeChild(c)
         c.inPlay = false
+        c.rotation = 0
         c.isOffCard = false
       })
   
@@ -300,7 +337,7 @@ export const init = (app, setup) => {
     })
   }
 
-  function updateLevel(){
+  function updateLevelDescriptor(){
     levelText.text = "Level: " + levelCounter
   }
 
@@ -363,6 +400,20 @@ export const init = (app, setup) => {
     tlHeartBeat.to(livesHeart,{width: heartWidth*0.5,height: heartWidth*1.1,duration: 0.25})
     tlHeartBeat.to(livesHeart,{width: heartWidth*1.1,height: heartWidth*0.5,duration: 0.25})
     tlHeartBeat.to(livesHeart,{width: heartWidth,height: heartWidth,duration: 0.5,ease: "elastic"})
+
+    endOfGameModal = new PIXI.Graphics()
+    endOfGameModal.beginFill(0xffffff)
+    endOfGameModal.drawRoundedRect(0,0,setup.width,setup.height)
+    endOfGameModal.y = setup.height*1.1
+    endOfGameModal.interactive = true
+    endOfGameModal.on('pointerdown',()=>restartGame())
+
+    endOfGameText = new PIXI.Text("blank",{fontSize: setup.height/10})
+    endOfGameText.y = setup.height
+    endOfGameText.x = setup.width/2
+    endOfGameText.anchor.set(0.5)
+
+
  
     for (let i=0;i<2;i++){
       for (let j=0;j<2;j++){
