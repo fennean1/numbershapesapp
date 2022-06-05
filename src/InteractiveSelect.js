@@ -3,6 +3,7 @@ import { INTERACTIVE_TYPES } from "./const.js";
 import MatchGame from "./Interactives/MatchGame.js";
 import Subitizer from "./Interactives/Subitizer";
 import Multiplication from "./Interactives/Multiplication";
+import Crush from "./Interactives/Crush";
 
 
 export default function InteractiveSelect(props) {
@@ -16,6 +17,9 @@ export default function InteractiveSelect(props) {
         )}
         {props.type == INTERACTIVE_TYPES.MULTIPLICATION && (
           <Multiplication {...props} />
+        )}
+                {props.type == INTERACTIVE_TYPES.SAMI && (
+          <Crush {...props} />
         )}
     </div>
   );

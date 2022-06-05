@@ -4,7 +4,7 @@ import Interactive from "../Interactive";
 import * as script from "../js/crushAPI"
 import * as CONST from "../const.js"
 
-export default function Multiplication(props) {
+export default function Crush(props) {
   const {activityname} = useParams()
   const data = CONST.SETUPS[activityname]
 

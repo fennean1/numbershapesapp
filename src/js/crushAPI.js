@@ -1,63 +1,53 @@
 // Problem que setup
 import * as PIXI from "pixi.js";
 import Clouds from "../assets/Clouds.png";
-import BlueBall from "../assets/PinkBall.png"
+import BlueBall from "../assets/BlueBall.png"
 import StartButton from "../assets/GoButton.png"
 import Heart from "../assets/Heart.png"
+import CrushHelp from "../assets/CrushHelp.png"
 
 import {getRandomArray,getRandomInt} from "./api.js"
 import { Timeline, Tween } from "gsap/gsap-core";
 import * as l from "./crushlevels.js"
 
-const level = {
-  grid: [2,2],
-  value: 2,
-  delta: 1,
-  mesh: [2,2]
-}
-
-const level2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 2,
-  mesh: [2,2]
-}
-
-const level3 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [3,3]
-}
-
-const level4 = {
-  grid: [2,2],
-  value: 3,
-  delta: 2,
-  mesh: [3,2]
-}
-
-
 
 const levels = l.crushlevels
 
+console.log("levels",levels)
+
 const mod = levels.length
 
-let levelCounter = 1
-let lifeCounter = 2
+
+let NUMBER_OF_LIVES = 9
+let levelCounter = 0
+let lifeCounter = NUMBER_OF_LIVES
+
+const initLevel = {
+  grid: [2,2],
+  value: 3,
+  delta: 2,
+  mesh: [2,2]
+}
+
 
 export const init = (app, setup) => {
+
+
+  let helping = false
 
   let pool;
 
   let startButton;
   let levelText;
+  let helpButton;
   let endOfGameModal;
   let endOfGameText;
   let helpModal;
   let livesHeart;
   let livesText;
 
+  const TEXT_COLOR = 0x1191fa
+  const BORDER_COLOR = 0x1191fa
 
   let tlHeartBeat = new Timeline({paused: true})
 
@@ -65,20 +55,20 @@ export const init = (app, setup) => {
   let VIEW_HEIGHT = setup.height
   let MIN_DIM = Math.min(VIEW_WIDTH,VIEW_HEIGHT)
 
-  let maxMeshDimension = Math.max(level.mesh[0],level.mesh[1])
+  let TOP_PADDING = 0.02*setup.height
 
-  let gridUnitsWide = (maxMeshDimension+2)*level.grid[0]
-  let gridUnitsHigh = (maxMeshDimension+2)*level.grid[1]
+  let maxMeshDimension = Math.max(initLevel.mesh[0],initLevel.mesh[1])
+
+  let gridUnitsWide = (maxMeshDimension+2)*initLevel.grid[0]
+  let gridUnitsHigh = (maxMeshDimension+2)*initLevel.grid[1]
   let gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
 
   let UNIT = MIN_DIM/gridUnitsMax
   let SPACE_BETWEEN_CARDS = UNIT/4
   let CARD_WIDTH = (maxMeshDimension+1)*UNIT
-  let GRID_WIDTH = (CARD_WIDTH)*level.grid[0] + SPACE_BETWEEN_CARDS*(level.grid[0]-1)
-  let GRID_HEIGHT = (CARD_WIDTH)*level.grid[1] + SPACE_BETWEEN_CARDS*(level.grid[1]-1)
+  let GRID_WIDTH = (CARD_WIDTH)*initLevel.grid[0] + SPACE_BETWEEN_CARDS*(initLevel.grid[0]-1)
+  let GRID_HEIGHT = (CARD_WIDTH)*initLevel.grid[1] + SPACE_BETWEEN_CARDS*(initLevel.grid[1]-1)
   let delta = CARD_WIDTH+SPACE_BETWEEN_CARDS
-  
-  let heartScale;
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
@@ -123,8 +113,8 @@ export const init = (app, setup) => {
     }
     Tween.to(endOfGameModal,{duration: 1,y: 1.1*setup.height,onComplete: onComplete,ease: "elastic"})
     Tween.to(endOfGameText,{duration: 1,y: 1.1*setup.height,ease: "elastic"})
-    levelCounter = 1
-    lifeCounter = 9
+    levelCounter = 0
+    lifeCounter = NUMBER_OF_LIVES
     
     livesText.text = lifeCounter
     updateLevelDescriptor()
@@ -154,7 +144,7 @@ export const init = (app, setup) => {
 
       this.clear()
       this.beginFill(0xffffff);
-      this.lineStyle(1,0xfc5195)
+      this.lineStyle(CARD_WIDTH/50,BORDER_COLOR)
       this.drawRoundedRect(0,0,CARD_WIDTH,CARD_WIDTH,this.dim/10)
   
 
@@ -215,6 +205,7 @@ export const init = (app, setup) => {
       this.level = level
       this.cards.forEach(c=>{
         app.stage.removeChild(c)
+        c.interactive = false
         c.inPlay = false
         c.rotation = 0
         c.isOffCard = false
@@ -237,9 +228,8 @@ export const init = (app, setup) => {
             }
             c.isOffCard = true
           }
-          console.log("cardwidth",CARD_WIDTH)
           c.draw(CARD_WIDTH,level.mesh,potentialValue)
-          c.y = -CARD_WIDTH
+          c.y = -1.1*CARD_WIDTH
           c.x = originX + i%level.grid[0]*CARD_WIDTH
           c.inPlay = true
           c.i = i 
@@ -311,7 +301,12 @@ export const init = (app, setup) => {
   }
 
   function startGame(){
-    pool = new CardPool(level)
+    console.log("level counter mod",levelCounter%mod)
+    const startLevel = levels[levelCounter%mod]
+    console.log("start Leve",startLevel)
+    pool = new CardPool(levels[levelCounter%mod])
+
+    console.log("pool.level",pool.level)
 
     const onComplete = ()=>{
       dealCards(pool)
@@ -320,12 +315,17 @@ export const init = (app, setup) => {
     Tween.to(livesText,{duration: 2,alpha: 1,ease: "elastic"})
     Tween.to(livesHeart,{duration: 2,alpha: 1,ease: "elastic"})
     Tween.to(levelText,{duration: 2,alpha: 1,ease: "elastic"})
+    Tween.to(helpButton,{duration: 2,alpha: 1,ease: "elastic"})
+
+    livesText.text = NUMBER_OF_LIVES
+    helpButton.text = "?"
 
     Tween.to(this,{y:-this.height,onComplete: onComplete})
   }
 
   function dealCards(pool){
     pool.cards.forEach(c=>{
+      c.interactive = true
       if (c.inPlay == true){
         let _x = originX + delta*c.i 
         let _y = originY + delta*c.j
@@ -338,7 +338,8 @@ export const init = (app, setup) => {
   }
 
   function updateLevelDescriptor(){
-    levelText.text = "Level: " + levelCounter
+    const actualLevel = levelCounter+1
+    levelText.text = "Level: " + actualLevel
   }
 
   function updateLives(){
@@ -348,6 +349,25 @@ export const init = (app, setup) => {
     tlHeartBeat.play()
   }
 
+  function help(){
+    app.stage.addChild(helpModal)
+
+    const onHelp = ()=>{
+      helping = true
+    }
+
+    const onHelpLeave = ()=>{
+      helping = false
+    }
+
+    if (!helping){
+      Tween.to(helpModal,{x: setup.width/2,y: setup.height/2,onComplete: onHelp})
+    } else {
+      Tween.to(helpModal,{x: 2*setup.width,onComplete: onHelpLeave})
+    }
+
+
+  }
 
   function load(){
 
@@ -371,9 +391,10 @@ export const init = (app, setup) => {
     app.stage.addChild(startButton)
 
 
-    livesText = new PIXI.Text(lifeCounter,{fontSize: CARD_WIDTH/8})
-    livesText.x =  0.02*setup.height
-    livesText.y = 0.02*setup.height
+    livesText = new PIXI.Text("b",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: CARD_WIDTH/8})
+    livesText.style.fill = TEXT_COLOR
+    livesText.x =  TOP_PADDING
+    livesText.y = TOP_PADDING
     app.stage.addChild(livesText)
 
     livesHeart = new PIXI.Sprite.from(Heart)
@@ -381,18 +402,15 @@ export const init = (app, setup) => {
     livesHeart.height = CARD_WIDTH/8
     livesHeart.anchor.set(0.5,0.45)
     app.stage.addChild(livesHeart)
-    livesHeart.y = 0.02*setup.height+livesHeart.height/2
+    livesHeart.y = TOP_PADDING+livesHeart.height/2
     livesHeart.x = livesText.x + livesText.width*2.2
 
-    levelText = new PIXI.Text("Level: 1",{fontSize: CARD_WIDTH/8})
+    levelText = new PIXI.Text("Level: 1",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: CARD_WIDTH/8})
     levelText.anchor.x = 0.5
+    levelText.style.fill = TEXT_COLOR
     levelText.x = setup.width/2
-    levelText.y = 0.02*setup.height
+    levelText.y = TOP_PADDING
     app.stage.addChild(levelText)
-
-    levelText.alpha = 0
-    livesHeart.alpha = 0
-    livesText.alpha = 0
 
     let heartWidth = livesHeart.width
 
@@ -408,12 +426,35 @@ export const init = (app, setup) => {
     endOfGameModal.interactive = true
     endOfGameModal.on('pointerdown',()=>restartGame())
 
-    endOfGameText = new PIXI.Text("blank",{fontSize: setup.height/10})
+    endOfGameText = new PIXI.Text("blank",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: setup.height/10})
+    endOfGameText.style.fill = TEXT_COLOR
     endOfGameText.y = setup.height
     endOfGameText.x = setup.width/2
     endOfGameText.anchor.set(0.5)
 
+    helpModal = new PIXI.Sprite.from(CrushHelp)
+    helpModal.width = MIN_DIM
+    helpModal.height = MIN_DIM
+    helpModal.anchor.set(0.5)
+    helpModal.x = 2*setup.width
+    helpModal.interactive = true
+    helpModal.y = setup.height/2 
+    helpModal.on('pointerdown',help)
+    app.stage.addChild(helpModal)
 
+    helpButton = new PIXI.Text("b",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: CARD_WIDTH/8})
+    helpButton.style.fill = TEXT_COLOR
+    helpButton.anchor.set(0)
+    helpButton.interactive = true
+    helpButton.x =  setup.width - 2*helpButton.width
+    helpButton.y = TOP_PADDING
+    helpButton.on("pointerdown",help)
+    app.stage.addChild(helpButton)
+    
+    levelText.alpha = 0
+    livesHeart.alpha = 0
+    livesText.alpha = 0
+    helpButton.alpha = 0
  
     for (let i=0;i<2;i++){
       for (let j=0;j<2;j++){

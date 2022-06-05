@@ -22,6 +22,79 @@ Additional Info:
   - Practices
 */
 
+export const sami = {
+  KEY: "CB12",
+  ID: "sami",
+  HEADER: {
+    TITLE: "Sami",
+    SHORT_TEXT: "Numbers Game",
+  },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1654439209/CrushHelp_sjscc5.png",
+  EXEMPLAR_TALK: [
+    {
+      actor: ACTORS.TEACHER,
+      text: "Which one is different from the rest?",
+    },
+    {
+      actor: ACTORS.STUDENT,
+      text: "Do you mean a different shape?",
+    },
+    {
+      actor: ACTORS.TEACHER,
+      text: "Which has a different number when you count them",
+    },
+  ],
+  INTRO: {
+    TEXT: "Sami is a numbers game where players search for a number that's different from the rest.",
+  },
+  SLIDES: [
+    {
+      sample_talk: [
+        {
+          actor: ACTORS.TEACHER,
+          text: "Which is different?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "All are three except one of them!",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1654439209/CrushHelp_sjscc5.png",
+    },
+  ],
+  INTERACTIVE: {
+    TYPE: CONST.INTERACTIVE_TYPES.SAMI,
+    SETUP: CONST.SETUPS.SAMI,
+  }, // sent to "Interactive Selector"
+  QUICK_START: {
+    STEPS: [
+      {
+        meta: "something",
+        description: "Play Sami!",
+      },
+    ],
+    META: "something",
+  },
+  LINKS: [
+    {
+      type: LINK_TYPES.FILE,
+      text: "Multiplication Poster",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653767740/MultplicationPosterPDF_godt8l.pdf",
+    },
+    {
+      type: LINK_TYPES.IOS_APP,
+      text: "App Store Link for Multiplication Fact Game",
+      url: "https://apps.apple.com/us/app/multiplication-fact-workout/id1085400375",
+    },
+    {
+      type: LINK_TYPES.FILE,
+      text: "Multiplication Search Worksheet.",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1653620561/Multiplication_l761yo.pdf",
+    },
+  ],
+  INFO: { GRADE: "FirstGrade" },
+};
+
 
 export const hidden_eggs = {
   KEY: "AB13",
@@ -383,4 +456,5 @@ export const multiplication_groups = {
   ],
   INFO: { GRADE: "FirstGrade" },
 };
+
 
