@@ -20,43 +20,107 @@ export const L3 = {
   mesh: [3,2]
 }
 
-export const L4 = {
+export const L3A = {
   grid: [2,2],
+  value: 3,
+  delta: 2,
+  mesh: [3,3]
+}
+export const L3B = {
+  grid: [2,2],
+  value: 4,
+  delta: 2,
+  mesh: [4,3]
+}
+
+export const L3C = {
+  grid: [2,2],
+  value: 4,
+  delta: 1,
+  mesh: [4,3]
+}
+
+export const L3D = {
+  grid: [2,2],
+  value: 5,
+  delta: 2,
+  mesh: [4,4]
+}
+
+export const L3E = {
+  grid: [2,2],
+  value: 5,
+  delta: 1,
+  mesh: [4,4]
+}
+
+export const L4 = {
+  grid: [3,2],
   value: 5,
   delta: 1,
   mesh: [2,3]
 }
 
-export const L5 = {
-  grid: [2,2],
+export const L4A = {
+  grid: [3,2],
   value: 5,
   delta: 1,
-  mesh: [3,2]
+  mesh: [3,3]
 }
 
+export const L4B = {
+  grid: [3,2],
+  value: 5,
+  delta: 1,
+  mesh: [4,3]
+}
+
+export const L4C = {
+  grid: [3,2],
+  value: 5,
+  delta: 1,
+  mesh: [4,4]
+}
+
+export const L4D = {
+  grid: [3,2],
+  value: 7,
+  delta: 2,
+  mesh: [4,4]
+}
+
+
+export const L5 = {
+  grid: [3,3],
+  value: 5,
+  delta: 1,
+  mesh: [3,3]
+}
+
+
 export const L6 = {
-  grid: [2,3],
+  grid: [3,2],
   value: 4,
   delta: 2,
   mesh: [3,2]
 }
 
 export const L7 = {
-  grid: [2,3],
+  grid: [3,2],
   value: 5,
   delta: 2,
   mesh: [3,3]
 }
 
 export const L8 = {
-  grid: [2,3],
+  grid: [3,2],
   value: 5,
   delta: 1,
   mesh: [3,3]
 }
 
 export const L9 = {
-  grid: [2,3],
+  grid: [3,2],
   value: 6,
   delta: 2,
   mesh: [3,3]
@@ -106,14 +170,14 @@ export const L15 = {
 }
 
 export const L16 = {
-  grid: [2,3],
+  grid: [3,2],
   value: 8,
   delta: 2,
   mesh: [4,3]
 }
 
 export const L17 = {
-  grid: [2,3],
+  grid: [3,2],
   value: 9,
   delta: 2,
   mesh: [4,3]
@@ -226,7 +290,7 @@ export const L2x = {
 
 
 
-export const crushlevels = [L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
+export const crushlevels = [L1,L2,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
 
 
 

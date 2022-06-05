@@ -294,12 +294,12 @@ export const init = (app, setup) => {
 
     TOP_PADDING = isMobileDevice ? 0.10*setup.height : 0.02*setup.height
   
-    gridUnitsWide = (maxMeshDimension+2)*newLevel.grid[0]
-    gridUnitsHigh = (maxMeshDimension+2)*newLevel.grid[1]
+    gridUnitsWide = (newLevel.mesh[0]+2)*newLevel.grid[0]
+    gridUnitsHigh = (newLevel.mesh[1]+2)*newLevel.grid[1]
     gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
 
-    UNIT = MIN_DIM/gridUnitsMax
-    SPACE_BETWEEN_CARDS = UNIT/4
+    UNIT = isMobileDevice ? MIN_DIM/gridUnitsMax : (MIN_DIM-FONT_SIZE-MARGIN_TOP)/gridUnitsMax
+    SPACE_BETWEEN_CARDS = MIN_DIM/50
     CARD_WIDTH = (maxMeshDimension+1)*UNIT
     GRID_WIDTH = (CARD_WIDTH)*newLevel.grid[0] + SPACE_BETWEEN_CARDS*(newLevel.grid[0]-1)
     GRID_HEIGHT = (CARD_WIDTH)*newLevel.grid[1] + SPACE_BETWEEN_CARDS*(newLevel.grid[1]-1)
