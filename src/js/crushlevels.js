@@ -206,7 +206,7 @@ export const L29 = {
 }
 
 export const L30 = {
-  grid: [3,4],
+  grid: [4,3],
   value: 9,
   delta: 1,
   mesh: [4,4]
@@ -217,7 +217,7 @@ export const L30 = {
 
 export const L2x = {
   grid: [5,5],
-  value: 8,
+  value: 15,
   delta: 3,
   mesh: [5,5]
 }
@@ -226,7 +226,7 @@ export const L2x = {
 
 
 
-export const crushlevels = [L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
+export const crushlevels = [L30,L2x,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
 
 
 

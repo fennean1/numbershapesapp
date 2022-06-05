@@ -13,7 +13,6 @@ import * as l from "./crushlevels.js"
 
 const levels = l.crushlevels
 
-console.log("levels",levels)
 
 const mod = levels.length
 
@@ -51,17 +50,23 @@ export const init = (app, setup) => {
 
   let tlHeartBeat = new Timeline({paused: true})
 
+  let isMobileDevice = setup.width/setup.height < 0.75 ? true : false
+
   let VIEW_WIDTH = setup.width
   let VIEW_HEIGHT = setup.height
   let MIN_DIM = Math.min(VIEW_WIDTH,VIEW_HEIGHT)
 
-  let TOP_PADDING = 0.02*setup.height
+  let MARGIN_TOP = MIN_DIM*0.02
+
+  let TOP_PADDING = isMobileDevice ? 0.10*setup.height : 0.05*setup.height
 
   let maxMeshDimension = Math.max(initLevel.mesh[0],initLevel.mesh[1])
 
   let gridUnitsWide = (maxMeshDimension+2)*initLevel.grid[0]
   let gridUnitsHigh = (maxMeshDimension+2)*initLevel.grid[1]
   let gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
+
+  let FONT_SIZE = isMobileDevice ? TOP_PADDING/3 : TOP_PADDING
 
   let UNIT = MIN_DIM/gridUnitsMax
   let SPACE_BETWEEN_CARDS = UNIT/4
@@ -97,7 +102,7 @@ export const init = (app, setup) => {
   }
 
   function endGame(){
-    console.log("end of game")
+
     Tween.to(endOfGameModal,{y: 0,duration: 2,ease: "elastic"})
     Tween.to(endOfGameText,{y: setup.height/2,duration: 2,ease: "elastic"})
     endOfGameText.text = "Level " + levelCounter
@@ -284,6 +289,10 @@ export const init = (app, setup) => {
     MIN_DIM = Math.min(VIEW_WIDTH,VIEW_HEIGHT)
   
     maxMeshDimension = Math.max(newLevel.mesh[0],newLevel.mesh[1])
+
+    MARGIN_TOP = MIN_DIM*0.02
+
+    TOP_PADDING = isMobileDevice ? 0.10*setup.height : 0.02*setup.height
   
     gridUnitsWide = (maxMeshDimension+2)*newLevel.grid[0]
     gridUnitsHigh = (maxMeshDimension+2)*newLevel.grid[1]
@@ -301,12 +310,12 @@ export const init = (app, setup) => {
   }
 
   function startGame(){
-    console.log("level counter mod",levelCounter%mod)
+
     const startLevel = levels[levelCounter%mod]
-    console.log("start Leve",startLevel)
+    updateLayoutParams(setup.width,setup.height,startLevel)
+
     pool = new CardPool(levels[levelCounter%mod])
 
-    console.log("pool.level",pool.level)
 
     const onComplete = ()=>{
       dealCards(pool)
@@ -391,25 +400,25 @@ export const init = (app, setup) => {
     app.stage.addChild(startButton)
 
 
-    livesText = new PIXI.Text("b",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: CARD_WIDTH/8})
+    livesText = new PIXI.Text("b",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: FONT_SIZE})
     livesText.style.fill = TEXT_COLOR
-    livesText.x =  TOP_PADDING
-    livesText.y = TOP_PADDING
+    livesText.x =  MARGIN_TOP
+    livesText.y = MARGIN_TOP
     app.stage.addChild(livesText)
 
     livesHeart = new PIXI.Sprite.from(Heart)
-    livesHeart.width = CARD_WIDTH/8
-    livesHeart.height = CARD_WIDTH/8
+    livesHeart.width = FONT_SIZE
+    livesHeart.height = FONT_SIZE
     livesHeart.anchor.set(0.5,0.45)
     app.stage.addChild(livesHeart)
-    livesHeart.y = TOP_PADDING+livesHeart.height/2
+    livesHeart.y = MARGIN_TOP+livesHeart.height/2
     livesHeart.x = livesText.x + livesText.width*2.2
 
-    levelText = new PIXI.Text("Level: 1",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: CARD_WIDTH/8})
+    levelText = new PIXI.Text("Level: 1",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: FONT_SIZE})
     levelText.anchor.x = 0.5
     levelText.style.fill = TEXT_COLOR
     levelText.x = setup.width/2
-    levelText.y = TOP_PADDING
+    levelText.y = MARGIN_TOP
     app.stage.addChild(levelText)
 
     let heartWidth = livesHeart.width
@@ -442,12 +451,12 @@ export const init = (app, setup) => {
     helpModal.on('pointerdown',help)
     app.stage.addChild(helpModal)
 
-    helpButton = new PIXI.Text("b",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: CARD_WIDTH/8})
+    helpButton = new PIXI.Text("b",{fontWeight: "bold",fontFamily: "Quicksand",fontSize: FONT_SIZE})
     helpButton.style.fill = TEXT_COLOR
     helpButton.anchor.set(0)
     helpButton.interactive = true
     helpButton.x =  setup.width - 2*helpButton.width
-    helpButton.y = TOP_PADDING
+    helpButton.y = MARGIN_TOP
     helpButton.on("pointerdown",help)
     app.stage.addChild(helpButton)
     
