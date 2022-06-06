@@ -58,7 +58,7 @@ export const L4 = {
   grid: [3,2],
   value: 5,
   delta: 1,
-  mesh: [2,3]
+  mesh: [3,2]
 }
 
 export const L4A = {

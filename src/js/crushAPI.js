@@ -66,7 +66,7 @@ export const init = (app, setup) => {
   let gridUnitsHigh = (maxMeshDimension+2)*initLevel.grid[1]
   let gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
 
-  let FONT_SIZE = isMobileDevice ? TOP_PADDING/3 : TOP_PADDING
+  let FONT_SIZE = isMobileDevice ? TOP_PADDING/2 : TOP_PADDING
 
   let UNIT = MIN_DIM/gridUnitsMax
   let SPACE_BETWEEN_CARDS = UNIT/4
@@ -338,13 +338,17 @@ export const init = (app, setup) => {
     Tween.to(this,{y:-this.height,onComplete: onComplete})
   }
 
+  function makeInteractive(){
+    this._targets[0].interactive = true
+  }
+
   function dealCards(pool){
     pool.cards.forEach(c=>{
       if (c.inPlay == true){
         let _x = originX + delta*c.i 
         let _y = originY + delta*c.j
         app.stage.addChild(c)
-        Tween.to(c,{duration: 1,x: _x, y: _y,ease: "elastic",onComplete: ()=>c.interactive = true})
+        Tween.to(c,{duration: 0.85,x: _x, y: _y,ease: "elastic",callBackScope: this,onComplete: makeInteractive})
       } else {
         app.stage.removeChild(c)
       }
