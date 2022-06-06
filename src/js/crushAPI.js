@@ -89,7 +89,9 @@ export const init = (app, setup) => {
             dealCards(pool)
           },500) 
       } else {
+        pool.activeCards.forEach(c=>c.interactive = false)
         const onComplete = ()=>{
+          pool.activeCards.forEach(c=>c.interactive = true)
           if (lifeCounter == 0){
             endGame()
           }
@@ -103,7 +105,11 @@ export const init = (app, setup) => {
 
   function endGame(){
 
-    Tween.to(endOfGameModal,{y: 0,duration: 2,ease: "elastic"})
+    const onComplete = ()=>{
+      endOfGameModal.interactive = true
+    }
+    endOfGameModal.interactive = false
+    Tween.to(endOfGameModal,{y: 0,duration: 2,ease: "elastic",onComplete: onComplete})
     Tween.to(endOfGameText,{y: setup.height/2,duration: 2,ease: "elastic"})
     endOfGameText.text = "Level " + levelCounter
     app.stage.addChild(endOfGameModal)
@@ -334,12 +340,11 @@ export const init = (app, setup) => {
 
   function dealCards(pool){
     pool.cards.forEach(c=>{
-      c.interactive = true
       if (c.inPlay == true){
         let _x = originX + delta*c.i 
         let _y = originY + delta*c.j
         app.stage.addChild(c)
-        Tween.to(c,{duration: 1,x: _x, y: _y,ease: "elastic"})
+        Tween.to(c,{duration: 1,x: _x, y: _y,ease: "elastic",onComplete: ()=>c.interactive = true})
       } else {
         app.stage.removeChild(c)
       }
