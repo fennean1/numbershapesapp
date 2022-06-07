@@ -1,23 +1,103 @@
+
+const counters = {
+  blue: "blue",
+  red: "red"
+}
+
+
 export const L1 = {
   grid: [2,2],
   value: 3,
   delta: 2,
-  mesh: [2,2]
+  mesh: [2,2],
+  counter: counters.blue
 }
+
+export const L1A = {
+  grid: [2,2],
+  value: 3,
+  delta: 2,
+  mesh: [3,3],
+  counter: counters.blue
+}
+
+export const L1B = {
+  grid: [2,2],
+  value: 3,
+  delta: 1,
+  mesh: [3,3],
+  counter: counters.blue
+}
+
+
+export const L1C = {
+  grid: [2,2],
+  value: 4,
+  delta: 2,
+  mesh: [3,3],
+  counter: counters.blue
+}
+
+export const L1D = {
+  grid: [2,2],
+  value: 5,
+  delta: 2,
+  mesh: [3,3],
+  counter: counters.blue
+}
+
+export const L1E = {
+  grid: [2,2],
+  value: 6,
+  delta: 3,
+  mesh: [3,3],
+  counter: counters.blue
+}
+
+
 
 
 export const L2 = {
   grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
+  value: 5,
+  delta: 3,
+  mesh: [3,2],
 }
+
+export const L2A = {
+  grid: [2,2],
+  value: 4,
+  delta: 3,
+  mesh: [3,3],
+}
+
+export const L2B = {
+  grid: [2,2],
+  value: 5,
+  delta: 3,
+  mesh: [3,3],
+}
+
+export const L2C = {
+  grid: [2,2],
+  value: 7,
+  delta: 4,
+  mesh: [4,3],
+}
+
+export const L2D = {
+  grid: [2,2],
+  value: 8,
+  delta: 3,
+  mesh: [4,3],
+}
+
 
 export const L3 = {
   grid: [2,2],
   value: 3,
   delta: 2,
-  mesh: [3,2]
+  mesh: [3,2],
 }
 
 export const L3A = {
@@ -63,15 +143,15 @@ export const L4 = {
 
 export const L4A = {
   grid: [3,2],
-  value: 5,
-  delta: 1,
-  mesh: [3,3]
+  value: 9,
+  delta: 4,
+  mesh: [4,4]
 }
 
 export const L4B = {
   grid: [3,2],
-  value: 5,
-  delta: 1,
+  value: 8,
+  delta: 3,
   mesh: [4,3]
 }
 
@@ -92,18 +172,94 @@ export const L4D = {
 
 export const L5 = {
   grid: [3,3],
-  value: 5,
-  delta: 1,
+  value: 6,
+  delta: 3,
   mesh: [3,3]
 }
 
+export const L5A = {
+  grid: [3,3],
+  value: 10,
+  delta: 5,
+  mesh: [5,4]
+}
+
+export const L5B = {
+  grid: [3,3],
+  value: 12,
+  delta: 6,
+  mesh: [5,4]
+}
+
+export const L5C = {
+  grid: [3,3],
+  value: 12,
+  delta: 4,
+  mesh: [5,4]
+}
+
+
+export const L5D = {
+  grid: [3,3],
+  value: 16,
+  delta: 4,
+  mesh: [5,5]
+}
+
+export const L5E = {
+  grid: [4,3],
+  value: 18,
+  delta: 4,
+  mesh: [5,5]
+}
+
+
+
 
 export const L6 = {
-  grid: [3,2],
-  value: 4,
-  delta: 2,
-  mesh: [3,2]
+  grid: [4,4],
+  value: 5,
+  delta: 3,
+  mesh: [4,3]
 }
+
+export const L6A = {
+  grid: [4,4],
+  value: 5,
+  delta: 3,
+  mesh: [4,3]
+}
+
+export const L6B = {
+  grid: [4,4],
+  value: 6,
+  delta: 3,
+  mesh: [4,3]
+}
+
+export const L6C = {
+  grid: [4,4],
+  value: 7,
+  delta: 3,
+  mesh: [4,3]
+}
+
+export const L6D = {
+  grid: [4,4],
+  value: 8,
+  delta: 3,
+  mesh: [4,3]
+}
+
+export const L6E = {
+  grid: [4,4],
+  value: 9,
+  delta: 3,
+  mesh: [4,3]
+}
+
+
+
 
 export const L7 = {
   grid: [3,2],
@@ -386,7 +542,7 @@ export const L2x = {
 
 
 
-export const crushlevels = [L1,L2,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,L5,L6,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
+export const crushlevels = [L1,L1A,L1B,L1C,L1D,L1E,L2,L2A,L2B,L2C,L2D,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,L5,L5A,L5B,L5C,L5D,L5E,L6,L6,L6A,L6B,L6C,L6D,L6E,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
 
 
 
