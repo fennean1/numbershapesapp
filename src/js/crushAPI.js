@@ -3,6 +3,8 @@ import * as PIXI from "pixi.js";
 import Clouds from "../assets/Clouds.png";
 import BlueBall from "../assets/BlueBall.png"
 import RedBall from "../assets/RedBall.png"
+import HalfBall from "../assets/HalfBall.png"
+import RedSquare from "../assets/Square.png"
 import StartButton from "../assets/GoButton.png"
 import Heart from "../assets/Heart.png"
 import CrushHelp from "../assets/CrushHelp.png"
@@ -81,11 +83,13 @@ export const init = (app, setup) => {
 
   let BLUE_COUNTER = new PIXI.Texture.from(BlueBall)
   let RED_COUNTER = new PIXI.Texture.from(RedBall)
+  let RED_SQUARE_COUNTER = new PIXI.Texture.from(RedSquare)
+  let HALF_COUNTER = new PIXI.Texture.from(HalfBall)
 
   let COUNTER_TEXTURE = BLUE_COUNTER
 
-  let COUNTERS = {blue: BLUE_COUNTER,red: RED_COUNTER}
-  let LINE_COLORS = {blue: 0x1191fa,red: 0xff2465}
+  let COUNTERS = {blue: BLUE_COUNTER,red: RED_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
+  let LINE_COLORS = {blue: 0x1191fa,red: 0xff2465,square: 0x00b30f}
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
@@ -109,9 +113,6 @@ export const init = (app, setup) => {
           const onComplete = ()=>{
             pool.loadLevel(newLevel)
             dealCards(pool)
-            setTimeout(()=>{
-              //dealCards(pool)
-            },50)
           }
 
           Tween.to(pool.activeCards,{alpha: 0,duration: 0.01,ease: "power4.in",onComplete: onComplete})
@@ -182,10 +183,9 @@ export const init = (app, setup) => {
       this.value = value
       this.maxMeshDim = Math.max(mesh[0],mesh[1])
       this.unit = CARD_WIDTH/(this.maxMeshDim+1)
-      
-
 
       const lineColor = LINE_COLORS[this.level.counter]
+      COUNTER_TEXTURE = COUNTERS[this.level.counter]
 
 
       this.clear()
@@ -199,6 +199,7 @@ export const init = (app, setup) => {
   
       let offsetY = CARD_WIDTH/2-shapeWidth/2
       let offsetX = CARD_WIDTH/2-shapeHeight/2
+
   
       this.balls.forEach(b=>{
         this.removeChild(b)
@@ -211,6 +212,7 @@ export const init = (app, setup) => {
     
       array.forEach((c,i)=>{
         let sprite = this.balls[i]
+
         sprite.width = this.unit
         sprite.height = this.unit
         sprite.x = c[0]*this.unit + offsetX
@@ -266,11 +268,19 @@ export const init = (app, setup) => {
       for (let i=0;i<level.grid[0];i++){
         for (let j=0;j<level.grid[1];j++){
           let c = this.cards[acc]
-          c.texture = COUNTER_TEXTURE
+
+
+          console.log(level.counter,acc)
+
+
+    
           let potentialValue = level.value 
           if (acc == r){
             const randMod = getRandomInt(20)
-            if (randMod%2==0){
+
+            if (!level.random){
+              potentialValue = potentialValue + level.delta
+            } else if (randMod%2==0){
               potentialValue = potentialValue - level.delta
             } else {
               potentialValue = potentialValue + level.delta
@@ -278,6 +288,8 @@ export const init = (app, setup) => {
             c.isOffCard = true
           }
           c.draw(level,level.mesh,potentialValue)
+          c.texture = COUNTER_TEXTURE
+
           c.y = -1.1*CARD_WIDTH
           c.x = originX + i%level.grid[0]*CARD_WIDTH
           c.inPlay = true

@@ -1,7 +1,9 @@
 
-const counters = {
+export const counters = {
   blue: "blue",
-  red: "red"
+  red: "red",
+  square: "square",
+  half: "half"
 }
 
 
@@ -14,12 +16,22 @@ export const L1 = {
 }
 
 export const L1A = {
-  grid: [2,2],
-  value: 3,
-  delta: 2,
+  grid: [3,3],
+  value: 5,
+  delta: -2,
   mesh: [3,3],
-  counter: counters.blue
+  random: false,
 }
+
+export const L1AI = {
+  grid: [3,3],
+  value: 9,
+  delta: -2,
+  mesh: [4,3],
+  random: false,
+}
+
+
 
 export const L1B = {
   grid: [2,2],
@@ -35,7 +47,6 @@ export const L1C = {
   value: 4,
   delta: 2,
   mesh: [3,3],
-  counter: counters.blue
 }
 
 export const L1D = {
@@ -502,6 +513,13 @@ export const L40 = {
   mesh: [5,5]
 }
 
+export const L41 = {
+  grid: [4,4],
+  value: 9,
+  delta: 2,
+  mesh: [5,5]
+}
+
 export const L42 = {
   grid: [4,4],
   value: 8,
@@ -524,8 +542,70 @@ export const L44 = {
 }
 
 
+// #region Square Levels
 
+export const S1 = {
+  grid: [2,2],
+  value: 9,
+  delta: -2,
+  mesh: [3,3],
+  random: false,
+  counter: counters.square
+}
 
+export const S1A = {
+  grid: [2,2],
+  value: 7,
+  delta: -2,
+  mesh: [3,3],
+  random: false,
+  counter: counters.square
+}
+
+export const S1B = {
+  grid: [2,2],
+  value: 6,
+  delta: -1,
+  mesh: [3,3],
+  random: false,
+  counter: counters.square
+}
+
+export const S2 = {
+  grid: [3,3],
+  value: 9,
+  delta: -2,
+  mesh: [4,3],
+  random: false,
+  counter: counters.square
+}
+export const S3 = {
+  grid: [3,3],
+  value: 8,
+  delta: -2,
+  mesh: [3,3],
+  random: false,
+  counter: counters.square
+}
+export const S4 = {
+  grid: [3,3],
+  value: 10,
+  delta: -2,
+  mesh: [4,3],
+  random: false,
+  counter: counters.square
+}
+
+export const S5 = {
+  grid: [4,4],
+  value: 13,
+  delta: -3,
+  mesh: [4,4],
+  random: false,
+  counter: counters.square
+}
+
+// #endregion
 
 
 
@@ -533,222 +613,13 @@ export const L44 = {
 
 export const L2x = {
   grid: [5,5],
-  value: 15,
+  value: 14,
   delta: 3,
   mesh: [5,5]
 }
 
 
 
+export const crushlevels = [L1,L1B,L1C,L1D,L1E,L2,L2A,L2B,L2C,L2D,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,L5,L5A,L5B,L5C,L5D,L5E,L6,L6,L6A,L6B,L6C,L6D,L6E,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,S1,S5,S1A,S1B,S2,S3,S4,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L41,L42,L43]
 
-
-export const crushlevels = [L1,L1A,L1B,L1C,L1D,L1E,L2,L2A,L2B,L2C,L2D,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,L5,L5A,L5B,L5C,L5D,L5E,L6,L6,L6A,L6B,L6C,L6D,L6E,L7,L8,L9,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23,L24,L25,L26,L27,L28,L29,L30]
-
-
-
-/*
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L1 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-export const L2 = {
-  grid: [2,2],
-  value: 3,
-  delta: 1,
-  mesh: [2,2]
-}
-
-
-*/
-
-
-
-
-
-
+console.log("crush levels",crushlevels.length)
