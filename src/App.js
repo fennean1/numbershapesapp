@@ -9,6 +9,17 @@ import Crush from "./Interactives/Crush"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 import InteractiveSVG from "./Interactives/InteractiveSVG"
+import { ThemeProvider, createTheme } from '@mui/material/styles'; 
+
+const theme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: 'Quicksand',
+      fontWeight: "bold"
+    },
+  },
+})
+
 /*
 
 TODOS: 
@@ -89,10 +100,12 @@ const Main = () => (
 
 const App = () => {
   return (
+    <ThemeProvider theme = {theme}>
     <BrowserRouter>
     <ScrollToTop/>
     <Main />
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
