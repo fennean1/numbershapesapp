@@ -5,6 +5,7 @@ import BlueBall from "../assets/BlueBall.png"
 import RedBall from "../assets/RedBall.png"
 import HalfBall from "../assets/HalfBall.png"
 import RedSquare from "../assets/Square.png"
+import Diamond from "../assets/Diamond.png"
 import StartButton from "../assets/GoButton.png"
 import Heart from "../assets/Heart.png"
 import CrushHelp from "../assets/CrushHelp.png"
@@ -85,11 +86,14 @@ export const init = (app, setup) => {
   let RED_COUNTER = new PIXI.Texture.from(RedBall)
   let RED_SQUARE_COUNTER = new PIXI.Texture.from(RedSquare)
   let HALF_COUNTER = new PIXI.Texture.from(HalfBall)
+  let DIAMOND_COUNTER = new PIXI.Texture.from(Diamond)
+
 
   let COUNTER_TEXTURE = BLUE_COUNTER
+  let LINE_COLOR = 0x1191fa
 
-  let COUNTERS = {blue: BLUE_COUNTER,red: RED_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
-  let LINE_COLORS = {blue: 0x1191fa,red: 0xff2465,square: 0x00b30f}
+  let COUNTERS = {blue: BLUE_COUNTER,red: RED_COUNTER,diamond: DIAMOND_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
+  let LINE_COLORS = {blue: 0x1191fa,red: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
@@ -184,13 +188,11 @@ export const init = (app, setup) => {
       this.maxMeshDim = Math.max(mesh[0],mesh[1])
       this.unit = CARD_WIDTH/(this.maxMeshDim+1)
 
-      const lineColor = LINE_COLORS[this.level.counter]
-      COUNTER_TEXTURE = COUNTERS[this.level.counter]
-
+      LINE_COLOR = this.level.counter ? LINE_COLORS[this.level.counter] : LINE_COLOR
 
       this.clear()
       this.beginFill(0xffffff);
-      this.lineStyle(CARD_WIDTH/50,lineColor)
+      this.lineStyle(CARD_WIDTH/50,LINE_COLOR)
       this.drawRoundedRect(0,0,CARD_WIDTH,CARD_WIDTH,this.dim/10)
   
 
