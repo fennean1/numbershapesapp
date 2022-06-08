@@ -105,6 +105,7 @@ export const init = (app, setup) => {
 
           const newLevel = levels[levelCounter%mod]
 
+
           if (!newLevel.counter){
             newLevel.counter = DEFAULT_COUNTER
           } 
@@ -272,8 +273,7 @@ export const init = (app, setup) => {
           let c = this.cards[acc]
 
 
-          console.log(level.counter,acc)
-
+  
 
     
           let potentialValue = level.value 
@@ -323,7 +323,7 @@ export const init = (app, setup) => {
 
 
   function backgroundPointerDown(){
-    console.log("resettign texture")
+ 
   }
 
   /*
