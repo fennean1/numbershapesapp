@@ -251,6 +251,8 @@ export const init = (app, setup) => {
         let sprite = this.balls[i]
         if(this.level.counter == "rainbow"){
           sprite.texture = RAINBOW[i%9]  
+        } else {
+          sprite.texture = COUNTERS[this.level.counter]
         }
         
         sprite.width = this.unit
