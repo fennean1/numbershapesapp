@@ -4,7 +4,72 @@ export const counters = {
   red: "red",
   square: "square",
   half: "half",
-  diamond: "diamond"
+  diamond: "diamond",
+  rainbow: "rainbow"
+}
+
+
+export const R1 = {
+  grid: [2,2],
+  value: 5,
+  delta: 1,
+  mesh: [4,4],
+  random: false,
+  counter: counters.rainbow
+}
+
+export const R2 = {
+  grid: [2,2],
+  value: 5,
+  delta: -1,
+  mesh: [5,5],
+  random: false,
+  counter: counters.rainbow
+}
+
+export const R3 = {
+  grid: [2,2],
+  value: 4,
+  delta: 2,
+  mesh: [5,5],
+  random: false,
+  counter: counters.rainbow
+}
+
+export const R4 = {
+  grid: [2,2],
+  value: 5,
+  delta: 1,
+  mesh: [5,5],
+  random: false,
+  counter: counters.rainbow
+}
+
+export const R5 = {
+  grid: [2,2],
+  value: 6,
+  delta: 2,
+  mesh: [5,5],
+  random: false,
+  counter: counters.rainbow
+}
+
+export const R6 = {
+  grid: [2,2],
+  value: 8,
+  delta: -2,
+  mesh: [5,5],
+  random: false,
+  counter: counters.rainbow
+}
+
+export const R7 = {
+  grid: [2,2],
+  value: 7,
+  delta: -1,
+  mesh: [5,5],
+  random: false,
+  counter: counters.rainbow
 }
 
 export const D1 = {
@@ -212,7 +277,8 @@ export const L3E = {
 export const L4 = {
   grid: [3,2],
   value: 5,
-  delta: 1,
+  delta: -1,
+  random: false,
   mesh: [3,2]
 }
 
@@ -865,6 +931,6 @@ export const L2x = {
 }
 
 
-export const crushlevels = [L1,L1A,L1B,L1C,L1D,L1E,L2,L2A,L2B,L2C,L2D,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,S1A,S1B,S1C,S1D,S1E,S1F,L5,L5A,L5B,L5C,L5D,L5E,L6,L6,L6A,L6B,L6C,L6D,L6E,D1,D1A,D1B,D1C,D1D,D1E,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L22A,L22B,L22C,L22D,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D,]
+export const crushlevels = [L1,L1A,L1B,L1C,L1D,L1E,L2,L2A,L2B,L2C,L2D,L3,L3A,L3B,L3C,L3D,L3E,L4,L4A,L4B,L4C,L4D,R1,R2,R3,R4,R5,R6,R7,L5A,L5B,L5C,L5D,L5E,L6,L6,L6A,L6B,L6C,L6D,L6E,D1,D1A,D1B,D1C,D1D,D1E,S1A,S1B,S1C,S1D,S1E,S1F,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L22,L22A,L22B,L22C,L22D,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D,]
 
 console.log("crush levels",crushlevels.length)

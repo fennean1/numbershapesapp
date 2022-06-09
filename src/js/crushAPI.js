@@ -3,6 +3,22 @@ import * as PIXI from "pixi.js";
 import Clouds from "../assets/Clouds.png";
 import BlueBall from "../assets/BlueBall.png"
 import RedBall from "../assets/RedBall.png"
+import GreenBall from "../assets/GreenBall.png"
+import OrangeBall from "../assets/OrangeBall.png"
+import PinkBall from "../assets/PinkBall.png"
+import PurpleBall from "../assets/PurpleBall.png"
+
+import NewBlueBall from "../assets/NewBlueBall.png"
+import NewRedBall from "../assets/NewRedBall.png"
+import NewGreenBall from "../assets/NewGreenBall.png"
+import NewOrangeBall from "../assets/NewOrangeBall.png"
+import NewYellowBall from "../assets/NewYellowBall.png"
+import NewPurpleBall from "../assets/NewPurpleBall.png"
+import NewDarkPurpleBall from "../assets/NewDarkPurpleBall.png"
+import NewLightBlueBall from "../assets/NewLightBlueBall.png"
+import NewPinkBall from "../assets/NewPinkBall.png"
+
+
 import HalfBall from "../assets/HalfBall.png"
 import RedSquare from "../assets/Square.png"
 import Diamond from "../assets/Diamond.png"
@@ -56,6 +72,8 @@ export const init = (app, setup) => {
 
   let isMobileDevice = setup.width/setup.height < 0.75 ? true : false
 
+  
+
   let VIEW_WIDTH = setup.width
   let VIEW_HEIGHT = setup.height
   let MIN_DIM = Math.min(VIEW_WIDTH,VIEW_HEIGHT)
@@ -84,16 +102,33 @@ export const init = (app, setup) => {
 
   let BLUE_COUNTER = new PIXI.Texture.from(BlueBall)
   let RED_COUNTER = new PIXI.Texture.from(RedBall)
+  let GREEN_COUNTER = new PIXI.Texture.from(GreenBall)
+  let PINK_COUNTER = new PIXI.Texture.from(PinkBall)
+  let PURPLE_COUNTER = new PIXI.Texture.from(PurpleBall)
+  let ORANGE_COUNTER = new PIXI.Texture.from(OrangeBall)
   let RED_SQUARE_COUNTER = new PIXI.Texture.from(RedSquare)
   let HALF_COUNTER = new PIXI.Texture.from(HalfBall)
   let DIAMOND_COUNTER = new PIXI.Texture.from(Diamond)
 
 
+  let NEW_RED_COUNTER = new PIXI.Texture.from(NewRedBall)
+  let NEW_PURPLE_COUNTER = new PIXI.Texture.from(NewPurpleBall)
+  let NEW_ORANGE_COUNTER = new PIXI.Texture.from(NewOrangeBall)
+  let NEW_LIGHT_BLUE_COUNTER = new PIXI.Texture.from(NewLightBlueBall)
+  let NEW_YELLOW_COUNTER = new PIXI.Texture.from(NewYellowBall)
+  let NEW_DARK_PURPLE_COUNTER = new PIXI.Texture.from(NewDarkPurpleBall)
+  let NEW_GREEN_COUNTER = new PIXI.Texture.from(NewGreenBall)
+  let NEW_BLUE_COUNTER = new PIXI.Texture.from(NewBlueBall)
+  let NEW_PINK_COUNTER = new PIXI.Texture.from(NewPinkBall)
+
+
+  let RAINBOW = [NEW_YELLOW_COUNTER,NEW_LIGHT_BLUE_COUNTER,NEW_ORANGE_COUNTER,NEW_GREEN_COUNTER,NEW_BLUE_COUNTER,NEW_PINK_COUNTER,NEW_PURPLE_COUNTER,NEW_RED_COUNTER,NEW_DARK_PURPLE_COUNTER]
+
   let COUNTER_TEXTURE = BLUE_COUNTER
   let LINE_COLOR = 0x1191fa
 
   let COUNTERS = {blue: BLUE_COUNTER,red: RED_COUNTER,diamond: DIAMOND_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
-  let LINE_COLORS = {blue: 0x1191fa,red: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
+  let LINE_COLORS = {blue: 0x1191fa,rainbow: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
@@ -110,8 +145,7 @@ export const init = (app, setup) => {
             newLevel.counter = DEFAULT_COUNTER
           } 
 
-          COUNTER_TEXTURE = COUNTERS[newLevel.counter]
-
+  
           updateLayoutParams(setup.width,setup.height,newLevel)
           
 
@@ -215,7 +249,10 @@ export const init = (app, setup) => {
     
       array.forEach((c,i)=>{
         let sprite = this.balls[i]
-
+        if(this.level.counter == "rainbow"){
+          sprite.texture = RAINBOW[i%9]  
+        }
+        
         sprite.width = this.unit
         sprite.height = this.unit
         sprite.x = c[0]*this.unit + offsetX
@@ -290,7 +327,6 @@ export const init = (app, setup) => {
             c.isOffCard = true
           }
           c.draw(level,level.mesh,potentialValue)
-          c.texture = COUNTER_TEXTURE
 
           c.y = -1.1*CARD_WIDTH
           c.x = originX + i%level.grid[0]*CARD_WIDTH
