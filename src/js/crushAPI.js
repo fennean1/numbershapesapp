@@ -127,8 +127,8 @@ export const init = (app, setup) => {
   let COUNTER_TEXTURE = BLUE_COUNTER
   let LINE_COLOR = 0x1191fa
 
-  let COUNTERS = {blue: BLUE_COUNTER,red: RED_COUNTER,diamond: DIAMOND_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
-  let LINE_COLORS = {blue: 0x1191fa,rainbow: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
+  let COUNTERS = {darkpurple: NEW_DARK_PURPLE_COUNTER, lightblue: NEW_LIGHT_BLUE_COUNTER, green: NEW_GREEN_COUNTER,yellow: NEW_YELLOW_COUNTER,blue: NEW_BLUE_COUNTER,red: NEW_RED_COUNTER,purple: NEW_PURPLE_COUNTER,orange: NEW_ORANGE_COUNTER, pink: NEW_PINK_COUNTER, diamond: DIAMOND_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
+  let LINE_COLORS = {darkpurple: 0x5940ff, lightblue:  0x70e0ff, pink: 0xff0593,yellow: 0xfced0f,blue: 0x1191fa,red:0xff4545,purple: 0xb407f2, orange: 0xff860d, green: 0x00c91e,rainbow: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
