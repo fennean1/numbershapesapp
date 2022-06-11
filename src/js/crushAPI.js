@@ -152,12 +152,12 @@ export const init = (app, setup) => {
       value: 1,
     },
     red: {
-      texture: NEW_BLUE_COUNTER,
+      texture: NEW_RED_COUNTER,
       stroke: LINE_COLORS.red,
       value: 1,
     },
     green: {
-      texture: NEW_BLUE_COUNTER,
+      texture: NEW_GREEN_COUNTER,
       stroke: LINE_COLORS.green,
       value: 1,
     },
