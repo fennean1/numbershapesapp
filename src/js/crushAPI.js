@@ -29,6 +29,7 @@ import CrushHelp from "../assets/CrushHelp.png"
 import {getRandomArray,getRandomInt} from "./api.js"
 import { Timeline, Tween,Elastic } from "gsap/gsap-core";
 import * as l from "./crushlevels.js"
+import {counters} from "./crushlevels.js"
 
 
 const levels = l.crushlevels
@@ -72,7 +73,7 @@ export const init = (app, setup) => {
 
   let isMobileDevice = setup.width/setup.height < 0.75 ? true : false
 
-  
+  let NEW_CARD_WIDTH  = 40
 
   let VIEW_WIDTH = setup.width
   let VIEW_HEIGHT = setup.height
@@ -119,7 +120,7 @@ export const init = (app, setup) => {
   let NEW_DARK_PURPLE_COUNTER = new PIXI.Texture.from(NewDarkPurpleBall)
   let NEW_GREEN_COUNTER = new PIXI.Texture.from(NewGreenBall)
   let NEW_BLUE_COUNTER = new PIXI.Texture.from(NewBlueBall)
-  let NEW_PINK_COUNTER = new PIXI.Texture.from(NewPinkBall)
+  let NEW_PINK_COUNTER = new PIXI.Texture.from(NewPinkBall)  
 
 
   let RAINBOW = [NEW_YELLOW_COUNTER,NEW_LIGHT_BLUE_COUNTER,NEW_ORANGE_COUNTER,NEW_GREEN_COUNTER,NEW_BLUE_COUNTER,NEW_PINK_COUNTER,NEW_PURPLE_COUNTER,NEW_RED_COUNTER,NEW_DARK_PURPLE_COUNTER]
@@ -127,8 +128,76 @@ export const init = (app, setup) => {
   let COUNTER_TEXTURE = BLUE_COUNTER
   let LINE_COLOR = 0x1191fa
 
-  let COUNTERS = {darkpurple: NEW_DARK_PURPLE_COUNTER, lightblue: NEW_LIGHT_BLUE_COUNTER, green: NEW_GREEN_COUNTER,yellow: NEW_YELLOW_COUNTER,blue: NEW_BLUE_COUNTER,red: NEW_RED_COUNTER,purple: NEW_PURPLE_COUNTER,orange: NEW_ORANGE_COUNTER, pink: NEW_PINK_COUNTER, diamond: DIAMOND_COUNTER,square: RED_SQUARE_COUNTER,half: HALF_COUNTER}
   let LINE_COLORS = {darkpurple: 0x5940ff, lightblue:  0x70e0ff, pink: 0xff0593,yellow: 0xfced0f,blue: 0x1191fa,red:0xff4545,purple: 0xb407f2, orange: 0xff860d, green: 0x00c91e,rainbow: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
+
+  const C = {
+    default: {
+      texture: NEW_BLUE_COUNTER,
+      stroke: LINE_COLORS.blue,
+      value: 1,
+    },
+    square: {
+      texture: RED_SQUARE_COUNTER,
+      stroke: 0xfc2003,
+      value: 1,
+    },
+    diamond: {
+      texture: DIAMOND_COUNTER,
+      stroke: 0x424242,
+      value: 1,
+    },
+    blue: {
+      texture: NEW_BLUE_COUNTER,
+      stroke: LINE_COLORS.blue,
+      value: 1,
+    },
+    red: {
+      texture: NEW_BLUE_COUNTER,
+      stroke: LINE_COLORS.red,
+      value: 1,
+    },
+    green: {
+      texture: NEW_BLUE_COUNTER,
+      stroke: LINE_COLORS.green,
+      value: 1,
+    },
+    yellow: {
+      texture: NEW_YELLOW_COUNTER,
+      stroke: LINE_COLORS.yellow,
+      value: 1,
+    },
+    pink: {
+      texture: NEW_PINK_COUNTER,
+      stroke: LINE_COLORS.pink,
+      value: 1,
+    },
+    lightblue: {
+      texture: NEW_LIGHT_BLUE_COUNTER,
+      stroke: LINE_COLORS.lightblue,
+      value: 1,
+    },
+    orange: {
+      texture: NEW_ORANGE_COUNTER,
+      stroke: LINE_COLORS.orange,
+      value: 1,
+    },
+    purple: {
+      texture: NEW_PURPLE_COUNTER,
+      stroke: LINE_COLORS.purple,
+      value: 1,
+    },
+    rainbow: {
+      texture: NEW_PINK_COUNTER,
+      stroke: LINE_COLORS.pink,
+      value: 1,
+    },
+    darkpurple: {
+      texture: NEW_DARK_PURPLE_COUNTER,
+      stroke: LINE_COLORS.darkpurple,
+      value: 1,
+    }
+  }
+
 
   let originX = VIEW_WIDTH/2 - GRID_WIDTH/2
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
@@ -202,6 +271,7 @@ export const init = (app, setup) => {
     pool.loadLevel(newLevel)
   }
 
+
   class Card extends PIXI.Graphics {
     constructor(level){
       super()
@@ -221,16 +291,21 @@ export const init = (app, setup) => {
       this.mesh = mesh
       this.value = value
       this.maxMeshDim = Math.max(mesh[0],mesh[1])
-      this.unit = CARD_WIDTH/(this.maxMeshDim+1)
+      this.unit = UNIT
 
-      LINE_COLOR = this.level.counter ? LINE_COLORS[this.level.counter] : LINE_COLOR
+      if (!this.level.counter){
+        this.level.counter = counters.default
+      } 
+
+      const c = C[this.level.counter]
+      LINE_COLOR = c.stroke
+      COUNTER_TEXTURE = c.texture
 
       this.clear()
       this.beginFill(0xffffff);
       this.lineStyle(CARD_WIDTH/50,LINE_COLOR)
       this.drawRoundedRect(0,0,CARD_WIDTH,CARD_WIDTH,this.dim/10)
   
-
       let shapeHeight = this.mesh[0]*this.unit
       let shapeWidth = this.mesh[1]*this.unit
   
@@ -249,10 +324,11 @@ export const init = (app, setup) => {
     
       array.forEach((c,i)=>{
         let sprite = this.balls[i]
+
         if(this.level.counter == "rainbow"){
           sprite.texture = RAINBOW[i%9]  
         } else {
-          sprite.texture = COUNTERS[this.level.counter]
+          sprite.texture = COUNTER_TEXTURE
         }
         
         sprite.width = this.unit
@@ -311,9 +387,6 @@ export const init = (app, setup) => {
         for (let j=0;j<level.grid[1];j++){
           let c = this.cards[acc]
 
-
-  
-
     
           let potentialValue = level.value 
           if (acc == r){
@@ -354,8 +427,6 @@ export const init = (app, setup) => {
           this.cards.push(card)
         }
       }
-
-      this.loadLevel(this.level)
     }
   }
 
@@ -382,6 +453,25 @@ export const init = (app, setup) => {
   function updateLayoutParams(width,height,newLevel){
     VIEW_WIDTH = width
     VIEW_HEIGHT = height
+
+    // New Algo
+
+
+    // Logic for laying out cards in different dimensions
+    if (isMobileDevice){
+      let tempM0 = newLevel.grid[0]
+      let tempM1 = newLevel.grid[1]
+      newLevel.grid = [tempM1,tempM0]
+      NEW_CARD_WIDTH = 0.9*VIEW_WIDTH/newLevel.grid[0]
+    } else {
+      if (VIEW_HEIGHT<VIEW_WIDTH){
+        NEW_CARD_WIDTH = 0.7*VIEW_HEIGHT/newLevel.grid[1]
+      } else {
+        NEW_CARD_WIDTH = 0.85*VIEW_WIDTH/newLevel.grid[0]
+      }
+    } 
+
+
     MIN_DIM = Math.min(VIEW_WIDTH,VIEW_HEIGHT)
   
     maxMeshDimension = Math.max(newLevel.mesh[0],newLevel.mesh[1])
@@ -394,15 +484,17 @@ export const init = (app, setup) => {
     gridUnitsHigh = (newLevel.mesh[1]+2)*newLevel.grid[1]
     gridUnitsMax = Math.max(gridUnitsHigh,gridUnitsWide)
 
-    UNIT = isMobileDevice ? MIN_DIM/gridUnitsMax : (MIN_DIM-FONT_SIZE-MARGIN_TOP)/gridUnitsMax
     SPACE_BETWEEN_CARDS = MIN_DIM/50
-    CARD_WIDTH = (maxMeshDimension+1)*UNIT
+    CARD_WIDTH = NEW_CARD_WIDTH
+    UNIT = (CARD_WIDTH)/maxMeshDimension
+    UNIT = (CARD_WIDTH-UNIT)/maxMeshDimension
     GRID_WIDTH = (CARD_WIDTH)*newLevel.grid[0] + SPACE_BETWEEN_CARDS*(newLevel.grid[0]-1)
     GRID_HEIGHT = (CARD_WIDTH)*newLevel.grid[1] + SPACE_BETWEEN_CARDS*(newLevel.grid[1]-1)
     delta = CARD_WIDTH+SPACE_BETWEEN_CARDS
   
     originX = VIEW_WIDTH/2 - GRID_WIDTH/2
     originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
+
   }
 
   function startGame(){
@@ -411,8 +503,7 @@ export const init = (app, setup) => {
 
     updateLayoutParams(setup.width,setup.height,startLevel)
 
-    pool = new CardPool(levels[levelCounter%mod])
-
+    pool.loadLevel(startLevel)
 
     const onComplete = ()=>{
       dealCards(pool)
@@ -479,6 +570,8 @@ export const init = (app, setup) => {
   }
 
   function load(){
+
+    pool = new CardPool(initLevel)
 
     let backGround = new PIXI.Sprite.from(Clouds)
     backGround.on('pointerdown',backgroundPointerDown)

@@ -1,5 +1,6 @@
 
 export const counters = {
+  default: "default",
   blue: "blue",
   red: "red",
   square: "square",
@@ -121,6 +122,90 @@ export const PK11 = {
 
 
 // #endregion 
+
+//  #region Early Length Models 
+
+export const LM1 = {
+  grid: [2,2],
+  value: 3,
+  delta: -1,
+  random: false,
+  mesh: [5,1],
+  counter: counters.square
+}
+
+export const LM1A = {
+  grid: [2,2],
+  value: 4,
+  delta: -2,
+  random: false,
+  mesh: [5,1],
+  counter: counters.square
+}
+
+export const LM1B = {
+  grid: [2,2],
+  value: 4,
+  delta: -2,
+  random: false,
+  mesh: [5,1],
+  counter: counters.square
+}
+
+export const LM1C = {
+  grid: [2,2],
+  value: 4,
+  delta: -1,
+  random: false,
+  mesh: [5,1],
+  counter: counters.square
+}
+
+export const LM2 = {
+  grid: [2,2],
+  value: 3,
+  delta: 1,
+  mesh: [5,1],
+  random: false,
+  counter: counters.square
+}
+
+export const LM3 = {
+  grid: [2,2],
+  value: 4,
+  delta: -2,
+  mesh: [5,1],
+  random: false,
+  counter: counters.square
+}
+
+export const LM4 = {
+  grid: [2,2],
+  value: 3,
+  delta: 1,
+  mesh: [5,1],
+  random: false,
+  counter: counters.square
+}
+
+export const LM5 = {
+  grid: [3,2],
+  value: 3,
+  delta: 1,
+  mesh: [5,1],
+  counter: counters.square
+}
+
+export const LM6 = {
+  grid: [3,2],
+  value: 2,
+  delta: 1,
+  mesh: [5,1],
+  counter: counters.square
+}
+
+// #endregion
+
 
 // #region K
 
@@ -407,7 +492,7 @@ export const D1E = {
 
 export const PKE = {
   grid: [3,3],
-  value: 2,
+  value: 3,
   delta: 4,
   mesh: [3,3],
   random: false,
@@ -416,8 +501,8 @@ export const PKE = {
 
 export const PKE1 = {
   grid: [3,3],
-  value: 2,
-  delta: 5,
+  value: 3,
+  delta: 3,
   mesh: [3,3],
   random: false,
   counter: counters.lightblue
@@ -425,8 +510,8 @@ export const PKE1 = {
 
 export const PKE2 = {
   grid: [3,3],
-  value: 3,
-  delta: 4,
+  value: 4,
+  delta: 3,
   mesh: [3,3],
   random: false,
   counter: counters.lightblue
@@ -435,7 +520,7 @@ export const PKE2 = {
 export const PKE3 = {
   grid: [3,3],
   value: 8,
-  delta: -5,
+  delta: -3,
   mesh: [3,3],
   random: false,
   counter: counters.lightblue
@@ -443,8 +528,8 @@ export const PKE3 = {
 
 export const PKE4 = {
   grid: [3,3],
-  value: 7,
-  delta: -4,
+  value: 8,
+  delta: -2,
   mesh: [3,3],
   random: false,
   counter: counters.lightblue
@@ -452,8 +537,8 @@ export const PKE4 = {
 
 export const PKE5 = {
   grid: [3,3],
-  value: 6,
-  delta: -3,
+  value: 7,
+  delta: -1,
   mesh: [3,3],
   random: false,
   counter: counters.lightblue
@@ -466,7 +551,7 @@ export const C1 = {
   grid: [3,2],
   value: 2,
   delta: 4,
-  mesh: [3,4],
+  mesh: [4,3],
   random: false,
   counter: counters.blue
 }
@@ -475,7 +560,7 @@ export const C2 = {
   grid: [3,2],
   value: 3,
   delta: 3,
-  mesh: [3,4],
+  mesh: [4,3],
   random: false,
   counter: counters.blue
 }
@@ -839,7 +924,7 @@ export const L10 = {
   grid: [3,3],
   value: 8,
   delta: 1,
-  mesh: [3,4]
+  mesh: [4,3]
 }
 
 export const L11 = {
@@ -1305,6 +1390,8 @@ export const L2x = {
 }
 
 
-export const crushlevels = [PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PKE,PKE1,PKE2,PKE3,PKE4,PKE5,K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,G1A,G1B,G1C,G1D,G1F,G1G,L3,L3A,L3B,L3C,L3D,L3E,R1,R2,R3,R4,R5,R6,R7,C1,C2,C3,C4,C5,L6,L6A,L6B,L6C,L6D,L6E,L4,L4A,L4B,L4C,L4D,E1A,E1B,E1C,E1D,E1E,E1F,E1G,E1A,D1,D1A,D1B,D1C,D1D,D1E,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L21,L22,L22A,L22B,L22C,L22D,S1A,S1B,S1C,S1D,S1E,S1F,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D]
+export const crushlevels = [PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PKE,PKE1,PKE2,PKE3,PKE4,PKE5,LM1,LM1A,LM1B,LM1C,LM2,LM3,LM4,LM5,LM6,K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,G1A,G1B,G1C,G1D,G1F,G1G,L3,L3A,L3B,L3C,L3D,L3E,R1,R2,R3,R4,R5,R6,R7,C1,C2,C3,C4,C5,L6,L6A,L6B,L6C,L6D,L6E,L4,L4A,L4B,L4C,L4D,E1A,E1B,E1C,E1D,E1E,E1F,E1G,E1A,D1,D1A,D1B,D1C,D1D,D1E,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L21,L22,L22A,L22B,L22C,L22D,S1A,S1B,S1C,S1D,S1E,S1F,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D]
+
+//export const crushlevels = [LM1,LM2,LM3,LM4,R1,S1B,D1A,L22,L40E]
 
 console.log("crush levels",crushlevels.length)
