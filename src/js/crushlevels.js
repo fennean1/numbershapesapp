@@ -119,6 +119,10 @@ export const PK11 = {
   counter: counters.pink
 }
 
+export const FirstNumbers = {
+  name: "First Numbers",
+  puzzles: [PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11]
+}
 
 
 // #endregion 
@@ -489,6 +493,8 @@ export const D1E = {
   counter: counters.diamond
 }
 
+// #region Early Estimation
+
 export const PKE = {
   grid: [3,3],
   value: 3,
@@ -543,6 +549,13 @@ export const PKE5 = {
   counter: counters.lightblue
 }
 
+export const EarlyEstimation = {
+  name: "Early Estimation",
+  puzzles: [PKE1,PKE2,PKE3,PKE4,PKE5]
+}
+
+// #endregion
+
 
 // #region Counting
 
@@ -555,8 +568,10 @@ export const C1 = {
   counter: counters.blue
 }
 
+// #region Counting Five to Ten
+
 export const C2 = {
-  grid: [3,2],
+  grid: [2,2],
   value: 5,
   delta: 1,
   mesh: [4,3],
@@ -587,10 +602,43 @@ export const C5 = {
   grid: [3,2],
   value: 7,
   delta: 1,
+  mesh: [4,4],
+  random: false,
+  counter: counters.blue
+}
+
+export const C6 = {
+  grid: [3,2],
+  value: 8,
+  delta: -1,
+  mesh: [4,4],
+  random: false,
+  counter: counters.blue
+}
+
+export const C7 = {
+  grid: [3,2],
+  value: 9,
+  delta: -1,
+  mesh: [4,4],
+  random: false,
+  counter: counters.blue
+}
+
+export const C8 = {
+  grid: [3,2],
+  value: 8,
+  delta: 2,
   mesh: [5,4],
   random: false,
   counter: counters.blue
 }
+
+export const CountingFiveToTen = {
+  name: "Counting Five to Ten",
+  puzzles: [C1,C2,C3,C4,C5,C6,C7,C8]
+}
+
 
 // #endregion
 
@@ -1410,6 +1458,57 @@ export const S5 = {
 // #endregion
 
 
+// #region Ten Plus or Minus One
+
+export const PMT = {
+  grid: [2,2],
+  value: 10,
+  delta: 1,
+  mesh: [4,3],
+  counter: counters.blue
+}
+
+export const PMT1 = {
+  grid: [2,2],
+  value: 10,
+  delta: 1,
+  mesh: [4,4],
+  counter: counters.blue
+}
+
+export const PMT2 = {
+  grid: [2,2],
+  value: 10,
+  delta: 1,
+  mesh: [5,3],
+  counter: counters.blue
+}
+
+export const PMT3 = {
+  grid: [3,2],
+  value: 10,
+  delta: 1,
+  mesh: [4,3],
+  counter: counters.blue
+}
+
+
+export const TenPlusOrMinusOne = {
+  name: "Ten Plus or Minus One",
+  puzzles: [PMT,PMT1,PMT2,PMT3]
+}
+
+// #endregion
+
+/* Ideas
+
+  Ten Plus and Minus One
+  First Numbers,
+  Estimation Under Ten, 
+  Counting,
+
+*/
+
 
 
 
@@ -1420,8 +1519,14 @@ export const L2x = {
   mesh: [5,5]
 }
 
+export const LEVELS = {
+  tenplusorminusone: TenPlusOrMinusOne,
+  firstnumbers: FirstNumbers,
+  earlyestimation: EarlyEstimation,
+  countingfivetoten: CountingFiveToTen,
+}
 
-export const crushlevels = [PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PKE,PKE1,PKE2,PKE3,PKE4,PKE5,K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,G1A,G1B,G1C,G1D,G1F,G1G,L3,L3A,L3B,L3C,L3D,L3E,R1,R2,R3,R4,R5,R6,R7,C1,C2,C3,C4,C5,TF1,TF2,TF3,L6,L6A,L6B,L6C,L6D,L6E,L4,L4A,L4B,L4C,L4D,LM1,LM1A,LM1B,LM1C,LM2,LM3,LM4,LM5,LM6,E1A,E1B,E1C,E1D,E1E,E1F,E1G,E1A,D1,D1A,D1B,D1C,D1D,D1E,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L21,L22,L22A,L22B,L22C,L22D,S1A,S1B,S1C,S1D,S1E,S1F,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D]
+export const crushlevels = [...FirstNumbers.puzzles,...EarlyEstimation.puzzles,K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,G1A,G1B,G1C,G1D,G1F,G1G,L3,L3A,L3B,L3C,L3D,L3E,R1,R2,R3,R4,R5,R6,R7,...CountingFiveToTen.puzzles,...TenPlusOrMinusOne.puzzles,L6,L6A,L6B,L6C,L6D,L6E,L4,L4A,L4B,L4C,L4D,LM1,LM1A,LM1B,LM1C,LM2,LM3,LM4,LM5,LM6,E1A,E1B,E1C,E1D,E1E,E1F,E1G,E1A,D1,D1A,D1B,D1C,D1D,D1E,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L21,L22,L22A,L22B,L22C,L22D,S1A,S1B,S1C,S1D,S1E,S1F,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D]
 
 //export const crushlevels = [K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,C1,C2,C3,C4,C5,LM1,LM2,LM3,LM4,R1,S1B,D1A,L22,L40E]
 

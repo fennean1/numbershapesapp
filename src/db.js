@@ -77,6 +77,26 @@ export const saami = {
   },
   LINKS: [
     {
+      type: LINK_TYPES.GAME,
+      text: "Ten Plus or Minus One",
+      url: "../interactives/saami/tenplusorminusone",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Counting Five to Ten",
+      url: "../interactives/saami/countingfivetoten",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "First Numbers",
+      url: "../interactives/saami/firstnumbers",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Early Estimation",
+      url: "../interactives/saami/earlyestimation",
+    },
+    {
       type: LINK_TYPES.IOS_APP,
       text: "App Store Link for NumberShapes Game",
       url: "https://apps.apple.com/us/app/numbershapes/id1444912086",

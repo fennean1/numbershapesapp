@@ -10,7 +10,7 @@ export default function IconLinkList(props) {
   
   const navigateTo = (url)=>{
     let x = url.substring(0,3)
-    if (x == "htt"){
+    if (true){
       window.open(url, '_blank');
     } else{
       navigate(url)

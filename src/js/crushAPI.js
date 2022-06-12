@@ -2,11 +2,6 @@
 import * as PIXI from "pixi.js";
 import Clouds from "../assets/Clouds.png";
 import BlueBall from "../assets/BlueBall.png"
-import RedBall from "../assets/RedBall.png"
-import GreenBall from "../assets/GreenBall.png"
-import OrangeBall from "../assets/OrangeBall.png"
-import PinkBall from "../assets/PinkBall.png"
-import PurpleBall from "../assets/PurpleBall.png"
 
 import NewBlueBall from "../assets/NewBlueBall.png"
 import NewRedBall from "../assets/NewRedBall.png"
@@ -28,22 +23,16 @@ import CrushHelp from "../assets/CrushHelp.png"
 
 import {getRandomArray,getRandomInt, Draggable} from "./api.js"
 import { Timeline, Tween,Elastic } from "gsap/gsap-core";
-import * as l from "./crushlevels.js"
-import {counters} from "./crushlevels.js"
+import {counters,LEVELS,crushlevels} from "./crushlevels.js"
 
-const levels = l.crushlevels
+let levels = crushlevels
 
 
-const mod = levels.length
+let mod = levels.length
 
 
 let NUMBER_OF_LIVES = 9
-
-
-
 let levelCounter = 0
-
-
 let lifeCounter = NUMBER_OF_LIVES
 
 const initLevel = {
@@ -56,6 +45,8 @@ const initLevel = {
 
 export const init = (app, setup) => {
 
+  let customLevel = LEVELS[setup.level]
+
   const potentialLevel = setup.level.substring(5)
   const prefix = setup.level.substring(0,5)
   let levelStartedAt = null
@@ -67,6 +58,13 @@ export const init = (app, setup) => {
       levelStartedAt = levelCounter
     }
   } 
+
+  if (customLevel){
+    levels = customLevel.puzzles
+    mod = levels.length
+  }
+
+
 
   // Flags
   let helping = false
@@ -121,17 +119,9 @@ export const init = (app, setup) => {
   let GRID_HEIGHT = (CARD_WIDTH)*initLevel.grid[1] + SPACE_BETWEEN_CARDS*(initLevel.grid[1]-1)
   let delta = CARD_WIDTH+SPACE_BETWEEN_CARDS
 
-
   let BLUE_COUNTER = new PIXI.Texture.from(BlueBall)
-  let RED_COUNTER = new PIXI.Texture.from(RedBall)
-  let GREEN_COUNTER = new PIXI.Texture.from(GreenBall)
-  let PINK_COUNTER = new PIXI.Texture.from(PinkBall)
-  let PURPLE_COUNTER = new PIXI.Texture.from(PurpleBall)
-  let ORANGE_COUNTER = new PIXI.Texture.from(OrangeBall)
   let RED_SQUARE_COUNTER = new PIXI.Texture.from(RedSquare)
-  let HALF_COUNTER = new PIXI.Texture.from(HalfBall)
   let DIAMOND_COUNTER = new PIXI.Texture.from(Diamond)
-
 
   let NEW_RED_COUNTER = new PIXI.Texture.from(NewRedBall)
   let NEW_PURPLE_COUNTER = new PIXI.Texture.from(NewPurpleBall)
@@ -146,7 +136,7 @@ export const init = (app, setup) => {
 
   let RAINBOW = [NEW_YELLOW_COUNTER,NEW_LIGHT_BLUE_COUNTER,NEW_ORANGE_COUNTER,NEW_GREEN_COUNTER,NEW_BLUE_COUNTER,NEW_PINK_COUNTER,NEW_PURPLE_COUNTER,NEW_RED_COUNTER,NEW_DARK_PURPLE_COUNTER]
 
-  let COUNTER_TEXTURE = BLUE_COUNTER
+  let COUNTER_TEXTURE = NEW_BLUE_COUNTER
   let LINE_COLOR = 0x1191fa
 
   let LINE_COLORS = {darkpurple: 0x5940ff, lightblue:  0x70e0ff, pink: 0xff0593,yellow: 0xfced0f,blue: 0x1191fa,red:0xff4545,purple: 0xb407f2, orange: 0xff860d, green: 0x00c91e,rainbow: 0xff2465,square: 0x00b30f,diamond: 0xff2465}
@@ -278,7 +268,6 @@ export const init = (app, setup) => {
       endOfGameModal.interactive = true
     }
 
-
     // Interactivity
     endOfGameModal.interactive = false
     backGround.interactive = false
@@ -289,10 +278,10 @@ export const init = (app, setup) => {
 
     if (levelStartedAt != null){
       let levels = levelCounter - levelStartedAt
-      endOfGameText.text = levels + " Levels!" + "\n Complete"
+      endOfGameText.text = levels + " Puzzles!" + "\n Complete"
     } else {
       let levels = levelCounter+1
-      endOfGameText.text = "Level " + levels + "!"
+      endOfGameText.text = levels + " Saami Puzzles!"
     }
     
     
@@ -446,7 +435,7 @@ export const init = (app, setup) => {
           if (acc == r){
             const randMod = getRandomInt(20)
 
-            if (!level.random){
+            if (level.random == false){
               potentialValue = potentialValue + level.delta
             } else if (randMod%2==0){
               potentialValue = potentialValue - level.delta
@@ -634,7 +623,7 @@ export const init = (app, setup) => {
 
   function updateLevelDescriptor(){
     const actualLevel = levelCounter+1
-    levelText.text = "Level: " + actualLevel
+    levelText.text = "Puzzle: " + actualLevel
   }
 
   function updateLives(){
