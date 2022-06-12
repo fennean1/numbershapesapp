@@ -58,7 +58,7 @@ export const init = (app, setup) => {
 
   const potentialLevel = setup.level.substring(5)
   const prefix = setup.level.substring(0,5)
-  let levelStartedAt;
+  let levelStartedAt = null
   
   if (prefix === "level"){
     let notNumber = isNaN(potentialLevel)
@@ -277,11 +277,25 @@ export const init = (app, setup) => {
     const onComplete = ()=>{
       endOfGameModal.interactive = true
     }
+
+
+    // Interactivity
     endOfGameModal.interactive = false
+    backGround.interactive = false
+    pool.cards.forEach(c=>{c.interactive = false})
+
     Tween.to(endOfGameModal,{y: 0,duration: 2,ease: "elastic",onComplete: onComplete})
     Tween.to(endOfGameText,{y: setup.height/2,duration: 2,ease: "elastic"})
-    let levels = levelCounter - levelStartedAt
-    endOfGameText.text = "You Completed \n " + levels + " Levels!"
+
+    if (levelStartedAt != null){
+      let levels = levelCounter - levelStartedAt
+      endOfGameText.text = levels + " Levels!" + "\n Complete"
+    } else {
+      let levels = levelCounter+1
+      endOfGameText.text = "Level " + levels + "!"
+    }
+    
+    
     app.stage.addChild(endOfGameModal)
     app.stage.addChild(endOfGameText)
   }
