@@ -20,7 +20,8 @@ export default function Interactive(props) {
     const setup = {
       height: elementRef.clientHeight,
       width: elementRef.clientWidth,
-      ...props.setup
+      level: props.level,
+      ...props.setup,
     };
 
     app.renderer.resize(

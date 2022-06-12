@@ -26,11 +26,10 @@ import StartButton from "../assets/GoButton.png"
 import Heart from "../assets/Heart.png"
 import CrushHelp from "../assets/CrushHelp.png"
 
-import {getRandomArray,getRandomInt} from "./api.js"
+import {getRandomArray,getRandomInt, Draggable} from "./api.js"
 import { Timeline, Tween,Elastic } from "gsap/gsap-core";
 import * as l from "./crushlevels.js"
 import {counters} from "./crushlevels.js"
-
 
 const levels = l.crushlevels
 
@@ -39,7 +38,12 @@ const mod = levels.length
 
 
 let NUMBER_OF_LIVES = 9
+
+
+
 let levelCounter = 0
+
+
 let lifeCounter = NUMBER_OF_LIVES
 
 const initLevel = {
@@ -52,8 +56,21 @@ const initLevel = {
 
 export const init = (app, setup) => {
 
+  const potentialLevel = setup.level.substring(5)
+  const prefix = setup.level.substring(0,5)
+  let levelStartedAt;
+  
+  if (prefix === "level"){
+    let notNumber = isNaN(potentialLevel)
+    if (!notNumber && potentialLevel > 0 && potentialLevel <= mod){
+      levelCounter = potentialLevel-1
+      levelStartedAt = levelCounter
+    }
+  } 
 
+  // Flags
   let helping = false
+  let learning = false
 
   let pool;
 
@@ -65,9 +82,11 @@ export const init = (app, setup) => {
   let helpModal;
   let livesHeart;
   let livesText;
+  let backGround;
 
   const TEXT_COLOR = 0x1191fa
-  const BORDER_COLOR = 0x1191fa
+
+  let cardGraphics = new PIXI.Graphics()
 
   let tlHeartBeat = new Timeline({paused: true})
 
@@ -82,6 +101,8 @@ export const init = (app, setup) => {
   let MARGIN_TOP = MIN_DIM*0.02
 
   let TOP_PADDING = isMobileDevice ? 0.10*setup.height : 0.05*setup.height
+
+  let CARD_TEXTURE;
 
   let maxMeshDimension = Math.max(initLevel.mesh[0],initLevel.mesh[1])
 
@@ -203,7 +224,13 @@ export const init = (app, setup) => {
   let originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
 
   function newLevel(e){
+
+
+
+    if (!learning){
+
       if (e.target.isOffCard == true){
+
           levelCounter++
           updateLevelDescriptor()
 
@@ -214,6 +241,9 @@ export const init = (app, setup) => {
             newLevel.counter = DEFAULT_COUNTER
           } 
 
+          console.log("potential points",updateScore(newLevel))
+
+          backGround.interactive = false
   
           updateLayoutParams(setup.width,setup.height,newLevel)
           
@@ -227,8 +257,10 @@ export const init = (app, setup) => {
 
       } else {
         pool.activeCards.forEach(c=>c.interactive = false)
+        backGround.interactive = false
         const onComplete = ()=>{
           pool.activeCards.forEach(c=>c.interactive = true)
+          backGround.interactive = true
           if (lifeCounter == 0){
             endGame()
           }
@@ -237,7 +269,7 @@ export const init = (app, setup) => {
         lifeCounter--
         updateLives()
       }
-
+    } 
   }
 
   function endGame(){
@@ -248,7 +280,8 @@ export const init = (app, setup) => {
     endOfGameModal.interactive = false
     Tween.to(endOfGameModal,{y: 0,duration: 2,ease: "elastic",onComplete: onComplete})
     Tween.to(endOfGameText,{y: setup.height/2,duration: 2,ease: "elastic"})
-    endOfGameText.text = "Level " + levelCounter
+    let levels = levelCounter - levelStartedAt
+    endOfGameText.text = "You Completed \n " + levels + " Levels!"
     app.stage.addChild(endOfGameModal)
     app.stage.addChild(endOfGameText)
   }
@@ -272,7 +305,7 @@ export const init = (app, setup) => {
   }
 
 
-  class Card extends PIXI.Graphics {
+  class Card extends PIXI.Container {
     constructor(level){
       super()
       this.level = level
@@ -300,12 +333,15 @@ export const init = (app, setup) => {
       const c = C[this.level.counter]
       LINE_COLOR = c.stroke
       COUNTER_TEXTURE = c.texture
-
-      this.clear()
-      this.beginFill(0xffffff);
-      this.lineStyle(CARD_WIDTH/50,LINE_COLOR)
-      this.drawRoundedRect(0,0,CARD_WIDTH,CARD_WIDTH,this.dim/10)
   
+      this.apparentWidth = CARD_WIDTH
+      this.apparentHeight = CARD_WIDTH
+      
+      this.bg.width = CARD_WIDTH
+      this.bg.height = CARD_WIDTH
+
+      this.bg.texture = CARD_TEXTURE
+
       let shapeHeight = this.mesh[0]*this.unit
       let shapeWidth = this.mesh[1]*this.unit
   
@@ -342,9 +378,13 @@ export const init = (app, setup) => {
   
     init(){
   
+        this.bg = new PIXI.Sprite.from(BlueBall)
+        this.addChild(this.bg)
+
         for (let i=0;i<5;i++){
           for (let j=0;j<5;j++){
-            let s = new PIXI.Sprite.from(BlueBall)
+            let s = new Draggable()
+            s.interactive = false
             this.balls.push(s)
             this.addChild(s)
           }
@@ -432,7 +472,19 @@ export const init = (app, setup) => {
 
 
   function backgroundPointerDown(){
- 
+    console.log("backgrond pointer down")
+    learning = !learning
+    if (learning){
+      this.alpha = 0.6
+      app.renderer.backgroundColor = 0x000000
+      pool.activeCards.forEach(c=>{c.balls.forEach(b=>{ 
+        b.interactive = true
+        b.wiggle()
+      })})
+    } else {
+      this.alpha = 1
+      pool.activeCards.forEach(c=>{c.balls.forEach(b=>b.interactive = false)})
+    }
   }
 
   /*
@@ -455,6 +507,7 @@ export const init = (app, setup) => {
     VIEW_HEIGHT = height
 
     // New Algo
+
 
 
     // Logic for laying out cards in different dimensions
@@ -495,9 +548,18 @@ export const init = (app, setup) => {
     originX = VIEW_WIDTH/2 - GRID_WIDTH/2
     originY = VIEW_HEIGHT/2 - GRID_HEIGHT/2
 
+    LINE_COLOR = C[newLevel.counter].stroke
+       
+    cardGraphics.clear()
+    cardGraphics.beginFill(0xffffff);
+    cardGraphics.lineStyle(CARD_WIDTH/50,LINE_COLOR)
+    cardGraphics.drawRoundedRect(0,0,CARD_WIDTH,CARD_WIDTH,CARD_WIDTH/10)
+    CARD_TEXTURE = app.renderer.generateTexture(cardGraphics)
+
   }
 
   function startGame(){
+
 
     const startLevel = levels[levelCounter%mod]
 
@@ -518,6 +580,21 @@ export const init = (app, setup) => {
     helpButton.text = "?"
 
     Tween.to(this,{y:-this.height,onComplete: onComplete})
+  
+    updateLevelDescriptor()
+  }
+
+  function updateScore(lvl){
+    const totalMesh = lvl.mesh[0]*lvl.mesh[1]
+    const value = lvl.value
+    const whiteSpaceDifficultyFactor = (totalMesh-value)/totalMesh
+
+    const totalBalls = lvl.grid[0]*lvl.grid[1]*lvl.value 
+
+    const ballCredit = totalBalls*whiteSpaceDifficultyFactor
+
+    return Math.abs(ballCredit/lvl.delta)
+
   }
 
   function makeInteractive(){
@@ -525,12 +602,16 @@ export const init = (app, setup) => {
   }
 
   function dealCards(pool){
+    setTimeout(t=>{
+      backGround.interactive = true
+   },1000)
     pool.cards.forEach(c=>{
       if (c.inPlay == true){
         let _x = originX + delta*c.i 
         let _y = originY + delta*c.j
         app.stage.addChild(c)
         Tween.to(c,{duration: 1,x: _x, y: _y,ease: Elastic.easeOut.config(0.8, 0.3),callBackScope: this,onComplete: makeInteractive})
+      
       } else {
         app.stage.removeChild(c)
       }
@@ -573,9 +654,8 @@ export const init = (app, setup) => {
 
     pool = new CardPool(initLevel)
 
-    let backGround = new PIXI.Sprite.from(Clouds)
+    backGround = new PIXI.Sprite.from(Clouds)
     backGround.on('pointerdown',backgroundPointerDown)
-    backGround.interactive = true
     backGround.x = 0;
     backGround.y = 0;
     backGround.width = setup.width;

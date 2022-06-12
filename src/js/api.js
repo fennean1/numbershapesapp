@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js";
 import { TweenMax, TimelineLite, Power2, Elastic, CSSPlugin, TweenLite, TimelineMax } from "gsap";
 import {NUMBERS} from "../AssetManager.js"
 import * as CONST from "./config.js";
+import { Tween } from "gsap/gsap-core.js";
 
 
 export const getRandomInt = max => {
@@ -843,13 +844,34 @@ export class Draggable extends PIXI.Sprite {
     this.on('pointerdown',this.pointerDown)
     this.on('pointermove',this.pointerMove)
     this.on('pointerup',this.pointerUp)
-    this.on('pointerupoutside',this.pointerUpOutside)
+    this.on('pointerupoutside',this.pointerUp)
+  }
+
+  wiggle(){
+    const originalx = this.x
+    const onComplete = ()=>{
+      Tween.to(this,{duration: 1,x: originalx,ease: "elastic"})   
+    }
+
+    const rand = getRandomInt(10)
+    let to = 0
+    if (rand%2==0){
+      to = this.x + this.width/2
+    } else {
+      to = this.x - this.width/2
+    }
+
+    Tween.to(this,{duration: 0.25,x: to,onComplete: onComplete})
+  
   }
 
   pointerDown(event){
     console.log("Draggable Pointer Down")
+    this.parent.addChild(this)
     this.touching = true
     this.dragged = false
+    this.originalX = this.x 
+    this.originalY = this.y
     this.deltaTouch = {
       x: this.x - event.data.global.x,
       y: this.y - event.data.global.y
@@ -870,6 +892,10 @@ export class Draggable extends PIXI.Sprite {
   }
 
   pointerUp(event){
+    if (this.x < 0 || this.y < 0 || this.x > this.parent.apparentWidth || this.y > this.parent.apparentHeight){
+      this.x = this.originalX
+      this.y = this.originalY
+    } 
     this.touching = false
   }
   

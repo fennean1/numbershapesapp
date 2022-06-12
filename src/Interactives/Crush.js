@@ -9,6 +9,6 @@ export default function Crush(props) {
   const data = CONST.SETUPS[activityname]
 
   return (
-    <Interactive script = {script} {...props} setup = {data}/>
+    <Interactive script = {script} level = {activityname} {...props} setup = {data}/>
   );
 }

@@ -574,7 +574,7 @@ export const init = (app, setup) => {
     function init(){
       destroy(balls)
 
-      console.log("setup.type",setup)
+      console.log("setup.typeeeeeeeee",setup.type)
       let newBalls = initBallsFromType(setup.type)
       
       let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
