@@ -281,7 +281,7 @@ export const init = (app, setup) => {
       endOfGameText.text = levels + " Puzzles!" + "\n Complete"
     } else {
       let levels = levelCounter+1
-      endOfGameText.text = levels + " Saami Puzzles!"
+      endOfGameText.text = levels + " Puzzles!"
     }
     
     
