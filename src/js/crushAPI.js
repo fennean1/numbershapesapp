@@ -34,7 +34,7 @@ import ten from "../assets/Ten_B.png";
 import { getRandomArray, getRandomInt, Draggable, shuffleArray } from "./api.js";
 import { Timeline, Tween, Elastic } from "gsap/gsap-core";
 import { counters, LEVELS, crushlevels, PM } from "./crushlevels.js";
-import { ConstructionOutlined } from "@mui/icons-material";
+
 
 
 let NUMERALS = []
@@ -907,7 +907,7 @@ export const init = (app, setup) => {
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
         
-        let t = new PIXI.Text("5", {fontWeight: "bold",
+        let t = new PIXI.Text("5", {fill: LINE_COLOR, fontWeight: "bold",
         fontFamily: "Quicksand",fontSize: CARD_WIDTH / 2 });
         t.x = originX + delta * i + CARD_WIDTH / 2;
         t.y = originY + delta * j + CARD_WIDTH / 2;
