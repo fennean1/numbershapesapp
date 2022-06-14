@@ -16,6 +16,109 @@ export const counters = {
   lightblue: "lightblue"
 }
 
+
+const ones = {
+  one: [1]
+}
+
+const twos = {
+  two: [2],
+  one_one: [2]
+}
+
+const threes = {
+  two_one: [2,1],
+  one_one_one: [1,1,1],
+  three: [3]
+}
+
+const fours = {
+  two_two: [2,2],
+  one_one_two: [1,1,2],
+  three_one: [3,1],
+  four: [4]
+}
+
+const fives = {
+  five: [5],
+  one_four: [1,4],
+  two_three: [2,3],
+  one_two_two: [1,2,2],
+  one_one_three: [1,1,3],
+  one_one_one_two: [1,1,1,2],
+}
+
+const sixes = {
+  six: [6],
+  one_five: [1,5],
+  two_four: [2,4],
+  three_three: [3,3],
+  two_two_two: [2,2,2],
+  one_two_three: [2,2,2],
+}
+
+const sevens = {
+  seven: [7],
+  one_six: [1,6],
+  two_five: [2,5],
+  three_four: [3,4],
+  two_two_three: [2,2,3],
+  one_two_three: [1,3,3],
+  one_one_three: [1,1,5],
+}
+
+const eights = {
+  eight: [8],
+  one_seven: [1,7],
+  two_six: [2,6],
+  three_five: [3,5],
+  four_four: [4,4],
+  two_two_four: [2,2,4],
+  two_three_three: [2,3,3],
+  two_five_one: [2,5,1],
+  two_two_two_two: [2,2,2,2],
+}
+
+const nines = {
+  nine: [9],
+  one_eight: [1,8],
+  two_seven: [2,7],
+  three_six: [3,6],
+  four_five: [4,5],
+  two_two_five: [2,2,5],
+  three_three_three: [3,3,3],
+  two_three_four: [2,3,4],
+  two_two_five: [2,2,5],
+  two_two_two_three: [2,2,2,3],
+  one_one_three: [2,2,2,3],
+}
+
+const tens = {
+  ten: [10],
+  one_nine: [1,9],
+  two_eight: [2,8],
+  three_seven: [3,6],
+  four_six: [4,5],
+  five_five: [5,5],
+  two_three_five: [2,3,5],
+  three_three_three: [3,3,4],
+  two_three_four: [2,2,6],
+  two_three_four: [2,4,4],
+  one_one_three: [2,2,2,4],
+}
+
+
+
+export const PM = {
+  1: [[0.5,0.5]],
+  2: [[0,0],[1,1]],
+  3: [[0.5,0],[0,1],[1,1]],
+  4: [[0,0],[0,1],[1,0],[1,1]]
+}
+
+
+
+
 // #region PRE-K
 
 export const PK1 = {
@@ -1509,6 +1612,67 @@ export const TenPlusOrMinusOne = {
 
 */
 
+// #region Grouping Puzzles
+
+export const GPThreeA = {
+  grid: [2,2],
+  cards: [threes.one_one_one,threes.two_one,twos.one_one,threes.two_one],
+  mesh: [2,2],
+  value: 3,
+  type: 'number',
+}
+
+export const GPFourA = {
+  grid: [2,2],
+  cards: [fours.one_one_two,fours.two_two,threes.one_one_one,fours.three_one],
+  mesh: [2,2],
+  value: 4,
+  type: 'number',
+}
+
+export const GPFourB = {
+  grid: [2,2],
+  cards: [fours.one_one_two,fours.three_one,fives.one_four,fours.three_one],
+  mesh: [2,2],
+  value: 4,
+  type: 'number',
+}
+
+export const GPFiveA = {
+  grid: [2,2],
+  cards: [fives.one_four,fives.one_one_three,fives.two_three,fours.one_one_two],
+  mesh: [2,2],
+  value: 5,
+  type: 'number',
+}
+
+export const GPEightA= {
+  grid: [2,2],
+  cards: [eights.eight,eights.three_five,eights.four_four,sevens.three_four],
+  mesh: [2,2],
+  value: 8,
+  type: 'number',
+}
+
+export const GPNineA = {
+  grid: [2,2],
+  cards: [nines.two_two_five,nines.three_three_three,nines.two_two_five,eights.four_four],
+  mesh: [2,2],
+  value: 9,
+  type: 'number',
+}
+
+export const GPNineB = {
+  grid: [2,2],
+  cards: [nines.two_two_five,nines.two_seven,nines.two_three_four,eights.four_four],
+  mesh: [2,2],
+  value: 9,
+  type: 'number',
+}
+
+// #endregion
+
+
 
 
 
@@ -1528,9 +1692,9 @@ export const LEVELS = {
 
 export const crushlevels = [...FirstNumbers.puzzles,...EarlyEstimation.puzzles,K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,G1A,G1B,G1C,G1D,G1F,G1G,L3,L3A,L3B,L3C,L3D,L3E,R1,R2,R3,R4,R5,R6,R7,...CountingFiveToTen.puzzles,...TenPlusOrMinusOne.puzzles,L6,L6A,L6B,L6C,L6D,L6E,L4,L4A,L4B,L4C,L4D,LM1,LM1A,LM1B,LM1C,LM2,LM3,LM4,LM5,LM6,E1A,E1B,E1C,E1D,E1E,E1F,E1G,E1A,D1,D1A,D1B,D1C,D1D,D1E,L7,L8,L9,L9A,L9B,L9C,L9D,L9E,L21,L22,L22A,L22B,L22C,L22D,S1A,S1B,S1C,S1D,S1E,S1F,L23,L24,L25,L26,L27,L28,L29,L30,L31,L32,L33,L34,L35,L36,L37,L38,L39,L40,L40A,L40B,L40C,L40E,L40F,L41,L42,L43,L22,L22A,L22B,L22C,L22D]
 
-//export const crushlevels = [K1,K2,K3,K4,K5,K6,K7,K8,K9,K10,C1,C2,C3,C4,C5,LM1,LM2,LM3,LM4,R1,S1B,D1A,L22,L40E]
+//export const crushlevels = [L40E,C1,C2,C3,C4,C5,LM1,LM2,LM3,LM4,R1,S1B,D1A,L22,L40E]
 
-//export const crushlevels = [C5,LM1,R1,S1B,D1A,L22,L40E]
+//export const crushlevels = [GPThreeA,GPFourA,GPFourB,GPEightA,GPNineA,GPNineB]
 
 
 console.log("crush levels",crushlevels.length)
