@@ -20,28 +20,35 @@ import StartButton from "../assets/GoButton.png";
 import Heart from "../assets/Heart.png";
 import CrushHelp from "../assets/CrushHelp.png";
 
-import one from "../assets/One_B.png";
-import two from "../assets/Two_B.png";
-import three from "../assets/Three_B.png";
-import four from "../assets/Four_B.png";
-import five from "../assets/Five_B.png";
-import six from "../assets/Six_B.png";
-import seven from "../assets/Seven_B.png";
-import eight from "../assets/Eight_B.png";
-import nine from "../assets/Nine_B.png";
-import ten from "../assets/Ten_B.png";
+import one from "../assets/H1.png";
+import two from "../assets/H2.png";
+import three from "../assets/H3.png";
+import four from "../assets/H4.png";
+import five from "../assets/H5.png";
+import six from "../assets/H6.png";
+import seven from "../assets/H7.png";
+import eight from "../assets/H8.png";
+import nine from "../assets/H9.png";
+import ten from "../assets/H10.png";
 
-import { getRandomArray, getRandomInt, Draggable, shuffleArray } from "./api.js";
+import {
+  getRandomArray,
+  getRandomInt,
+  Draggable,
+  shuffleArray,
+} from "./api.js";
 import { Timeline, Tween, Elastic } from "gsap/gsap-core";
 import { counters, LEVELS, crushlevels, PM } from "./crushlevels.js";
 
-
-
-let NUMERALS = []
+let NUMERALS = [];
 
 let levels = crushlevels;
 
 let mod = levels.length;
+
+let plusHeart;
+
+let newLifeFlag = false;
 
 let NUMBER_OF_LIVES = 9;
 let levelCounter = 0;
@@ -74,6 +81,23 @@ export const init = (app, setup) => {
     mod = levels.length;
   }
 
+  const ABSTRACT_CARDS = {
+    1: new PIXI.Text("1", {
+      fontFamily: "Quicksand",
+      fill: 0x000000,
+      fontSize: 60,
+    }),
+    2: new PIXI.Text("2", { fontFamily: "Quicksand", fontSize: 60 }),
+    3: new PIXI.Text("3", { fontFamily: "Quicksand", fontSize: 60 }),
+    4: new PIXI.Text("4", { fontFamily: "Quicksand", fontSize: 60 }),
+    5: new PIXI.Text("5", { fontFamily: "Quicksand", fontSize: 60 }),
+    6: new PIXI.Text("6", { fontFamily: "Quicksand", fontSize: 60 }),
+    7: new PIXI.Text("7", { fontFamily: "Quicksand", fontSize: 60 }),
+    8: new PIXI.Text("8", { fontFamily: "Quicksand", fontSize: 60 }),
+    9: new PIXI.Text("9", { fontFamily: "Quicksand", fontSize: 60 }),
+    10: new PIXI.Text("10", { fontFamily: "Quicksand", fontSize: 60 }),
+  };
+
   const NUMBER_CARDS = {
     1: new PIXI.Texture.from(one),
     2: new PIXI.Texture.from(two),
@@ -86,6 +110,8 @@ export const init = (app, setup) => {
     9: new PIXI.Texture.from(nine),
     10: new PIXI.Texture.from(ten),
   };
+
+  console.log("this is a texture", NUMBER_CARDS[2]);
 
   // Flags
   let helping = false;
@@ -102,6 +128,8 @@ export const init = (app, setup) => {
   let livesHeart;
   let livesText;
   let backGround;
+
+  let currentLevel;
 
   const TEXT_COLOR = 0x1191fa;
 
@@ -259,14 +287,34 @@ export const init = (app, setup) => {
   let originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
   let originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
 
+  function animateHeart() {
+    const onComplete = () => {
+      plusHeart.y = VIEW_HEIGHT + MIN_DIM / 5;
+    };
+    app.stage.addChild(plusHeart);
+    console.log("sucess");
+    Tween.to(plusHeart, {
+      duration: 1,
+      y: -CARD_WIDTH,
+      onComplete: onComplete,
+    });
+  }
+
   function cardClicked(e) {
     if (!learning) {
       if (e.target.isOffCard == true) {
+        if (currentLevel.type == "number") {
+          lifeCounter++;
+          updateLives()
+          setTimeout(() => {
+            animateHeart();
+          }, 100);
+        }
 
         levelCounter++;
         updateLevelDescriptor();
 
-        const newLevel = {...levels[levelCounter % mod]};
+        const newLevel = { ...levels[levelCounter % mod] };
 
         if (!newLevel.counter) {
           newLevel.counter = DEFAULT_COUNTER;
@@ -287,7 +335,6 @@ export const init = (app, setup) => {
           ease: "power4.in",
           onComplete: onComplete,
         });
-        
       } else {
         pool.activeCards.forEach((c) => (c.interactive = false));
         backGround.interactive = false;
@@ -298,9 +345,9 @@ export const init = (app, setup) => {
             endGame();
           }
         };
-        
-        app.stage.addChild(e.target.numeral)
-        Tween.fromTo(e.target.numeral,{alpha: 1},{duration:3,alpha: 0})
+
+        app.stage.addChild(e.target.numeral);
+        Tween.fromTo(e.target.numeral, { alpha: 1 }, { duration: 3, alpha: 0 });
         Tween.to(e.target, {
           onComplete: onComplete,
           rotation: 1,
@@ -387,15 +434,13 @@ export const init = (app, setup) => {
       this.init();
     }
 
-    draw(level, mesh, value,acc) {
+    draw(level, mesh, value, acc) {
       this.dim = CARD_WIDTH;
       this.level = level;
       this.mesh = mesh;
       this.value = value;
       this.maxMeshDim = Math.max(mesh[0], mesh[1]);
       this.unit = UNIT;
-
-  
 
       if (!this.level.counter) {
         this.level.counter = counters.default;
@@ -427,40 +472,51 @@ export const init = (app, setup) => {
         b.height = this.unit;
       });
 
-      if (this.level.type == "number" && this.level.cards.length !=0) {
+      if (this.level.type == "number" && this.level.cards.length != 0) {
+        const card = this.level.cards[acc];
+        const { arr, types } = card;
+        const coords = PM[arr.length];
 
+        shuffleArray(coords);
 
-        const card = this.level.cards[acc]
-        const coords = PM[card.length];
+        const sum = arr.reduce((a, b) => {
+          return a + b;
+        });
 
-        shuffleArray(coords)
+        this.value = sum;
 
-        const sum = card.reduce((a,b)=>{
-          return a+b
-        })
-
-        this.value = sum
-
-        if(sum != this.level.value){
-          console.log("making this off card")
-          this.isOffCard = true
+        if (sum != this.level.value) {
+          this.isOffCard = true;
         }
 
-         card.forEach((c,i)=>{
+        arr.forEach((c, i) => {
+          let sprite = this.balls[i];
 
-    
-            let sprite = this.balls[i]
-        
-            sprite.texture = NUMBER_CARDS[c]
-            sprite.width = this.unit;
-            sprite.height = this.unit;
-        
-            sprite.x = coords[i][0] * this.unit + offsetX;
-            sprite.y = coords[i][1] * this.unit + offsetY;
-       
-      
-            this.addChild(sprite);
-          })
+          let t;
+
+          if (types[i] == 1) {
+            let ac = ABSTRACT_CARDS[c];
+
+            ac.updateText();
+            t = ac.texture;
+          } else {
+            t = NUMBER_CARDS[c];
+          }
+
+          sprite.height = this.unit;
+          sprite.width = (this.unit * t.width) / t.height;
+
+          sprite.texture = t;
+
+          sprite.x =
+            coords[i][0] * this.unit +
+            offsetX +
+            this.unit / 2 -
+            sprite.width / 2;
+          sprite.y = coords[i][1] * this.unit + offsetY;
+
+          this.addChild(sprite);
+        });
       } else {
         const array = getRandomArray(this.mesh[0], this.mesh[1], value);
 
@@ -530,7 +586,6 @@ export const init = (app, setup) => {
         for (let j = 0; j < level.grid[1]; j++) {
           let c = this.cards[acc];
 
-
           // Handling offcard
           let potentialValue = level.value;
 
@@ -545,9 +600,8 @@ export const init = (app, setup) => {
               potentialValue = potentialValue + level.delta;
             }
             c.isOffCard = true;
-    
           }
-          c.draw(level, level.mesh, potentialValue,acc);
+          c.draw(level, level.mesh, potentialValue, acc);
 
           c.y = -1.1 * CARD_WIDTH;
           c.x = originX + (i % level.grid[0]) * CARD_WIDTH;
@@ -607,7 +661,7 @@ export const init = (app, setup) => {
   */
 
   function updateLayoutParams(width, height, newLevel) {
-
+    currentLevel = newLevel;
 
     VIEW_WIDTH = width;
     VIEW_HEIGHT = height;
@@ -649,10 +703,9 @@ export const init = (app, setup) => {
     UNIT = CARD_WIDTH / maxMeshDimension;
     UNIT = (CARD_WIDTH - UNIT) / maxMeshDimension;
 
-
-    if (newLevel.type == "number"){
-      UNIT = UNIT*1.9
-      shuffleArray(newLevel.cards)
+    if (newLevel.type == "number") {
+      UNIT = UNIT * 1.9;
+      shuffleArray(newLevel.cards);
     }
 
     GRID_WIDTH =
@@ -673,12 +726,16 @@ export const init = (app, setup) => {
     cardGraphics.lineStyle(CARD_WIDTH / 50, LINE_COLOR);
     cardGraphics.drawRoundedRect(0, 0, CARD_WIDTH, CARD_WIDTH, CARD_WIDTH / 10);
     CARD_TEXTURE = app.renderer.generateTexture(cardGraphics);
+
+    Object.keys(ABSTRACT_CARDS).forEach((k) => {
+      let t = ABSTRACT_CARDS[k];
+      t.fontSize = CARD_WIDTH / 2;
+      //t.anchor.set(0.5,0)
+    });
   }
 
   function startGame() {
-
-
-    const startLevel = levels[levelCounter % mod]
+    const startLevel = levels[levelCounter % mod];
 
     updateLayoutParams(setup.width, setup.height, startLevel);
 
@@ -722,25 +779,25 @@ export const init = (app, setup) => {
       backGround.interactive = true;
     }, 1000);
 
-    NUMERALS.forEach(n=>{
-      n.x = -CARD_WIDTH
-      n.alpha = 0
-      app.stage.removeChild(n)
-    })
+    NUMERALS.forEach((n) => {
+      n.x = -CARD_WIDTH;
+      n.alpha = 0;
+      app.stage.removeChild(n);
+    });
 
-    pool.cards.forEach((c,i) => {
+    pool.cards.forEach((c, i) => {
       if (c.inPlay == true) {
         let _x = originX + delta * c.i;
         let _y = originY + delta * c.j;
-        let n = NUMERALS[i]
+        let n = NUMERALS[i];
 
-        n.x = _x + CARD_WIDTH/2
-        n.y = _y + CARD_WIDTH/2
-        
-        n.text = c.value
+        n.x = _x + CARD_WIDTH / 2;
+        n.y = _y + CARD_WIDTH / 2;
 
-        c.numeral = n
-      
+        n.text = c.value;
+
+        c.numeral = n;
+
         app.stage.addChild(c);
         Tween.to(c, {
           duration: 1,
@@ -827,7 +884,15 @@ export const init = (app, setup) => {
     livesHeart.anchor.set(0.5, 0.45);
     app.stage.addChild(livesHeart);
     livesHeart.y = MARGIN_TOP + livesHeart.height / 2;
-    livesHeart.x = livesText.x + livesText.width * 2.2;
+    livesHeart.x = livesText.x + livesText.width * 2.5;
+
+    plusHeart = new PIXI.Sprite.from(Heart);
+    plusHeart.width = MIN_DIM / 5;
+    plusHeart.height = MIN_DIM / 5;
+    app.stage.addChild(plusHeart);
+    plusHeart.anchor.set(0.5, 0.5);
+    plusHeart.x = VIEW_WIDTH / 2;
+    plusHeart.y = VIEW_HEIGHT + CARD_WIDTH;
 
     levelText = new PIXI.Text("Level: 1", {
       fontWeight: "bold",
@@ -906,16 +971,20 @@ export const init = (app, setup) => {
 
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
-        
-        let t = new PIXI.Text("5", {fill: LINE_COLOR, fontWeight: "bold",
-        fontFamily: "Quicksand",fontSize: CARD_WIDTH / 2 });
+        let t = new PIXI.Text("5", {
+          fill: LINE_COLOR,
+          fontWeight: "bold",
+          fontFamily: "Quicksand",
+          fontSize: CARD_WIDTH / 2,
+        });
         t.x = originX + delta * i + CARD_WIDTH / 2;
         t.y = originY + delta * j + CARD_WIDTH / 2;
         t.anchor.set(0.5);
-        NUMERALS.push(t)
+        NUMERALS.push(t);
         //app.stage.addChild(t)
       }
     }
+
   }
 
   load();
