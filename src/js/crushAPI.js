@@ -42,13 +42,27 @@ import { counters, LEVELS, crushlevels, PM } from "./crushlevels.js";
 
 let NUMERALS = [];
 
+let LINE_COLORS = {
+  darkpurple: 0x5940ff,
+  lightblue: 0x70e0ff,
+  pink: 0xff0593,
+  yellow: 0xfced0f,
+  blue: 0x1191fa,
+  red: 0xff4545,
+  purple: 0xb407f2,
+  orange: 0xff860d,
+  green: 0x00c91e,
+  rainbow: 0xff2465,
+  square: 0x00b30f,
+  diamond: 0xff2465,
+  black: 0x000000,
+};
+
 let levels = crushlevels;
 
 let mod = levels.length;
 
 let plusHeart;
-
-let newLifeFlag = false;
 
 let NUMBER_OF_LIVES = 9;
 let levelCounter = 0;
@@ -80,22 +94,25 @@ export const init = (app, setup) => {
     levels = customLevel.puzzles;
     mod = levels.length;
   }
+  let LINE_COLOR = 0x1191fa;
+
+  const ABS_CARD_COLOR = LINE_COLORS.black
 
   const ABSTRACT_CARDS = {
     1: new PIXI.Text("1", {
       fontFamily: "Quicksand",
-      fill: 0x000000,
+      fill: ABS_CARD_COLOR,
       fontSize: 60,
     }),
-    2: new PIXI.Text("2", { fontFamily: "Quicksand", fontSize: 60 }),
-    3: new PIXI.Text("3", { fontFamily: "Quicksand", fontSize: 60 }),
-    4: new PIXI.Text("4", { fontFamily: "Quicksand", fontSize: 60 }),
-    5: new PIXI.Text("5", { fontFamily: "Quicksand", fontSize: 60 }),
-    6: new PIXI.Text("6", { fontFamily: "Quicksand", fontSize: 60 }),
-    7: new PIXI.Text("7", { fontFamily: "Quicksand", fontSize: 60 }),
-    8: new PIXI.Text("8", { fontFamily: "Quicksand", fontSize: 60 }),
-    9: new PIXI.Text("9", { fontFamily: "Quicksand", fontSize: 60 }),
-    10: new PIXI.Text("10", { fontFamily: "Quicksand", fontSize: 60 }),
+    2: new PIXI.Text("2", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
+    3: new PIXI.Text("3", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
+    4: new PIXI.Text("4", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
+    5: new PIXI.Text("5", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
+    6: new PIXI.Text("6", {fill: ABS_CARD_COLOR, fontFamily: "Quicksand", fontSize: 60 }),
+    7: new PIXI.Text("7", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
+    8: new PIXI.Text("8", { fill: ABS_CARD_COLOR, fontFamily: "Quicksand", fontSize: 60 }),
+    9: new PIXI.Text("9", {fill: ABS_CARD_COLOR, fontFamily: "Quicksand", fontSize: 60 }),
+    10: new PIXI.Text("10", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
   };
 
   const NUMBER_CARDS = {
@@ -110,8 +127,6 @@ export const init = (app, setup) => {
     9: new PIXI.Texture.from(nine),
     10: new PIXI.Texture.from(ten),
   };
-
-  console.log("this is a texture", NUMBER_CARDS[2]);
 
   // Flags
   let helping = false;
@@ -199,27 +214,13 @@ export const init = (app, setup) => {
   ];
 
   let COUNTER_TEXTURE = NEW_BLUE_COUNTER;
-  let LINE_COLOR = 0x1191fa;
 
-  let LINE_COLORS = {
-    darkpurple: 0x5940ff,
-    lightblue: 0x70e0ff,
-    pink: 0xff0593,
-    yellow: 0xfced0f,
-    blue: 0x1191fa,
-    red: 0xff4545,
-    purple: 0xb407f2,
-    orange: 0xff860d,
-    green: 0x00c91e,
-    rainbow: 0xff2465,
-    square: 0x00b30f,
-    diamond: 0xff2465,
-  };
+
 
   const C = {
     default: {
       texture: NEW_BLUE_COUNTER,
-      stroke: LINE_COLORS.blue,
+      stroke: LINE_COLORS.red,
       value: 1,
     },
     square: {
@@ -282,6 +283,11 @@ export const init = (app, setup) => {
       stroke: LINE_COLORS.darkpurple,
       value: 1,
     },
+    black: {
+      texture: NEW_DARK_PURPLE_COUNTER,
+      stroke: LINE_COLORS.black,
+      value: 1,
+    },
   };
 
   let originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
@@ -289,13 +295,21 @@ export const init = (app, setup) => {
 
   function animateHeart() {
     const onComplete = () => {
-      plusHeart.y = VIEW_HEIGHT + MIN_DIM / 5;
+      updateLives();
+      plusHeart.y = VIEW_HEIGHT + plusHeart.height
+      plusHeart.x = livesHeart.x
     };
-    app.stage.addChild(plusHeart);
-    console.log("sucess");
+
+   
+
     Tween.to(plusHeart, {
-      duration: 1,
-      y: -CARD_WIDTH,
+      duration: 0.5,
+      alpha: 1,
+      width: livesHeart.width,
+      height: livesHeart.height,
+      ease: "power4.in",
+      y: livesHeart.y,
+      x: livesHeart.x,
       onComplete: onComplete,
     });
   }
@@ -305,10 +319,9 @@ export const init = (app, setup) => {
       if (e.target.isOffCard == true) {
         if (currentLevel.type == "number") {
           lifeCounter++;
-          updateLives()
-          setTimeout(() => {
+          
             animateHeart();
-          }, 100);
+ 
         }
 
         levelCounter++;
@@ -444,8 +457,9 @@ export const init = (app, setup) => {
 
       if (!this.level.counter) {
         this.level.counter = counters.default;
-        console.log("using default");
       }
+
+  
 
       const c = C[this.level.counter];
       LINE_COLOR = c.stroke;
@@ -472,7 +486,9 @@ export const init = (app, setup) => {
         b.height = this.unit;
       });
 
-      if (this.level.type == "number" && this.level.cards.length != 0) {
+  
+      if (this.level.type == "number") {
+    
         const card = this.level.cards[acc];
         const { arr, types } = card;
         const coords = PM[arr.length];
@@ -518,8 +534,11 @@ export const init = (app, setup) => {
           this.addChild(sprite);
         });
       } else {
+        
+    
         const array = getRandomArray(this.mesh[0], this.mesh[1], value);
 
+  
         array.forEach((c, i) => {
           let sprite = this.balls[i];
 
@@ -581,6 +600,9 @@ export const init = (app, setup) => {
       let acc = 0;
 
       let r = getRandomInt(level.grid[0] * level.grid[1]);
+
+ 
+
 
       for (let i = 0; i < level.grid[0]; i++) {
         for (let j = 0; j < level.grid[1]; j++) {
@@ -672,12 +694,14 @@ export const init = (app, setup) => {
       newLevel.counter = DEFAULT_COUNTER;
     }
 
+    LINE_COLOR = LINE_COLORS[newLevel.counter]
+
     // Logic for laying out cards in different dimensions
     if (isMobileDevice) {
       let tempM0 = newLevel.grid[0];
       let tempM1 = newLevel.grid[1];
       newLevel.grid = [tempM1, tempM0];
-      NEW_CARD_WIDTH = (0.9 * VIEW_WIDTH) / newLevel.grid[0];
+      NEW_CARD_WIDTH = (0.8 * VIEW_WIDTH) / newLevel.grid[0];
     } else {
       if (VIEW_HEIGHT < VIEW_WIDTH) {
         NEW_CARD_WIDTH = (0.7 * VIEW_HEIGHT) / newLevel.grid[1];
@@ -692,13 +716,15 @@ export const init = (app, setup) => {
 
     MARGIN_TOP = MIN_DIM * 0.02;
 
+    const maxGridDim = Math.max(newLevel.grid[0],newLevel.grid[1])
+
     TOP_PADDING = isMobileDevice ? 0.1 * setup.height : 0.02 * setup.height;
 
     gridUnitsWide = (newLevel.mesh[0] + 2) * newLevel.grid[0];
     gridUnitsHigh = (newLevel.mesh[1] + 2) * newLevel.grid[1];
     gridUnitsMax = Math.max(gridUnitsHigh, gridUnitsWide);
 
-    SPACE_BETWEEN_CARDS = MIN_DIM / 50;
+    SPACE_BETWEEN_CARDS = MIN_DIM / 50 / (maxGridDim-1)
     CARD_WIDTH = NEW_CARD_WIDTH;
     UNIT = CARD_WIDTH / maxMeshDimension;
     UNIT = (CARD_WIDTH - UNIT) / maxMeshDimension;
@@ -718,6 +744,8 @@ export const init = (app, setup) => {
 
     originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
     originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
+
+
 
     LINE_COLOR = C[newLevel.counter].stroke;
 
@@ -775,9 +803,10 @@ export const init = (app, setup) => {
   }
 
   function dealCards(pool) {
-    setTimeout((t) => {
-      backGround.interactive = true;
-    }, 1000);
+
+    setTimeout(()=>{
+      backGround.interactive = true
+    },1000)
 
     NUMERALS.forEach((n) => {
       n.x = -CARD_WIDTH;
@@ -787,6 +816,8 @@ export const init = (app, setup) => {
 
     pool.cards.forEach((c, i) => {
       if (c.inPlay == true) {
+
+
         let _x = originX + delta * c.i;
         let _y = originY + delta * c.j;
         let n = NUMERALS[i];
@@ -794,7 +825,9 @@ export const init = (app, setup) => {
         n.x = _x + CARD_WIDTH / 2;
         n.y = _y + CARD_WIDTH / 2;
 
+        n.fill = LINE_COLOR
         n.text = c.value;
+      
 
         c.numeral = n;
 
@@ -881,18 +914,19 @@ export const init = (app, setup) => {
     livesHeart = new PIXI.Sprite.from(Heart);
     livesHeart.width = FONT_SIZE;
     livesHeart.height = FONT_SIZE;
-    livesHeart.anchor.set(0.5, 0.45);
+    livesHeart.anchor.set(0.5, 0.5);
     app.stage.addChild(livesHeart);
     livesHeart.y = MARGIN_TOP + livesHeart.height / 2;
     livesHeart.x = livesText.x + livesText.width * 2.5;
 
     plusHeart = new PIXI.Sprite.from(Heart);
-    plusHeart.width = MIN_DIM / 5;
-    plusHeart.height = MIN_DIM / 5;
+    plusHeart.width = MIN_DIM / 2;
+    plusHeart.height = MIN_DIM / 2;
     app.stage.addChild(plusHeart);
-    plusHeart.anchor.set(0.5, 0.5);
-    plusHeart.x = VIEW_WIDTH / 2;
-    plusHeart.y = VIEW_HEIGHT + CARD_WIDTH;
+    plusHeart.anchor.set(0.5,0.5)
+    plusHeart.alpha = 0
+    plusHeart.x = livesHeart.x 
+    plusHeart.y = VIEW_HEIGHT + livesHeart.height
 
     levelText = new PIXI.Text("Level: 1", {
       fontWeight: "bold",
@@ -972,7 +1006,7 @@ export const init = (app, setup) => {
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
         let t = new PIXI.Text("5", {
-          fill: LINE_COLOR,
+          fill: LINE_COLORS.blue,
           fontWeight: "bold",
           fontFamily: "Quicksand",
           fontSize: CARD_WIDTH / 2,
@@ -984,7 +1018,6 @@ export const init = (app, setup) => {
         //app.stage.addChild(t)
       }
     }
-
   }
 
   load();
