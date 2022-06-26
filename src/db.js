@@ -29,7 +29,7 @@ export const saami_number_talks = {
     TITLE: "Saami Number Talks",
     SHORT_TEXT: "Number Talks With Saami Puzzles",
   },
-  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1656256571/saami_number_talks_cbnkbj.png",
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1656263972/Screen_Shot_2022-06-26_at_1.19.04_PM_fphzqv.png",
   EXEMPLAR_TALK: [
     {
       actor: ACTORS.TEACHER,
@@ -71,7 +71,7 @@ export const saami_number_talks = {
           text: "2+2 is 4, so 2+2 + 3 is the same as 4 and 3.",
         },
       ],
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1656256571/saami_number_talks_cbnkbj.png",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1656263972/Screen_Shot_2022-06-26_at_1.19.04_PM_fphzqv.png",
     },
     {
       sample_talk: [
@@ -93,14 +93,14 @@ export const saami_number_talks = {
         },
         {
           actor: ACTORS.TEACHER,
-          text: "I see! So you take one from the five and give it to two and that makes 4 and 3?",
+          text: "I see! So you take 1 from the 5 and add it to two and that makes 4 and 3?",
         },
         {
           actor: ACTORS.STUDENT,
-          text: "Yes because we only moved things around!",
+          text: "Yes because we just move things around to show they're the same!",
         },
       ],
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1656261698/Screen_Shot_2022-06-26_at_12.41.25_PM_jbay3s.png",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1656264490/Screen_Shot_2022-06-26_at_1.27.46_PM_cpqbfg.png",
     },
   ],
   INTERACTIVE: {
