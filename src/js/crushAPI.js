@@ -13,7 +13,7 @@ import NewDarkPurpleBall from "../assets/NewDarkPurpleBall.png";
 import NewLightBlueBall from "../assets/NewLightBlueBall.png";
 import NewPinkBall from "../assets/NewPinkBall.png";
 
-import HalfBall from "../assets/HalfBall.png";
+//import HalfBall from "../assets/HalfBall.png";
 import RedSquare from "../assets/Square.png";
 import Diamond from "../assets/Diamond.png";
 import StartButton from "../assets/GoButton.png";
@@ -38,7 +38,13 @@ import {
   shuffleArray,
 } from "./api.js";
 import { Timeline, Tween, Elastic } from "gsap/gsap-core";
-import { counters, LEVELS, crushlevels, PM } from "./crushlevels.js";
+import {
+  counters,
+  levelTypes,
+  LEVELS,
+  crushlevels,
+  PM,
+} from "./crushlevels.js";
 
 let NUMERALS = [];
 
@@ -62,8 +68,6 @@ let levels = crushlevels;
 
 let mod = levels.length;
 
-let plusHeart;
-
 let NUMBER_OF_LIVES = 9;
 let levelCounter = 0;
 let lifeCounter = NUMBER_OF_LIVES;
@@ -75,28 +79,51 @@ const initLevel = {
   mesh: [2, 2],
 };
 
-export const init = (app, setup) => {
-  let customLevel = LEVELS[setup.level];
+let assessmentMode = false;
 
-  const potentialLevel = setup.level.substring(5);
-  const prefix = setup.level.substring(0, 5);
+export const init = (app, setup) => {
+  // UI
+  let plusHeart;
+
+  // Vars
   let levelStartedAt = null;
 
+  // #region Init Levels
+
+  // Check to see if setup represents a custom level.
+  let customLevel = LEVELS[setup.level];
+
+  // Parse Slug
+  const potentialLevel = setup.level.substring(5);
+  const prefix = setup.level.substring(0, 5);
+
+  // Level previx is a keyword
   if (prefix === "level") {
     let notNumber = isNaN(potentialLevel);
+    // Check to see if valid number was provided.
     if (!notNumber && potentialLevel > 0 && potentialLevel <= mod) {
       levelCounter = potentialLevel - 1;
       levelStartedAt = levelCounter;
     }
   }
 
-  if (customLevel) {
+  // Check the type of the custom level coming in.
+  if (customLevel && customLevel.type == levelTypes.assessment){
+    console.log("assessment")
+    assessmentMode = true
+    let i = getRandomInt(customLevel.puzzles.length)
+    levels = customLevel.puzzles[i]
+    mod = levels.length;
+  } else if (customLevel) {
     levels = customLevel.puzzles;
     mod = levels.length;
   }
+
+  // #endregion
+
   let LINE_COLOR = 0x1191fa;
 
-  const ABS_CARD_COLOR = LINE_COLORS.black
+  const ABS_CARD_COLOR = LINE_COLORS.black;
 
   const ABSTRACT_CARDS = {
     1: new PIXI.Text("1", {
@@ -104,15 +131,51 @@ export const init = (app, setup) => {
       fill: ABS_CARD_COLOR,
       fontSize: 60,
     }),
-    2: new PIXI.Text("2", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
-    3: new PIXI.Text("3", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
-    4: new PIXI.Text("4", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
-    5: new PIXI.Text("5", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
-    6: new PIXI.Text("6", {fill: ABS_CARD_COLOR, fontFamily: "Quicksand", fontSize: 60 }),
-    7: new PIXI.Text("7", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
-    8: new PIXI.Text("8", { fill: ABS_CARD_COLOR, fontFamily: "Quicksand", fontSize: 60 }),
-    9: new PIXI.Text("9", {fill: ABS_CARD_COLOR, fontFamily: "Quicksand", fontSize: 60 }),
-    10: new PIXI.Text("10", { fill: ABS_CARD_COLOR,fontFamily: "Quicksand", fontSize: 60 }),
+    2: new PIXI.Text("2", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    3: new PIXI.Text("3", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    4: new PIXI.Text("4", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    5: new PIXI.Text("5", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    6: new PIXI.Text("6", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    7: new PIXI.Text("7", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    8: new PIXI.Text("8", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    9: new PIXI.Text("9", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
+    10: new PIXI.Text("10", {
+      fill: ABS_CARD_COLOR,
+      fontFamily: "Quicksand",
+      fontSize: 60,
+    }),
   };
 
   const NUMBER_CARDS = {
@@ -215,8 +278,6 @@ export const init = (app, setup) => {
 
   let COUNTER_TEXTURE = NEW_BLUE_COUNTER;
 
-
-
   const C = {
     default: {
       texture: NEW_BLUE_COUNTER,
@@ -296,11 +357,9 @@ export const init = (app, setup) => {
   function animateHeart() {
     const onComplete = () => {
       updateLives();
-      plusHeart.y = VIEW_HEIGHT + plusHeart.height
-      plusHeart.x = livesHeart.x
+      plusHeart.y = VIEW_HEIGHT + plusHeart.height;
+      plusHeart.x = livesHeart.x;
     };
-
-   
 
     Tween.to(plusHeart, {
       duration: 0.5,
@@ -319,9 +378,8 @@ export const init = (app, setup) => {
       if (e.target.isOffCard == true) {
         if (currentLevel.type == "number") {
           lifeCounter++;
-          
-            animateHeart();
- 
+
+          animateHeart();
         }
 
         levelCounter++;
@@ -448,6 +506,7 @@ export const init = (app, setup) => {
     }
 
     draw(level, mesh, value, acc) {
+      console.log("level",level)
       this.dim = CARD_WIDTH;
       this.level = level;
       this.mesh = mesh;
@@ -458,8 +517,6 @@ export const init = (app, setup) => {
       if (!this.level.counter) {
         this.level.counter = counters.default;
       }
-
-  
 
       const c = C[this.level.counter];
       LINE_COLOR = c.stroke;
@@ -486,9 +543,8 @@ export const init = (app, setup) => {
         b.height = this.unit;
       });
 
-  
       if (this.level.type == "number") {
-    
+        console.log('this.lmevel',this.level)
         const card = this.level.cards[acc];
         const { arr, types } = card;
         const coords = PM[arr.length];
@@ -534,11 +590,8 @@ export const init = (app, setup) => {
           this.addChild(sprite);
         });
       } else {
-        
-    
         const array = getRandomArray(this.mesh[0], this.mesh[1], value);
 
-  
         array.forEach((c, i) => {
           let sprite = this.balls[i];
 
@@ -600,9 +653,6 @@ export const init = (app, setup) => {
       let acc = 0;
 
       let r = getRandomInt(level.grid[0] * level.grid[1]);
-
- 
-
 
       for (let i = 0; i < level.grid[0]; i++) {
         for (let j = 0; j < level.grid[1]; j++) {
@@ -694,7 +744,7 @@ export const init = (app, setup) => {
       newLevel.counter = DEFAULT_COUNTER;
     }
 
-    LINE_COLOR = LINE_COLORS[newLevel.counter]
+    LINE_COLOR = LINE_COLORS[newLevel.counter];
 
     // Logic for laying out cards in different dimensions
     if (isMobileDevice) {
@@ -716,7 +766,7 @@ export const init = (app, setup) => {
 
     MARGIN_TOP = MIN_DIM * 0.02;
 
-    const maxGridDim = Math.max(newLevel.grid[0],newLevel.grid[1])
+    const maxGridDim = Math.max(newLevel.grid[0], newLevel.grid[1]);
 
     TOP_PADDING = isMobileDevice ? 0.1 * setup.height : 0.02 * setup.height;
 
@@ -724,7 +774,7 @@ export const init = (app, setup) => {
     gridUnitsHigh = (newLevel.mesh[1] + 2) * newLevel.grid[1];
     gridUnitsMax = Math.max(gridUnitsHigh, gridUnitsWide);
 
-    SPACE_BETWEEN_CARDS = MIN_DIM / 50 / (maxGridDim-1)
+    SPACE_BETWEEN_CARDS = MIN_DIM / 50 / (maxGridDim - 1);
     CARD_WIDTH = NEW_CARD_WIDTH;
     UNIT = CARD_WIDTH / maxMeshDimension;
     UNIT = (CARD_WIDTH - UNIT) / maxMeshDimension;
@@ -744,8 +794,6 @@ export const init = (app, setup) => {
 
     originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
     originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
-
-
 
     LINE_COLOR = C[newLevel.counter].stroke;
 
@@ -803,10 +851,9 @@ export const init = (app, setup) => {
   }
 
   function dealCards(pool) {
-
-    setTimeout(()=>{
-      backGround.interactive = true
-    },1000)
+    setTimeout(() => {
+      backGround.interactive = true;
+    }, 1000);
 
     NUMERALS.forEach((n) => {
       n.x = -CARD_WIDTH;
@@ -816,8 +863,6 @@ export const init = (app, setup) => {
 
     pool.cards.forEach((c, i) => {
       if (c.inPlay == true) {
-
-
         let _x = originX + delta * c.i;
         let _y = originY + delta * c.j;
         let n = NUMERALS[i];
@@ -825,9 +870,8 @@ export const init = (app, setup) => {
         n.x = _x + CARD_WIDTH / 2;
         n.y = _y + CARD_WIDTH / 2;
 
-        n.fill = LINE_COLOR
+        n.fill = LINE_COLOR;
         n.text = c.value;
-      
 
         c.numeral = n;
 
@@ -923,10 +967,10 @@ export const init = (app, setup) => {
     plusHeart.width = MIN_DIM / 2;
     plusHeart.height = MIN_DIM / 2;
     app.stage.addChild(plusHeart);
-    plusHeart.anchor.set(0.5,0.5)
-    plusHeart.alpha = 0
-    plusHeart.x = livesHeart.x 
-    plusHeart.y = VIEW_HEIGHT + livesHeart.height
+    plusHeart.anchor.set(0.5, 0.5);
+    plusHeart.alpha = 0;
+    plusHeart.x = livesHeart.x;
+    plusHeart.y = VIEW_HEIGHT + livesHeart.height;
 
     levelText = new PIXI.Text("Level: 1", {
       fontWeight: "bold",

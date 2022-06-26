@@ -22,6 +22,123 @@ Additional Info:
   - Practices
 */
 
+export const saami_number_talks = {
+  KEY: "CB12",
+  ID: "saami_number_talks",
+  HEADER: {
+    TITLE: "Saami Number Talks",
+    SHORT_TEXT: "Number Talks With Saami Puzzles",
+  },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1656256571/saami_number_talks_cbnkbj.png",
+  EXEMPLAR_TALK: [
+    {
+      actor: ACTORS.TEACHER,
+      text: "Find a pair that add to the same number.",
+    },
+    {
+      actor: ACTORS.STUDENT,
+      text: "2,2 and 3 is the same as 3 and 4.",
+    },
+    {
+      actor: ACTORS.TEACHER,
+      text: "How do you know?",
+    },
+    {
+      actor: ACTORS.STUDENT,
+      text: "2+2 is 4, so 2+2 + 3 is the same as 4 and 3.",
+    },
+  ],
+  INTRO: {
+    TEXT: "Saami Number Talks are discussions about the relationships between different Saami cards. The following is an examplar of how a Saami Number Talk may look like in the classroom. Use it as a guide for facilitating the many puzzles that are available. See links at the bottom of page."
+  },
+  SLIDES: [
+    {
+      sample_talk: [
+        {
+          actor: ACTORS.TEACHER,
+          text: "Find a pair that add to the same number.",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "2,2 and 3 is the same as 3 and 4.",
+        },
+        {
+          actor: ACTORS.TEACHER,
+          text: "How do you know?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "2+2 is 4, so 2+2 + 3 is the same as 4 and 3.",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1656256571/saami_number_talks_cbnkbj.png",
+    },
+    {
+      sample_talk: [
+        {
+          actor: ACTORS.TEACHER,
+          text: "Find a pair that add to the same number.",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "3 and 4 is the same as 2 and 5.",
+        },
+        {
+          actor: ACTORS.TEACHER,
+          text: "How do you know?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "You can borrow from the five to make 3 and 4.",
+        },
+        {
+          actor: ACTORS.TEACHER,
+          text: "I see! So you take one from the five and give it to two and that makes 4 and 3?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "Yes because we only moved things around!",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1656261698/Screen_Shot_2022-06-26_at_12.41.25_PM_jbay3s.png",
+    },
+  ],
+  INTERACTIVE: {
+    TYPE: CONST.INTERACTIVE_TYPES.SAAMI,
+    SETUP: CONST.SETUPS.SAAMI,
+  }, // sent to "Interactive Selector"
+  QUICK_START: {
+    STEPS: [
+      {
+        meta: "something",
+        description: "Launch Saami Number Talk",
+      },
+      {
+        meta: "something",
+        description: "Use the Sample Talk as an Exemplar",
+      },
+      {
+        meta: "something",
+        description: "Lead a Discussion",
+      },
+      {
+        meta: "something",
+        description: "Have Student Play on Their Own (or do this first!)",
+      },
+    ],
+    META: "something",
+  },
+  LINKS: [
+    {
+      type: LINK_TYPES.GAME,
+      text: "Symbolic Saami Number Talks",
+      url: "../interactives/saami/saami_number_talks",
+    },
+  ],
+  INFO: { GRADE: "FirstGrade" },
+};
+
+
 export const saami = {
   KEY: "CB12",
   ID: "saami",

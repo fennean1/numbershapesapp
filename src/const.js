@@ -4,7 +4,7 @@ export const INTERACTIVE_TYPES = {
   SUBITIZER: "subitizer",
   MATCH_GAME: "match_game",
   MULTIPLICATION: "multiplication",
-  SAAMI: "saami"
+  SAAMI: "saami",
 }
 
 export const ACTORS = {
