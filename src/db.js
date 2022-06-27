@@ -134,6 +134,11 @@ export const saami_number_talks = {
       text: "Symbolic Saami Number Talks",
       url: "../interactives/saami/saami_number_talks",
     },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Visual / Symbolic Saami Number Talks",
+      url: "../interactives/saami/visualsymbolictoten",
+    },
   ],
   INFO: { GRADE: "FirstGrade" },
 };

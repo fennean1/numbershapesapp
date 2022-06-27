@@ -209,7 +209,7 @@ export const PM = {
   ],
 };
 
-// #region 
+// #region Abstract Pre Assessment
 
 export const PAP1 = {
   grid: [2, 2],
@@ -717,6 +717,546 @@ export const PAP17P = {
 };
 
 
+// #endregion
+
+
+
+// #region Visual/Abstract
+
+// P.re A.ssessment P.uzzle 1 ,  P.re A.ssessment P.uzzle 1 P.ost
+
+export const PAP1C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: twos.one_one},
+    { types:  [1,0], arr: threes.one_two},
+    { types: [0,1], arr: threes.one_two},
+    { types:  [0,0,0], arr: threes.one_one_one},
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP1CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: twos.one_one},
+    { types:  [1,0], arr: threes.one_two},
+    { types: [0,1], arr: threes.one_two},
+    { types:  [0], arr: threes.three},
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP2C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: fours.one_three},
+    { types:  [0,0], arr: threes.one_two},
+    { types: [1,1], arr: threes.one_two},
+    { types:  [0,0,0], arr: threes.one_one_one},
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP2CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: fours.two_two},
+    { types:  [0,1], arr: threes.one_two},
+    { types: [0,1], arr: threes.one_two},
+    { types:  [1,1,1], arr: threes.one_one_one},
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black
+};
+
+
+
+export const PAP3C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: fours.one_three},
+    { types:  [0,0], arr: fours.two_two},
+    { types: [1,0], arr: fours.one_three},
+    { types:  [0,0,0], arr: threes.one_one_one},
+  ],
+  mesh: [2, 2],
+  value: 4,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP3CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: fours.one_three},
+    { types:  [0,1], arr: fours.two_two},
+    { types: [1,0], arr: fours.one_three},
+    { types:  [1,0], arr: threes.one_two},
+  ],
+  mesh: [2, 2],
+  value: 4,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP4C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: fours.one_three},
+    { types:  [0,0], arr: fours.two_two},
+    { types: [1,0], arr: fours.one_three},
+    { types:  [1,0], arr: fives.one_four},
+  ],
+  mesh: [2, 2],
+  value: 4,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP4CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: fours.one_three},
+    { types:  [0,0], arr: fours.two_two},
+    { types: [0,1], arr: fours.one_three},
+    { types:  [0,1], arr: fives.two_three},
+  ],
+  mesh: [2, 2],
+  value: 4,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP5C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: fours.one_three},
+    { types:  [1,1], arr: fives.two_three},
+    { types: [0], arr: fives.five},
+    { types:  [1,0], arr: fives.one_four},
+  ],
+  mesh: [2, 2],
+  value: 5,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP5CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: fours.one_three},
+    { types:  [0,1], arr: fives.two_three},
+    { types: [0,0,1], arr: fives.one_one_three},
+    { types:  [0,1], arr: fives.one_four},
+  ],
+  mesh: [2, 2],
+  value: 5,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP6C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: sixes.three_three},
+    { types:  [1,0], arr: fives.two_three},
+    { types: [0,0,0], arr: fives.one_two_two},
+    { types:  [1,0], arr: fives.one_four},
+  ],
+  mesh: [2, 2],
+  value: 5,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP6CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: sixes.two_four},
+    { types:  [1,0], arr: fives.two_three},
+    { types: [1,0,0], arr: fives.one_two_two},
+    { types:  [1,0], arr: fives.one_four},
+  ],
+  mesh: [2, 2],
+  value: 5,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP7C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: sixes.three_three},
+    { types:  [1,1], arr: sixes.two_four},
+    { types: [0,0,0], arr: sixes.two_two_two},
+    { types:  [1,0], arr: fives.two_three},
+  ],
+  mesh: [2, 2],
+  value: 6,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP7CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: sixes.three_three},
+    { types:  [0,0], arr: sixes.two_four},
+    { types: [1,0], arr: sixes.one_five},
+    { types:  [0,0], arr: fives.two_three},
+  ],
+  mesh: [2, 2],
+  value: 6,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP8C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: sixes.one_five},
+    { types:  [0,1], arr: sixes.two_four},
+    { types: [0,0,0], arr: sixes.two_two_two},
+    { types:  [0,1], arr: sevens.three_four},
+  ],
+  mesh: [2, 2],
+  value: 6,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP8CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: sixes.one_five},
+    { types:  [0,0], arr: sixes.two_four},
+    { types: [0,0,0], arr: sixes.two_two_two},
+    { types:  [0,1], arr: sevens.two_five},
+  ],
+  mesh: [2, 2],
+  value: 6,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP9C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: sixes.one_five},
+    { types:  [0,0,1], arr: sevens.two_two_three},
+    { types: [1,0], arr: sevens.three_four},
+    { types:  [1,0], arr: sevens.two_five},
+  ],
+  mesh: [2, 2],
+  value: 7,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP9CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: sixes.three_three},
+    { types:  [0,0,1], arr: sevens.two_two_three},
+    { types: [1,0], arr: sevens.three_four},
+    { types:  [0,1], arr: sevens.two_five},
+  ],
+  mesh: [2, 2],
+  value: 7,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP10C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: eights.three_five},
+    { types:  [1,1,0], arr: sevens.two_two_three},
+    { types: [0,1], arr: sevens.one_six},
+    { types:  [0,1], arr: sevens.two_five},
+  ],
+  mesh: [2, 2],
+  value: 7,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP10CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: eights.three_five},
+    { types:  [0,0,0], arr: sevens.two_two_three},
+    { types: [1,0], arr: sevens.three_four},
+    { types:  [0,0], arr: sevens.two_five},
+  ],
+  mesh: [2, 2],
+  value: 7,
+  type: "number",
+  counter: counters.black
+};
+
+
+
+export const PAP11C = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: eights.three_five},
+    { types:  [1,1,0], arr: eights.two_two_four},
+    { types: [1,0], arr: eights.four_four},
+    { types:  [1,0], arr: sevens.three_four},
+  ],
+  mesh: [2, 2],
+  value: 8,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP11CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: eights.two_six},
+    { types:  [1,0,0], arr: eights.two_two_four},
+    { types: [1,0], arr: eights.four_four},
+    { types:  [0,1], arr: sevens.three_four},
+  ],
+  mesh: [2, 2],
+  value: 8,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP12C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: eights.three_five},
+    { types:  [1,1], arr: eights.four_four},
+    { types: [0,0,0], arr: eights.two_two_four},
+    { types:  [0,1], arr: nines.four_five},
+  ],
+  mesh: [2, 2],
+  value: 8,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP12CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,0], arr: eights.three_five},
+    { types:  [0,0], arr: eights.four_four},
+    { types: [0,0,1], arr: eights.two_two_four},
+    { types:  [1,0], arr: nines.three_six},
+  ],
+  mesh: [2, 2],
+  value: 8,
+  type: "number",
+  counter: counters.black
+};
+
+
+
+export const PAP13C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: eights.three_five},
+    { types:  [0,0,1], arr: nines.two_two_five},
+    { types: [1,0], arr: nines.three_six},
+    { types:  [1,0], arr: nines.four_five}
+  ],
+  mesh: [2, 2],
+  value: 9,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP13CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: eights.four_four},
+    { types:  [0,0,1], arr: nines.two_two_five},
+    { types: [1,0], arr: nines.three_six},
+    { types:  [0,1], arr: nines.four_five}
+  ],
+  mesh: [2, 2],
+  value: 9,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP14C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: tens.five_five},
+    { types:  [0,0,1], arr: nines.two_two_five},
+    { types: [1,1], arr: nines.three_six},
+    { types:  [0,0], arr: nines.four_five},
+  ],
+  mesh: [2, 2],
+  value: 9,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP14CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [1,1], arr: tens.two_eight},
+    { types:  [0,0,1], arr: nines.two_two_five},
+    { types: [0,0], arr: nines.three_six},
+    { types:  [0,0], arr: nines.four_five},
+  ],
+  mesh: [2, 2],
+  value: 9,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP15C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: tens.five_five},
+    { types:  [1,1], arr: tens.four_six},
+    { types: [0,0], arr: tens.three_seven},
+    { types:  [0,1], arr: nines.four_five},
+  ],
+  mesh: [2, 2],
+  value: 10,
+  type: "number",
+  counter: counters.black
+};
+
+export const PAP15CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: tens.five_five},
+    { types:  [0,1], arr: tens.four_six},
+    { types: [0,1], arr: tens.three_seven},
+    { types:  [0,0,1], arr: nines.two_two_five},
+  ],
+  mesh: [2, 2],
+  value: 10,
+  type: "number",
+  counter: counters.black
+};
+
+
+
+export const PAP16C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: tens.one_nine},
+    { types:  [1,1], arr: tens.two_eight},
+    { types: [1,0], arr: tens.three_seven},
+    { types:  [0,1], arr: elevens.one_ten},
+  ],
+  mesh: [2, 2],
+  value: 10,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP16CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,0], arr: tens.five_five},
+    { types:  [1,1], arr: tens.two_eight},
+    { types: [0,1], arr: tens.three_seven},
+    { types:  [1,1], arr: elevens.one_ten},
+  ],
+  mesh: [2, 2],
+  value: 10,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP17C = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: tens.four_six},
+    { types:  [0,1], arr: elevens.five_six},
+    { types: [0,0], arr: elevens.two_nine},
+    { types:  [0,1], arr: elevens.four_seven},
+  ],
+  mesh: [2, 2],
+  value: 6,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const PAP17CP = {
+  grid: [2, 2],
+  cards: [
+    { types: [0,1], arr: tens.four_six},
+    { types:  [0,1], arr: elevens.five_six},
+    { types: [1,0], arr: elevens.three_eight},
+    { types:  [1,0], arr: elevens.four_seven},
+  ],
+  mesh: [2, 2],
+  value: 6,
+  type: "number",
+  counter: counters.black
+};
+
+
+export const AssessmentOneC = {
+  name: "Visual/Abstract Assessment",
+  puzzles: [PAP1C,PAP2CP,PAP3C,PAP4CP,PAP5C,PAP6CP,PAP7C,PAP8CP,PAP9C,PAP10CP,PAP11C,PAP12CP,PAP13C,PAP14CP,PAP15C,PAP16CP,PAP17C]
+}
+
+export const AssessmentTwoC = {
+  name: "Visual/Abstract Assessment",
+  puzzles: [PAP1C,PAP2C,PAP3C,PAP4C,PAP5C,PAP6C,PAP7C,PAP8C,PAP9C,PAP10C,PAP11C,PAP12C,PAP13C,PAP14C,PAP15C,PAP16C,PAP17C]
+}
+
+export const AssessmentThreeC = {
+  name: "Visual/Abstract Assessment",
+  puzzles: [PAP1CP,PAP2CP,PAP3CP,PAP4CP,PAP5CP,PAP6CP,PAP7CP,PAP8CP,PAP9CP,PAP10CP,PAP11CP,PAP12CP,PAP13CP,PAP14CP,PAP15CP,PAP16CP,PAP17CP]
+}
+
+export const AssessmentFourC = {
+  name: "Visual/Abstract Assessment",
+  puzzles: [PAP1C,PAP2C,PAP3CP,PAP4CP,PAP5C,PAP6C,PAP7CP,PAP8CP,PAP9C,PAP10C,PAP11CP,PAP12CP,PAP13C,PAP14C,PAP15CP,PAP16CP,PAP17C]
+}
+
+export const AssessmentFiveC = {
+  name: "Visual/Abstract Assessment",
+  puzzles: [PAP1CP,PAP2CP,PAP3C,PAP4C,PAP5CP,PAP6CP,PAP7C,PAP8C,PAP9CP,PAP10CP,PAP11C,PAP12C,PAP13CP,PAP14CP,PAP15C,PAP16C,PAP17CP]
+}
+
+
+export const AssessmentSixC = {
+  name: "Visual/Abstract Assessment",
+  puzzles: [PAP1CP,PAP2CP,PAP3CP,PAP4CP,PAP5CP,PAP6CP,PAP7CP,PAP8CP,PAP9CP,PAP10C,PAP11C,PAP12C,PAP13C,PAP14C,PAP15C,PAP16C,PAP17C]
+}
+
+
+
+
+// #endregion
+
+
+
+
 /*
 
 export const PAP18 = {
@@ -784,26 +1324,28 @@ export const AssessmentTwo = {
 
 export const AssessmentThree = {
   name: "Pre Assessment",
-  puzzles: [PAP1,PAP2,PAP3,PAP3,PAP4,PAP5,PAP6,PAP7,PAP8,PAP9,PAP10,PAP11,PAP12,PAP13,PAP14,PAP15,PAP16,PAP16]
+  puzzles: [PAP1,PAP2,PAP3,PAP4,PAP5,PAP6,PAP7,PAP8,PAP9,PAP10,PAP11,PAP12,PAP13,PAP14,PAP15,PAP16,PAP16]
 }
 
 export const AssessmentFour = {
   name: "Pre Assessment",
-  puzzles: [PAP1P,PAP2P,PAP3P,PAP3P,PAP4P,PAP5P,PAP6P,PAP7P,PAP8P,PAP9P,PAP10P,PAP11P,PAP12P,PAP13P,PAP14P,PAP15P,PAP16P,PAP16P]
+  puzzles: [PAP1P,PAP2P,PAP3P,PAP4P,PAP5P,PAP6P,PAP7P,PAP8P,PAP9P,PAP10P,PAP11P,PAP12P,PAP13P,PAP14P,PAP15P,PAP16P]
 }
 
 export const AssessmentFive = {
   name: "Pre Assessment",
-  puzzles: [PAP1,PAP2P,PAP3P,PAP3,PAP4P,PAP5,PAP6P,PAP7P,PAP8,PAP9P,PAP10P,PAP11,PAP12P,PAP13,PAP14P,PAP15,PAP16P,PAP16]
+  puzzles: [PAP1,PAP2P,PAP3,PAP4P,PAP5,PAP6P,PAP7P,PAP8,PAP9P,PAP10P,PAP11,PAP12P,PAP13,PAP14P,PAP15,PAP16]
 }
 
 export const AssessmentSix = {
   name: "Pre Assessment",
-  puzzles: [PAP1P,PAP2,PAP3,PAP3,PAP4,PAP5,PAP6,PAP7,PAP8P,PAP8,PAP9,PAP10,PAP11,PAP12,PAP13P,PAP14,PAP15P,PAP16,PAP16P]
+  puzzles: [PAP1P,PAP2,PAP3,PAP4,PAP5,PAP6,PAP7,PAP8,PAP9,PAP10,PAP11,PAP12,PAP13P,PAP14,PAP15P,PAP16,PAP16P]
 }
 
+
 export const ASSESSMENTS = {
-  numberstoten: [AssessmentOne.puzzles,AssessmentTwo.puzzles,AssessmentThree.puzzles,AssessmentFour.puzzles,AssessmentFive.puzzles,AssessmentSix.puzzles]
+  numberstoten: [AssessmentOne.puzzles,AssessmentTwo.puzzles,AssessmentThree.puzzles,AssessmentFour.puzzles,AssessmentFive.puzzles,AssessmentSix.puzzles],
+  numberstotenc: [AssessmentOneC.puzzles,AssessmentTwoC.puzzles,AssessmentThreeC.puzzles,AssessmentFourC.puzzles,AssessmentFiveC.puzzles,AssessmentSixC.puzzles]
 }
 
 export const AssessmentOneToTen = {
@@ -812,7 +1354,11 @@ export const AssessmentOneToTen = {
   puzzles: ASSESSMENTS.numberstoten,
 };
 
-
+export const AssessmentOneToTenC = {
+  type: levelTypes.assessment,
+  name: "Visual/Abstract Assessment",
+  puzzles: ASSESSMENTS.numberstotenc,
+};
 
 
 // #endregion
@@ -2915,7 +3461,7 @@ export const LEVELS = {
   abstractpuzzles: AbstractPuzzles,
   assessmentonetoten: AssessmentOneToTen,
   saami_number_talks: AssessmentOneToTen,
-  assessmentonetoten: AssessmentOneToTen,
+  visualsymbolictoten: AssessmentOneToTenC,
 };
 
 
@@ -2928,6 +3474,7 @@ export const test = {
 // #region All Levels
 
 export const crushlevels = [
+  ...AssessmentOneC.puzzles,
   ...FirstNumbers.puzzles,
   AP1,
   ...EarlyEstimation.puzzles,
