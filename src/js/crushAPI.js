@@ -44,6 +44,7 @@ import {
   LEVELS,
   crushlevels,
   PM,
+  crushProgression,
 } from "./crushlevels.js";
 
 let NUMERALS = [];
@@ -64,12 +65,15 @@ let LINE_COLORS = {
   black: 0x000000,
 };
 
+let progression = crushProgression()
 let levels = crushlevels;
 
 let mod = levels.length;
+let pmod = progression.length
 
 let NUMBER_OF_LIVES = 9;
 let levelCounter = 0;
+let progressionCounter = 0;
 let lifeCounter = NUMBER_OF_LIVES;
 
 const initLevel = {
@@ -111,8 +115,12 @@ export const init = (app, setup) => {
   if (customLevel && customLevel.type == levelTypes.assessment){
     console.log("assessment")
     assessmentMode = true
-    let i = getRandomInt(customLevel.puzzles.length)
-    levels = customLevel.puzzles[i]
+    levels = customLevel.puzzles.map(ppArr=>{
+      const mod = ppArr.length
+      const int = getRandomInt(100)
+      const i = int%mod
+      return ppArr[i]
+    })
     mod = levels.length;
   } else if (customLevel) {
     levels = customLevel.puzzles;
@@ -378,15 +386,22 @@ export const init = (app, setup) => {
       if (e.target.isOffCard == true) {
         if (currentLevel.type == "number") {
           lifeCounter++;
-
           animateHeart();
         }
 
         levelCounter++;
         updateLevelDescriptor();
 
-        const newLevel = { ...levels[levelCounter % mod] };
+        // Safely initializing to initLevel
+        let newLevel = levels[levelCounter % mod];
 
+        // MOOOOOOOOOO
+        if (levelCounter%10 == 0){
+           newLevel = progression[progressionCounter%pmod]
+           progressionCounter++
+        } 
+
+        // Some new levels don't have a counter specified.
         if (!newLevel.counter) {
           newLevel.counter = DEFAULT_COUNTER;
         }
@@ -483,6 +498,7 @@ export const init = (app, setup) => {
       ease: "elastic",
     });
     levelCounter = 0;
+    progressionCounter = 0;
     lifeCounter = NUMBER_OF_LIVES;
 
     livesText.text = lifeCounter;
@@ -506,7 +522,6 @@ export const init = (app, setup) => {
     }
 
     draw(level, mesh, value, acc) {
-      console.log("level",level)
       this.dim = CARD_WIDTH;
       this.level = level;
       this.mesh = mesh;
@@ -544,7 +559,6 @@ export const init = (app, setup) => {
       });
 
       if (this.level.type == "number") {
-        console.log('this.lmevel',this.level)
         const card = this.level.cards[acc];
         const { arr, types } = card;
         const coords = PM[arr.length];
