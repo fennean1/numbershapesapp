@@ -299,7 +299,7 @@ export const init = (app, setup) => {
     },
     diamond: {
       texture: DIAMOND_COUNTER,
-      stroke: 0x424242,
+      stroke: LINE_COLORS.blue,
       value: 1,
     },
     blue: {

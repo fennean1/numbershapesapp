@@ -2189,7 +2189,7 @@ export const LM1 = {
   delta: -1,
   random: false,
   mesh: [5, 1],
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM1A = {
@@ -2198,7 +2198,7 @@ export const LM1A = {
   delta: -2,
   random: false,
   mesh: [5, 1],
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM1B = {
@@ -2207,7 +2207,7 @@ export const LM1B = {
   delta: -2,
   random: false,
   mesh: [5, 1],
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM1C = {
@@ -2216,7 +2216,7 @@ export const LM1C = {
   delta: -1,
   random: false,
   mesh: [5, 1],
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM2 = {
@@ -2225,7 +2225,7 @@ export const LM2 = {
   delta: 1,
   mesh: [5, 1],
   random: false,
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM3 = {
@@ -2234,7 +2234,7 @@ export const LM3 = {
   delta: -2,
   mesh: [5, 1],
   random: false,
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM4 = {
@@ -2243,7 +2243,7 @@ export const LM4 = {
   delta: 1,
   mesh: [5, 1],
   random: false,
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM5 = {
@@ -2251,7 +2251,7 @@ export const LM5 = {
   value: 3,
   delta: 1,
   mesh: [5, 1],
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const LM6 = {
@@ -2259,7 +2259,7 @@ export const LM6 = {
   value: 2,
   delta: 1,
   mesh: [5, 1],
-  counter: counters.square,
+  counter: counters.darkpurple
 };
 
 export const FiveFrame = {
@@ -2563,6 +2563,11 @@ export const D1E = {
   random: false,
   counter: counters.diamond,
 };
+
+export const Diamonds = {
+  name: "Diamonds",
+  puzzles: [D1,D1A,D1B,D1C,D1D,D1E]
+}
 
 // #region Early Estimation
 
@@ -2968,6 +2973,11 @@ export const E1G = {
   random: false,
   counter: counters.orange,
 };
+
+export const EstimationLevelOne = {
+  name: "Estimation Level Two",
+  puzzles: [E1A,E1B,E1C,E1D,E1E,E1F,E1G]
+}
 
 // #region Dragons Level
 
@@ -3543,6 +3553,11 @@ export const S5 = {
   counter: counters.square,
 };
 
+export const Squares = {
+  name: "Squares",
+  puzzles: [S1,S1A,S1B,S1C,S1D,S1E,S1F,S2,S2A]
+}
+
 // #endregion
 
 // #region Ten Plus or Minus One
@@ -3589,28 +3604,54 @@ export const TenPlusOrMinusOne = {
 // #region Four By Four Large Number Estimation
 
 export const LEST1 = {
-  grid: [4, 4],
-  value: 20,
+  grid: [5, 5],
+  value: 15,
   delta: -3,
   mesh: [5, 5],
-  counter: counters.green,
+  random: false,
+  counter: counters.orange,
 };
 
 export const LEST2 = {
   grid: [5, 5],
-  value: 20,
+  value: 18,
   delta: -3,
   mesh: [5, 5],
+  random: false,
   counter: counters.orange,
 };
 
 export const LEST3 = {
   grid: [5, 5],
-  value: 15,
+  value: 20,
   delta: -3,
   mesh: [5, 5],
+  random: false,
   counter: counters.orange,
 };
+
+export const LEST4 = {
+  grid: [5, 5],
+  value: 20,
+  delta: 3,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.orange,
+};
+
+export const LEST5 = {
+  grid: [5, 5],
+  value: 22,
+  delta: -2,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.orange,
+};
+
+export const EstimationLevelTwo = {
+  name: "Estimation Level One",
+  puzzles: [LEST1,LEST2,LEST3,LEST4,LEST5]
+}
 
 // #endregion
 
@@ -3846,37 +3887,17 @@ export const crushlevels = [
   ...FiveFrame.puzzles,
   ...Eights.puzzles,
   ...Tens.puzzles,
+  ...Diamonds.puzzles,
   ...KindergartenOpener.puzzles,
   ...Rainbows.puzzles,
   ...Dragon.puzzles,
-  D1,
-  D1A,
-  D1B,
-  D1C,
-  D1D,
-  D1E,
+  ...Squares.puzzles,
   ...CountingFiveToTen.puzzles,
   ...ThreeByThreeByThree.puzzles,
-  L4,
-  L4A,
-  L4B,
-  L4C,
-  L4D,
+  ...EstimationLevelOne.puzzles,
   ...TenPlusOrMinusOne.puzzles,
-  E1A,
-  E1B,
-  E1C,
-  E1D,
-  E1E,
-  E1F,
-  E1G,
   ...GradeOneOpener.puzzles,
-  S1A,
-  S1B,
-  S1C,
-  S1D,
-  S1E,
-  S1F,
+  ...EstimationLevelTwo.puzzles,
   L7,
   L8,
   L9,
