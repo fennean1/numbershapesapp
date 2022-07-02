@@ -3601,6 +3601,69 @@ export const TenPlusOrMinusOne = {
 
 // #endregion
 
+// #region PREKEST
+
+export const SAMI1 = {
+  grid: [3, 3],
+  value: 10,
+  delta: 10,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI2 = {
+  grid: [3, 3],
+  value: 20,
+  delta: -12,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.red,
+};
+
+export const SAMI3 = {
+  grid: [3, 3],
+  value: 8,
+  delta: 8,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.blue,
+};
+
+export const SAMI4 = {
+  grid: [3, 3],
+  value: 18,
+  delta: -10,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+export const SAMI5 = {
+  grid: [3, 3],
+  value: 15,
+  delta: -10,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.orange,
+};
+
+export const SAMI6 = {
+  grid: [3, 3],
+  value: 9,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.red,
+};
+
+export const Saami = {
+  name: "Saami",
+  puzzles: [SAMI1,SAMI2,SAMI3,SAMI4,SAMI5,SAMI6]
+}
+
+// #endregion
+
 // #region Four By Four Large Number Estimation
 
 export const LEST1 = {
@@ -3881,6 +3944,7 @@ export const crushProgression = ()=>{
 const tstProg = crushProgression()
 
 export const crushlevels = [
+  ...Saami.puzzles,
   ...FirstNumbers.puzzles,
   ...EarlyEstimation.puzzles,
   ...Doubles.puzzles,
