@@ -23,6 +23,10 @@ const puzzleTypes = {
   abstract: "abstract",
 };
 
+export const meshTypes = {
+  NS_SEVEN: {type: "ns", value: 7}
+}
+
 export const levelTypes = {
   assessment: "assessment",
 };
@@ -1737,6 +1741,115 @@ export const Assessment_Abstract = {
 
 // #endregion
 
+// #region Sevens 
+
+export const SP1 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 7,
+  delta: -1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP2 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 7,
+  delta: -2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP3 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 6,
+  delta: 1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP4 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 6,
+  delta: -1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP5 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 6,
+  delta: -2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP6 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 5,
+  delta: -2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP7 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 5,
+  delta: -1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP8 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 5,
+  delta: -2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP9 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 4,
+  delta: 1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const SP10 = {
+  customMesh: meshTypes.NS_SEVEN,
+  grid: [2, 2],
+  value: 3,
+  delta: 1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.rainbow
+};
+
+export const Sevens = {
+  name: "Sevens",
+  puzzles: [SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10]
+}
+
+// #endregion 
+
 // #region Eights
 
 export const EP1 = {
@@ -2077,17 +2190,17 @@ export const Doubles = {
 
 export const PK1 = {
   grid: [2, 2],
-  value: 2,
-  delta: -1,
-  mesh: [2, 1],
+  value: 1,
+  delta: 1,
+  mesh: [2, 2],
   random: false,
   counter: counters.pink,
 };
 
 export const PK2 = {
   grid: [2, 2],
-  value: 1,
-  delta: 1,
+  value: 2,
+  delta: -1,
   mesh: [2, 2],
   random: false,
   counter: counters.pink,
@@ -2096,7 +2209,7 @@ export const PK2 = {
 export const PK3 = {
   grid: [2, 2],
   value: 2,
-  delta: -1,
+  delta: 1,
   mesh: [2, 2],
   random: false,
   counter: counters.pink,
@@ -2609,7 +2722,7 @@ export const PKE3 = {
 
 export const PKE4 = {
   grid: [3, 3],
-  value: 8,
+  value: 7,
   delta: -2,
   mesh: [3, 3],
   random: false,
@@ -2618,16 +2731,61 @@ export const PKE4 = {
 
 export const PKE5 = {
   grid: [3, 3],
-  value: 7,
-  delta: -1,
+  value: 8,
+  delta: -3,
   mesh: [3, 3],
+  random: false,
+  counter: counters.lightblue,
+};
+
+export const PKE6 = {
+  grid: [3, 3],
+  value: 9,
+  delta: -4,
+  mesh: [4, 3],
+  random: false,
+  counter: counters.lightblue,
+};
+
+export const PKE7 = {
+  grid: [3, 3],
+  value: 7,
+  delta: 2,
+  mesh: [4, 3],
+  random: false,
+  counter: counters.lightblue,
+};
+
+export const PKE8 = {
+  grid: [3, 3],
+  value: 10,
+  delta: -2,
+  mesh: [4, 3],
+  random: false,
+  counter: counters.lightblue,
+};
+
+export const PKE9 = {
+  grid: [3, 3],
+  value: 12,
+  delta: -5,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.lightblue,
+};
+
+export const PKE10 = {
+  grid: [3, 3],
+  value: 12,
+  delta: -4,
+  mesh: [4, 4],
   random: false,
   counter: counters.lightblue,
 };
 
 export const EarlyEstimation = {
   name: "Early Estimation",
-  puzzles: [PKE1, PKE2, PKE3, PKE4, PKE5],
+  puzzles: [PKE1, PKE2, PKE3, PKE4, PKE5,PKE6, PKE7, PKE8, PKE9, PKE10],
 };
 
 // #endregion
@@ -3931,24 +4089,36 @@ export const crushProgression = ()=>{
     prog.push(...[c,a])
   }
 
-  prog.forEach(p=>{
-    console.log("p",p.value)
-  })
-
   return prog
 }
 
 
 // #region All Levels
 
-const tstProg = crushProgression()
+const tstLevel = [EarlyEstimation.puzzles[0],
+  ...Saami.puzzles,
+  Eights.puzzles[0],
+  Tens.puzzles[0],
+  Diamonds.puzzles[0],
+  KindergartenOpener.puzzles[0],
+  Rainbows.puzzles[0],
+  Dragon.puzzles[0],
+  Squares.puzzles[0],
+  CountingFiveToTen.puzzles[0],
+  ThreeByThreeByThree.puzzles[0],
+  EstimationLevelOne.puzzles[0],
+  TenPlusOrMinusOne.puzzles[0],
+  GradeOneOpener.puzzles[0],
+  EstimationLevelTwo.puzzles[0]]
+
 
 export const crushlevels = [
   ...Saami.puzzles,
-  ...FirstNumbers.puzzles,
   ...EarlyEstimation.puzzles,
   ...Doubles.puzzles,
+  ...FirstNumbers.puzzles,
   ...FiveFrame.puzzles,
+  ...Sevens.puzzles,
   ...Eights.puzzles,
   ...Tens.puzzles,
   ...Diamonds.puzzles,

@@ -74,11 +74,10 @@ export const SEVEN = (r) => {
   let f = { x: 0, y: 2 * h * COS_60 };
   let g = { x: h, y: 2 * h * COS_60 };
   let vals = [a, b, c, d, e, f, g]
+
   let offsetVals = vals.map(v=>{
       return {x: v.x + off,y: v.y}
     })
-
-console.log("SEVEN",offsetVals)
 
   return offsetVals;
 };
@@ -139,7 +138,6 @@ export const TEN = (r) => {
 };
 
 export const getWidthAndHeightOfNumberShape = (shape,r)=>{
-    let h = 2*r 
     let xS = shape.map(s=>s.x)
     let yS = shape.map(s=>s.y)
     let maxX = Math.max(...xS)
@@ -158,6 +156,7 @@ export const getWidthAndHeightOfCompositeNumberShape = (shape,w,h)=>{
   let minY = Math.min(...yS)
   let width = maxX - minX + w
   let height = maxY - minY + h
+
   return {width: width,height: height}
 }
 

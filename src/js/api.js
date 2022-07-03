@@ -19,6 +19,16 @@ export function shuffleArray(array) {
   }
 }
 
+export function getNRandomElementsFromArray(arr,n){
+  let els = []
+  let arrCopy = [...arr]
+  for (let i = 0;i<n;i++){
+    let l = arrCopy.length
+    let int = getRandomInt(l)
+    els.push(...arrCopy.splice(int,1))
+  }
+  return els
+}
 
 export function getRandomArray(I,J,n){
   let spots = []

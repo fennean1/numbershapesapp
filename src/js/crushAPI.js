@@ -36,6 +36,7 @@ import {
   getRandomInt,
   Draggable,
   shuffleArray,
+  getNRandomElementsFromArray,
 } from "./api.js";
 import { Timeline, Tween, Elastic } from "gsap/gsap-core";
 import {
@@ -46,6 +47,7 @@ import {
   PM,
   crushProgression,
 } from "./crushlevels.js";
+import { getWidthAndHeightOfNumberShape, NUMBERSHAPES } from "./numbershapes";
 
 let NUMERALS = [];
 
@@ -548,8 +550,11 @@ export const init = (app, setup) => {
       let shapeHeight = this.mesh[0] * this.unit;
       let shapeWidth = this.mesh[1] * this.unit;
 
+
       let offsetY = CARD_WIDTH / 2 - shapeWidth / 2;
       let offsetX = CARD_WIDTH / 2 - shapeHeight / 2;
+
+
 
       this.balls.forEach((b) => {
         this.removeChild(b);
@@ -604,7 +609,32 @@ export const init = (app, setup) => {
           this.addChild(sprite);
         });
       } else {
-        const array = getRandomArray(this.mesh[0], this.mesh[1], value);
+
+        // Switch to Array Type Here 
+        let array = getRandomArray(this.mesh[0], this.mesh[1], value);
+
+        if (this.level.customMesh){
+          
+            // Get array from number
+          let meshVal = this.level.customMesh.value
+          array = NUMBERSHAPES[meshVal](0.5)
+
+          // Get dimensions of array
+          const hw = getWidthAndHeightOfNumberShape(array,0.5)
+ 
+          // recalculate offset (it appears that the offset calculations needs to be adjusted by a half.)
+          offsetY = CARD_WIDTH / 2 - (hw.height+0.5)*this.unit/2;
+          offsetX = CARD_WIDTH / 2 - (hw.width+0.5)*this.unit/2;  
+          
+          array = getNRandomElementsFromArray(array,value)
+
+          // Clean array (2d array instead of array of objects)
+          array = array.map(e=> {return [e.x,e.y]})
+        } else {
+          array = getRandomArray(this.mesh[0], this.mesh[1], value);
+        }
+       
+
 
         array.forEach((c, i) => {
           let sprite = this.balls[i];
