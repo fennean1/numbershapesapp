@@ -67,6 +67,7 @@ let LINE_COLORS = {
   black: 0x000000,
 };
 
+let quizEvery = 5
 let progression = crushProgression()
 let levels = crushlevels;
 
@@ -398,7 +399,7 @@ export const init = (app, setup) => {
         let newLevel = levels[levelCounter % mod];
 
         // MOOOOOOOOOO
-        if (levelCounter%10 == 0){
+        if (levelCounter%quizEvery == 0){
            newLevel = progression[progressionCounter%pmod]
            progressionCounter++
         } 

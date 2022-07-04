@@ -24,7 +24,9 @@ const puzzleTypes = {
 };
 
 export const meshTypes = {
-  NS_SEVEN: {type: "ns", value: 7}
+  NS_SEVEN: {type: "ns", value: 7},
+  NS_EIGHT: {type: "ns",value: 8},
+  NS_TEN: {type: "ns",value: 10}
 }
 
 export const levelTypes = {
@@ -691,7 +693,8 @@ export const PAP17P = {
 
 // #endregion
 
-// #region Abstract Pre Assessment
+
+// #region Visual Pre Assessment
 
 export const PAP1V = {
   grid: [2, 2],
@@ -1193,11 +1196,39 @@ export const PAP1C = {
   counter: counters.black,
 };
 
+export const PAP1CA = {
+  grid: [2, 2],
+  cards: [
+    { types: [0], arr: twos.two },
+    { types: [1, 0], arr: threes.one_two },
+    { types: [0, 1], arr: threes.one_two },
+    { types: [0, 0, 0], arr: threes.one_one_one },
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black,
+};
+
 export const PAP1CP = {
   grid: [2, 2],
   cards: [
-    { types: [1, 1], arr: twos.one_one },
-    { types: [1, 0], arr: threes.one_two },
+    { types: [1, 0], arr: twos.one_one },
+    { types: [0, 0], arr: threes.one_two },
+    { types: [0, 1], arr: threes.one_two },
+    { types: [1,1,1], arr: threes.one_one_one },
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black,
+};
+
+export const PAP1CPA = {
+  grid: [2, 2],
+  cards: [
+    { types: [1, 0], arr: twos.one_one },
+    { types: [0, 0], arr: threes.one_two },
     { types: [0, 1], arr: threes.one_two },
     { types: [0], arr: threes.three },
   ],
@@ -1221,11 +1252,41 @@ export const PAP2C = {
   counter: counters.black,
 };
 
+
+export const PAP2CA = {
+  grid: [2, 2],
+  cards: [
+    { types: [1, 0], arr: fours.one_three },
+    { types: [0, 1], arr: threes.one_two },
+    { types: [0, 1], arr: threes.one_two },
+    { types: [0, 0, 0], arr: threes.one_one_one },
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black,
+};
+
 export const PAP2CP = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: fours.two_two },
     { types: [0, 1], arr: threes.one_two },
+    { types: [0, 1], arr: threes.one_two },
+    { types: [1, 1, 1], arr: threes.one_one_one },
+  ],
+  mesh: [2, 2],
+  value: 3,
+  type: "number",
+  counter: counters.black,
+};
+
+
+export const PAP2CPA = {
+  grid: [2, 2],
+  cards: [
+    { types: [0, 1], arr: fours.two_two },
+    { types: [0, 0], arr: threes.one_two },
     { types: [0, 1], arr: threes.one_two },
     { types: [1, 1, 1], arr: threes.one_one_one },
   ],
@@ -1656,8 +1717,8 @@ export const PAP17CP = {
 };
 
 export const AP_C = [
-  [PAP1C, PAP1CP],
-  [PAP2C, PAP2CP],
+  [PAP1C, PAP1CP,PAP1CA,PAP1CPA],
+  [PAP2C, PAP2CP,PAP2CA, PAP2CPA],
   [PAP3C, PAP3CP],
   [PAP4C, PAP4CP],
   [PAP5C, PAP5CP],
@@ -1849,6 +1910,214 @@ export const Sevens = {
 }
 
 // #endregion 
+
+// #region 
+
+export const NS_TP1 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 10,
+  delta: -1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP2  = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 9,
+  delta: -3,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP3  = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP4  = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 8,
+  delta: -2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+
+export const NS_TP5  = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 8,
+  delta: 1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP6 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 7,
+  delta: 1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP7 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 8,
+  delta: -1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP8 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 5,
+  delta: 1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP9 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 6,
+  delta: -1,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_TP10 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 6,
+  delta: 2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+
+export const NS_TP11 = {
+  customMesh: meshTypes.NS_TEN,
+  grid: [2, 2],
+  value: 7,
+  delta: 2,
+  mesh: [3, 3],
+  random: false,
+  counter: counters.red
+};
+
+export const NS_Tens = {
+  name: "Ten Number Shape",
+  puzzles: [NS_TP1,NS_TP2,NS_TP3,NS_TP4,NS_TP5,NS_TP6,NS_TP7,NS_TP8,NS_TP9,NS_TP10,NS_TP11]
+}
+
+// #endregion
+
+// #region Hardest Level Within Reason
+
+const HLWR1 = {
+  grid: [5, 5],
+  value: 15,
+  delta: -5,
+  random: false,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR2 = {
+  grid: [5, 5],
+  value: 15,
+  delta: 7,
+  random: false,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR3 = {
+  grid: [5, 5],
+  value: 15,
+  delta: 4,
+  random: false,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR4 = {
+  grid: [5, 5],
+  value: 16,
+  delta: -4,
+  random: false,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR5 = {
+  grid: [5, 5],
+  value: 17,
+  delta: -4,
+  random: false,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR6 = {
+  grid: [5, 5],
+  value: 17,
+  delta: 5,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR7 = {
+  grid: [5, 5],
+  value: 16,
+  delta: 4,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR8 = {
+  grid: [5, 5],
+  value: 17,
+  delta: 4,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+const HLWR9 = {
+  grid: [5, 5],
+  value: 18,
+  delta: -3,
+  mesh: [5, 5],
+  counter: counters.pink,
+}
+
+export const Within_Reason = {
+  name: "Hardest Level Within Reason",
+  puzzles: [HLWR1,HLWR2,HLWR3,HLWR4,HLWR5,HLWR6,HLWR7,HLWR9]
+}
+
+
+// #endregion
 
 // #region Eights
 
@@ -4132,6 +4401,8 @@ export const crushlevels = [
   ...TenPlusOrMinusOne.puzzles,
   ...GradeOneOpener.puzzles,
   ...EstimationLevelTwo.puzzles,
+  ...NS_Tens.puzzles,
+  ...Within_Reason.puzzles,
   L7,
   L8,
   L9,
