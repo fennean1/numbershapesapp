@@ -30,6 +30,10 @@ export function getNRandomElementsFromArray(arr,n){
   return els
 }
 
+
+ // farm  rand  (300-700)
+
+
 export function getRandomArray(I,J,n){
   let spots = []
   for (let i = 0;i<I;i++){

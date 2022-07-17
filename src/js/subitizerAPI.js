@@ -95,6 +95,7 @@ export const init = (app, setup) => {
     newShapeButton.width = 5*dx/2 
     newShapeButton.height = dx/2
     newShapeButton.interactive = true
+    newShapeButton.buttonMode = true
     newShapeButton.on('pointerdown',newShape)
     app.stage.addChild(newShapeButton)
 
@@ -103,6 +104,7 @@ export const init = (app, setup) => {
     questionButton.y = dx/3 + 2*dx/2
     questionButton.width = dx
     questionButton.height = dx
+    questionButton.buttonMode = true
     questionButton.interactive = true
     questionButton.on('pointerdown',()=> {app.help()})
     //app.stage.addChild(questionButton)
@@ -122,6 +124,7 @@ export const init = (app, setup) => {
     frameButton.width = 2*dx/2
     frameButton.height = 0.80*dx/2
     frameButton.interactive = true
+    frameButton.buttonMode = true
     frameButton.on('pointerdown',()=> {drawFrame()})
     app.stage.addChild(frameButton)
 
@@ -131,7 +134,8 @@ export const init = (app, setup) => {
     equationButton.width = 2*dx/2
     equationButton.height = 0.80*dx/2
     equationButton.interactive = true
-    equationButton.on('pointerdown',revealEquation)
+    equationButton.buttonMode = true
+    equationButton.on('pointerdown',()=>revealEquation(null))
     app.stage.addChild(equationButton)
 
     let shuffleButton = new PIXI.Sprite.from(ShuffleButton)
@@ -140,15 +144,22 @@ export const init = (app, setup) => {
     shuffleButton.width = 2*dx/2
     shuffleButton.height = 0.80*dx/2
     shuffleButton.interactive = true
+    shuffleButton.buttonMode = true
     shuffleButton.on('pointerdown',shuffle)
     app.stage.addChild(shuffleButton)
 
 
     
-    function revealEquation(){
+    function revealEquation(state){
+      console.log("new alpha")
 
-          showEquation = !showEquation
+      console.log("show equation",showEquation)
+      console.log("state",state)
+    
+
+          showEquation = state != null ? state : !showEquation
           let newAlpha = showEquation ? 1 : 0
+          console.log("new alpha",newAlpha)
 
           Tween.to(equation,{alpha: newAlpha})
     }
@@ -199,7 +210,7 @@ export const init = (app, setup) => {
 
       equation = makeEquation([a,"-",b,"=",a-b])
       equation.alpha = 0
-      showEquation = false
+      revealEquation(false)
 
       for (let i = 0;i<(a-b);i++){
         let aBall = new PIXI.Sprite.from(CounterImage)
@@ -387,7 +398,6 @@ export const init = (app, setup) => {
       let aBalls = []
 
       equation = makeEquation([n])
-      revealEquation()
 
       for (let i = 0;i<=k;i++){
         let aBall = i == k ? new PIXI.Sprite.from(PotOfGold) : new PIXI.Sprite.from(Coin)
@@ -411,7 +421,6 @@ export const init = (app, setup) => {
       let aBalls = []
 
       equation = makeEquation([n])
-      //revealEquation()
 
       for (let i = 0;i<n;i++){
         let rand = randBetween(0,EGGS.length)
@@ -563,7 +572,6 @@ export const init = (app, setup) => {
           1000,
           window.createjs.Ease.getPowInOut(4)
         );
-          revealEquation()
           makeDraggable(splat)
           splat.isSplat = true
           splat.interactive = true
@@ -611,6 +619,11 @@ export const init = (app, setup) => {
     }
 
     function newShape(){
+      if (setup.type == SUBITIZER_TYPES.SUBTRACTION){
+        revealEquation(false)
+      } else {
+        revealEquation(true)
+      }
         this.interactive = false
         destroy(balls)
 

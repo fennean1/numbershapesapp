@@ -156,19 +156,15 @@ export const saami = {
     TITLE: "Saami",
     SHORT_TEXT: "Numbers Game",
   },
-  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1654439209/CrushHelp_sjscc5.png",
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1658085950/Screen_Shot_2022-07-17_at_3.25.43_PM_rh4oba.png",
   EXEMPLAR_TALK: [
     {
       actor: ACTORS.TEACHER,
-      text: "Which one is different from the rest?",
+      text: "Which card is different from the rest?",
     },
     {
       actor: ACTORS.STUDENT,
-      text: "Do you mean a different shape?",
-    },
-    {
-      actor: ACTORS.TEACHER,
-      text: "Which has a different number when you count them",
+      text: "All of them are two except for one of them!",
     },
   ],
   INTRO: {
@@ -183,10 +179,10 @@ export const saami = {
         },
         {
           actor: ACTORS.STUDENT,
-          text: "All are three except one of them!",
+          text: "All have two pink dots except one of them!",
         },
       ],
-      url: "https://res.cloudinary.com/numbershapes/image/upload/v1654439209/CrushHelp_sjscc5.png",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1658085950/Screen_Shot_2022-07-17_at_3.25.43_PM_rh4oba.png",
     },
   ],
   INTERACTIVE: {
@@ -358,7 +354,7 @@ export const subtraction_spheres = {
           actor: ACTORS.TEACHER,
           text: "Can you write a subtraction sentence from the picture?",
         },
-        { actor: ACTORS.STUDENT, text: " 8 - 3 = 5" },
+        { actor: ACTORS.STUDENT, text: " 9 - 4 = 5" },
       ],
       url: "https://res.cloudinary.com/numbershapes/image/upload/v1653269443/Screen_Shot_2022-05-22_at_6.18.55_PM_tp4y5x.png",
     },
