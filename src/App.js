@@ -8,7 +8,7 @@ import MatchGame from "./Interactives/MatchGame"
 import Crush from "./Interactives/Crush"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
-import InteractiveSVG from "./Interactives/InteractiveSVG"
+import InteractiveSVG from "./InteractiveSVG"
 import { ThemeProvider, createTheme } from '@mui/material/styles'; 
 
 const theme = createTheme({
@@ -70,7 +70,7 @@ const Main = () => (
     />
             <Route
       exact
-      path="interactives/svgtest"
+      path="interactives/timer"
       element={<InteractiveSVG fullScreen = {true}/>}
     />
     <Route

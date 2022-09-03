@@ -8,6 +8,8 @@ export default function Crush(props) {
   const {activityname} = useParams()
   const data = CONST.SETUPS[activityname]
 
+  console.log("activity data",data)
+
   return (
     <Interactive script = {script} level = {activityname} {...props} setup = {data}/>
   );

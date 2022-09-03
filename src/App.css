@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.fullWidth {
+  width: 100%;
+  height: 100%;
+}
+
 .shadow {
   -moz-box-shadow:    inset 0 0 10px #000000;
   -webkit-box-shadow: inset 0 0 10px #000000;
@@ -62,6 +67,11 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.clouds {
+  background-image: url("https://res.cloudinary.com/numbershapes/image/upload/v1651317012/Clouds_iehfpx.png");
+  background-size: cover;
 }
 
 .carousel {

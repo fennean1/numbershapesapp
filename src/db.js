@@ -586,6 +586,11 @@ export const multiplication_groups = {
       text: "Multiplication Search Worksheet.",
       url: "https://res.cloudinary.com/numbershapes/image/upload/v1653620561/Multiplication_l761yo.pdf",
     },
+    {
+      type: LINK_TYPES.SLIDES,
+      text: "Slides from #ElemMathChat 8/25/2022",
+      url: "https://docs.google.com/presentation/d/1pZ-oA-UHBoVSHOAo2ftRa55Hd1ZRoiC_8EVvawLpf18/edit#slide=id.g14808b1eb6a_0_213",
+    },
   ],
   INFO: { GRADE: "FirstGrade" },
 };

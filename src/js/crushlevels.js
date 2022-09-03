@@ -1780,7 +1780,7 @@ export const AP_V = [
 
 // #endregion
 
-
+// #region Assessments
 export const Assessment_Visual = {
   type: levelTypes.assessment,
   name: "Visual Assessment",
@@ -1911,7 +1911,7 @@ export const Sevens = {
 
 // #endregion 
 
-// #region 
+// #region NS?
 
 export const NS_TP1 = {
   customMesh: meshTypes.NS_TEN,
@@ -2892,6 +2892,8 @@ export const Rainbows = {
 
 // #endregion
 
+
+// #region Diamonds
 export const D1 = {
   grid: [3, 2],
   value: 8,
@@ -2950,6 +2952,8 @@ export const Diamonds = {
   name: "Diamonds",
   puzzles: [D1,D1A,D1B,D1C,D1D,D1E]
 }
+
+// #endregion
 
 // #region Early Estimation
 
@@ -3168,6 +3172,8 @@ export const TF3 = {
 
 // #endregion
 
+
+// #region
 export const L2 = {
   grid: [2, 2],
   value: 5,
@@ -3211,6 +3217,7 @@ export const L2D = {
   mesh: [4, 3],
   counter: counters.purple,
 };
+// #endregion
 
 // #region I
 
@@ -3406,6 +3413,8 @@ export const EstimationLevelOne = {
   puzzles: [E1A,E1B,E1C,E1D,E1E,E1F,E1G]
 }
 
+// #endregion
+
 // #region Dragons Level
 
 export const L6 = {
@@ -3463,6 +3472,8 @@ export const Dragon = {
 
 // #endregion
 
+
+// #region The Rest
 export const L7 = {
   grid: [2, 2],
   value: 5,
@@ -3871,6 +3882,8 @@ export const L44 = {
   delta: 1,
   mesh: [4, 4],
 };
+
+// #endregion
 
 // #region Square Levels
 
@@ -4317,6 +4330,29 @@ export const AbstractPuzzles = {
 
 // #endregion
 
+const tstLevel = [
+  Rainbows.puzzles[0],
+  EarlyEstimation.puzzles[0],
+  Saami.puzzles[0],
+  Eights.puzzles[0],
+  Tens.puzzles[0],
+  Diamonds.puzzles[0],
+  Rainbows.puzzles[0],
+  Dragon.puzzles[0],
+  Squares.puzzles[0],
+  CountingFiveToTen.puzzles[0],
+  ThreeByThreeByThree.puzzles[0],
+  EstimationLevelOne.puzzles[0],
+  TenPlusOrMinusOne.puzzles[0],
+  GradeOneOpener.puzzles[0],
+  EstimationLevelTwo.puzzles[0]]
+
+const TEST = {
+  name: "Test Level",
+  puzzles: tstLevel
+}
+
+
 export const LEVELS = {
   tenplusorminusone: TenPlusOrMinusOne,
   firstnumbers: FirstNumbers,
@@ -4329,13 +4365,12 @@ export const LEVELS = {
   assessmentonetoten: Assessment_Abstract,
   saami_number_talks: Assessment_Abstract,
   visualsymbolictoten: Assessment_Combined,
-  visualtoten: Assessment_Visual
+  visualtoten: Assessment_Visual,
+  testlevel: TEST,
+  test: TEST,
 };
 
-export const test = {
-  name: "Ten Plus or Minus One",
-  puzzles: [EA1, EP1, EP2, EP3, EP4, EP5, DA1, DA2],
-};
+
 
 export const getRandomElement = (arr)=>{
   let mod = arr.length
@@ -4344,6 +4379,7 @@ export const getRandomElement = (arr)=>{
   return arr[i]
 }
 
+// This randomizes the "visual/symbolic" cards in the progression.
 export const crushProgression = ()=>{
   let prog = []
   // These arrays may change in length but should be roughly the same
@@ -4363,23 +4399,6 @@ export const crushProgression = ()=>{
 
 
 // #region All Levels
-
-const tstLevel = [EarlyEstimation.puzzles[0],
-  ...Saami.puzzles,
-  Eights.puzzles[0],
-  Tens.puzzles[0],
-  Diamonds.puzzles[0],
-  KindergartenOpener.puzzles[0],
-  Rainbows.puzzles[0],
-  Dragon.puzzles[0],
-  Squares.puzzles[0],
-  CountingFiveToTen.puzzles[0],
-  ThreeByThreeByThree.puzzles[0],
-  EstimationLevelOne.puzzles[0],
-  TenPlusOrMinusOne.puzzles[0],
-  GradeOneOpener.puzzles[0],
-  EstimationLevelTwo.puzzles[0]]
-
 
 export const crushlevels = [
   ...Saami.puzzles,

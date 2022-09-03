@@ -100,6 +100,10 @@ export const init = (app, setup) => {
   // Check to see if setup represents a custom level.
   let customLevel = LEVELS[setup.level];
 
+  console.log("custom lovel",customLevel)
+
+  let isCustomLevel = customLevel ? true : false
+
   // Parse Slug
   const potentialLevel = setup.level.substring(5);
   const prefix = setup.level.substring(0, 5);
@@ -133,7 +137,6 @@ export const init = (app, setup) => {
   // #endregion
 
   let LINE_COLOR = 0x1191fa;
-
   const ABS_CARD_COLOR = LINE_COLORS.black;
 
   const ABSTRACT_CARDS = {
@@ -385,6 +388,7 @@ export const init = (app, setup) => {
   }
 
   function cardClicked(e) {
+    console.log("card clicked")
     if (!learning) {
       if (e.target.isOffCard == true) {
         if (currentLevel.type == "number") {
@@ -397,6 +401,7 @@ export const init = (app, setup) => {
 
         // Safely initializing to initLevel
         let newLevel = levels[levelCounter % mod];
+        console.log("new level",newLevel)
 
         // MOOOOOOOOOO
         if (levelCounter%quizEvery == 0){
@@ -564,7 +569,12 @@ export const init = (app, setup) => {
         b.height = this.unit;
       });
 
+
+      // We probably want to have different "card types"
       if (this.level.type == "number") {
+
+        console.log("is not a custom level and is a number")
+
         const card = this.level.cards[acc];
         const { arr, types } = card;
         const coords = PM[arr.length];
@@ -857,6 +867,8 @@ export const init = (app, setup) => {
 
   function startGame() {
     const startLevel = levels[levelCounter % mod];
+
+    console.log("start Level",startLevel)
 
     updateLayoutParams(setup.width, setup.height, startLevel);
 

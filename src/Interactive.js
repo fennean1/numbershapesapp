@@ -24,6 +24,8 @@ export default function Interactive(props) {
       ...props.setup,
     };
 
+    console.log("props.setup")
+
     app.renderer.resize(
       elementRef.clientWidth,
       elementRef.clientHeight

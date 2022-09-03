@@ -1,6 +1,5 @@
 // Problem que setup
 import * as PIXI from "pixi.js";
-import { TweenMax } from "gsap";
 import { getWidthAndHeightOfNumberShape,getWidthAndHeightOfCompositeNumberShape } from "./numbershapes.js";
 import Clouds from "../assets/Clouds.png";
 import BlueBall from "../assets/BlueBall.png";
@@ -169,56 +168,7 @@ export const init = (app, setup) => {
     addShapeButton.interactive = false;
   };
 
-  function revealEquation() {
-    if (equation) {
-      showEquation = !showEquation;
-      let newAlpha = showEquation ? 1 : 0;
-      equation.forEach((e) => {
-        window.createjs.Tween.get(e).to(
-          {
-            alpha: newAlpha,
-          },
-          1000,
-          window.createjs.Ease.getPowInOut(4)
-        );
-      });
-    }
-  }
 
-  // Helpers
-  function randBetween(a, b) {
-    return a + Math.floor(Math.random() * (b - a));
-  }
-
-  function makeEquation(seq) {
-    showEquation = false;
-    let balls = seq.reduce((sum, num) => {
-      return sum + num;
-    });
-    let width = 50 * seq.length;
-    let textObjects = seq.map((c) => {
-      let cs = c.toString(10);
-      let t = new PIXI.Text(cs, { fontFamily: "Chalkboard SE", fontSize: 50 });
-      return t;
-    });
-    console.log("text Objects", textObjects);
-    textObjects.forEach((o, i) => {
-      o.alpha = 0;
-      app.stage.addChild(o);
-    });
-    let prevWidth = 0;
-    let nextX = CENTER_STAGE_X - width / 2;
-    textObjects.forEach((o, i) => {
-      console.log("o.width", o.width);
-      console.log("o.x", o.x);
-      console.log("prevWidth", prevWidth);
-      o.x = nextX;
-      o.y = 50;
-      nextX = o.x + o.width + 20;
-      console.log("o.x++", o.x);
-    });
-    return textObjects;
-  }
 
   function makeDraggable(dragMe) {
     dragMe.interactive = true;
