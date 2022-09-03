@@ -1,6 +1,8 @@
 // Problem que setup
 import { gsap, Timeline, Tween, Elastic , Linear} from "gsap/gsap-core";
+import * as NS from "./numbershapes.js"
 export const init = (e, setup) => {
+
 
  const svgns = "http://www.w3.org/2000/svg";
   
@@ -27,30 +29,46 @@ function createCircle(){
   return g
 }
 
-
   function load(){
 
     const timeline = new Timeline({paused: true})
     const circles = []
 
-    for(let i=0;i<5;i++){
+    for(let i=0;i<10;i++){
       circles.push(createCircle())
     }
 
-    const cords = [{x: 300,y: 250},{x: 400,y: 150},{x: 200,y: 150},{x: 200,y: 350},{x: 400,y: 350},]
+    let minutes = 5
 
-    circles.forEach((c,i)=>{
-      console.log("c")
-      gsap.set(c,{x: cords[i].x-50,y:cords[i].y})
+
+
+    const number = NS.NUMBERSHAPES[minutes](50)
+    let initialDim = NS.getWidthAndHeightOfNumberShape(number,50)
+    initialDim.width += 50
+    initialDim.height += 50
+
+    number.forEach((n,i)=>{
+      let c = circles[i]
+      gsap.set(c,{x: n.x+50-initialDim.width/2 + 250,y: n.y + 50-initialDim.height/2 + 250})
       e.appendChild(c)
     })
 
-    const onComplete = ()=>{
-      //alarm.play();
+
+    function onComplete() {
+      gsap.set(circles[minutes-1],{alpha: 0})
+      minutes--
+      let cords = NS.NUMBERSHAPES[minutes](50)
+      let hw = NS.getWidthAndHeightOfNumberShape(cords,50)
+      hw.width += 50
+      hw.height+= 50
+      cords.forEach((c,i)=>{
+        Tween.to(circles[i],{x: c.x+50-hw.width/2 + 250,y: c.y+50-hw.height/2 + 250})
+      })
     }
 
-    circles.forEach(c=>{
-      timeline.to(c.animator,{strokeDashoffset: 157,ease: Linear.easeNone,duration: 60,onComplete: onComplete})
+
+    number.forEach((n,i)=>{
+      timeline.to(circles[minutes-1-i].animator,{strokeDashoffset: 157,ease: Linear.easeNone,onComplete: onComplete, duration: 60})
     })
 
     setTimeout(()=>{
