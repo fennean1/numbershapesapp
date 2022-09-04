@@ -86,8 +86,6 @@ const initLevel = {
   mesh: [2, 2],
 };
 
-let assessmentMode = false;
-
 export const init = (app, setup) => {
   // UI
   let plusHeart;
@@ -95,14 +93,20 @@ export const init = (app, setup) => {
   // Vars
   let levelStartedAt = null;
 
+  const scoreObject = {
+    score: 0,
+    timer: 0,
+    focusTime: 0,
+  }
+
+  setInterval(()=>{
+    scoreObject.timer += 1
+  },10)
+
   // #region Init Levels
 
   // Check to see if setup represents a custom level.
   let customLevel = LEVELS[setup.level];
-
-  console.log("custom lovel",customLevel)
-
-  let isCustomLevel = customLevel ? true : false
 
   // Parse Slug
   const potentialLevel = setup.level.substring(5);
@@ -120,8 +124,6 @@ export const init = (app, setup) => {
 
   // Check the type of the custom level coming in.
   if (customLevel && customLevel.type == levelTypes.assessment){
-    console.log("assessment")
-    assessmentMode = true
     levels = customLevel.puzzles.map(ppArr=>{
       const mod = ppArr.length
       const int = getRandomInt(100)
@@ -388,7 +390,6 @@ export const init = (app, setup) => {
   }
 
   function cardClicked(e) {
-    console.log("card clicked")
     if (!learning) {
       if (e.target.isOffCard == true) {
         if (currentLevel.type == "number") {
@@ -401,7 +402,6 @@ export const init = (app, setup) => {
 
         // Safely initializing to initLevel
         let newLevel = levels[levelCounter % mod];
-        console.log("new level",newLevel)
 
         // MOOOOOOOOOO
         if (levelCounter%quizEvery == 0){
@@ -477,13 +477,7 @@ export const init = (app, setup) => {
       ease: "elastic",
     });
 
-    if (levelStartedAt != null) {
-      let levels = levelCounter - levelStartedAt;
-      endOfGameText.text = levels + " Puzzles!" + "\n Complete";
-    } else {
-      let levels = levelCounter + 1;
-      endOfGameText.text = levels + " Puzzles!";
-    }
+    endOfGameText.text = scoreObject.score + " Points!"
 
     app.stage.addChild(endOfGameModal);
     app.stage.addChild(endOfGameText);
@@ -510,10 +504,13 @@ export const init = (app, setup) => {
     lifeCounter = NUMBER_OF_LIVES;
 
     livesText.text = lifeCounter;
-    updateLevelDescriptor();
+    updateLevelDescriptor(0);
     const newLevel = levels[levelCounter % mod];
     updateLayoutParams(setup.width, setup.height, newLevel);
     pool.loadLevel(newLevel);
+
+    scoreObject.score = 0 
+    scoreObject.time = 0
   }
 
   class Card extends PIXI.Container {
@@ -573,8 +570,7 @@ export const init = (app, setup) => {
       // We probably want to have different "card types"
       if (this.level.type == "number") {
 
-        console.log("is not a custom level and is a number")
-
+   
         const card = this.level.cards[acc];
         const { arr, types } = card;
         const coords = PM[arr.length];
@@ -868,7 +864,6 @@ export const init = (app, setup) => {
   function startGame() {
     const startLevel = levels[levelCounter % mod];
 
-    console.log("start Level",startLevel)
 
     updateLayoutParams(setup.width, setup.height, startLevel);
 
@@ -887,8 +882,6 @@ export const init = (app, setup) => {
     helpButton.text = "?";
 
     Tween.to(this, { y: -this.height, onComplete: onComplete });
-
-    updateLevelDescriptor();
   }
 
   function updateScore(lvl) {
@@ -908,6 +901,7 @@ export const init = (app, setup) => {
   }
 
   function dealCards(pool) {
+    scoreObject.focusTime = scoreObject.timer
     setTimeout(() => {
       backGround.interactive = true;
     }, 1000);
@@ -947,9 +941,19 @@ export const init = (app, setup) => {
     });
   }
 
-  function updateLevelDescriptor() {
-    const actualLevel = levelCounter + 1;
-    levelText.text = "Puzzle: " + actualLevel;
+  function updateLevelDescriptor(val) {
+    if (val != null){
+      levelText.text = "Score: " + val
+    } else {
+      const {timer,focusTime } = scoreObject
+
+      const levelScore = Math.round(Math.pow(2,9/(1+(timer-focusTime)/2000))/20)
+
+      console.log("score",levelScore)
+
+      scoreObject.score += levelScore
+      levelText.text = "Score: " + scoreObject.score
+    }
   }
 
   function updateLives() {
@@ -1029,7 +1033,7 @@ export const init = (app, setup) => {
     plusHeart.x = livesHeart.x;
     plusHeart.y = VIEW_HEIGHT + livesHeart.height;
 
-    levelText = new PIXI.Text("Level: 1", {
+    levelText = new PIXI.Text("0", {
       fontWeight: "bold",
       fontFamily: "Quicksand",
       fontSize: FONT_SIZE,
