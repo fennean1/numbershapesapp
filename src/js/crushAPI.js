@@ -904,7 +904,7 @@ export const init = (app, setup) => {
     scoreObject.focusTime = scoreObject.timer
     setTimeout(() => {
       backGround.interactive = true;
-    }, 1000);
+    }, 2000);
 
     NUMERALS.forEach((n) => {
       n.x = -CARD_WIDTH;
@@ -928,10 +928,10 @@ export const init = (app, setup) => {
 
         app.stage.addChild(c);
         Tween.to(c, {
-          duration: 1,
+          duration: 0.65,
           x: _x,
           y: _y,
-          ease: Elastic.easeOut.config(0.8, 0.3),
+          ease: Elastic.easeOut.config(0.8, 0.5),
           callBackScope: this,
           onComplete: makeInteractive,
         });
@@ -947,7 +947,7 @@ export const init = (app, setup) => {
     } else {
       const {timer,focusTime } = scoreObject
 
-      const levelScore = Math.round(Math.pow(2,9/(1+(timer-focusTime)/2000))/20)
+      const levelScore = Math.round(Math.pow(2,11/(1+(timer-focusTime)/1000))/30)
 
       console.log("score",levelScore)
 
