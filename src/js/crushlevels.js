@@ -24,10 +24,10 @@ const puzzleTypes = {
 };
 
 export const meshTypes = {
-  NS_SEVEN: {type: "ns", value: 7},
-  NS_EIGHT: {type: "ns",value: 8},
-  NS_TEN: {type: "ns",value: 10}
-}
+  NS_SEVEN: { type: "ns", value: 7 },
+  NS_EIGHT: { type: "ns", value: 8 },
+  NS_TEN: { type: "ns", value: 10 },
+};
 
 export const levelTypes = {
   assessment: "assessment",
@@ -118,10 +118,7 @@ const tens = {
   four_six: [4, 6],
   five_five: [5, 5],
   two_three_five: [2, 3, 5],
-  three_three_three: [3, 3, 4],
-  two_three_four: [2, 2, 6],
-  two_three_four: [2, 4, 4],
-  one_one_three: [2, 2, 2, 4],
+  three_three_four: [3, 3, 4],
 };
 
 const elevens = {
@@ -194,7 +191,7 @@ const twenties = {
   ten_ten: [10, 10],
 };
 
-export const PM = {
+export const assessmentCardCustomCoordinates = {
   1: [[0.5, 0.5]],
   2: [
     [0, 0],
@@ -215,7 +212,7 @@ export const PM = {
 
 // #region Abstract Pre Assessment
 
-export const PAP1 = {
+export const A3_2_A = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: twos.one_one },
@@ -229,7 +226,7 @@ export const PAP1 = {
   counter: counters.black,
 };
 
-export const PAP1P = {
+export const A3_2_B = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: twos.one_one },
@@ -243,7 +240,7 @@ export const PAP1P = {
   counter: counters.black,
 };
 
-export const PAP2 = {
+export const A3_4_A = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.one_three },
@@ -257,7 +254,7 @@ export const PAP2 = {
   counter: counters.black,
 };
 
-export const PAP2P = {
+export const A3_4_B = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.two_two },
@@ -271,7 +268,7 @@ export const PAP2P = {
   counter: counters.black,
 };
 
-export const PAP3 = {
+export const A4_3_A = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.one_three },
@@ -285,7 +282,7 @@ export const PAP3 = {
   counter: counters.black,
 };
 
-export const PAP3P = {
+export const A4_3_B = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.one_three },
@@ -299,7 +296,7 @@ export const PAP3P = {
   counter: counters.black,
 };
 
-export const PAP4 = {
+export const A4_5_A = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.one_three },
@@ -313,7 +310,7 @@ export const PAP4 = {
   counter: counters.black,
 };
 
-export const PAP4P = {
+export const A4_5_B = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.one_three },
@@ -327,7 +324,7 @@ export const PAP4P = {
   counter: counters.black,
 };
 
-export const PAP5 = {
+export const A5_4_A = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.one_three },
@@ -341,7 +338,7 @@ export const PAP5 = {
   counter: counters.black,
 };
 
-export const PAP5P = {
+export const A5_4_B = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: fours.three_one },
@@ -611,8 +608,8 @@ export const PAP15 = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: tens.five_five },
-    { types: [1, 1, 1], arr: tens.four_six },
-    { types: [1, 1, 1], arr: tens.three_seven },
+    { types: [1, 1], arr: tens.four_six },
+    { types: [1, 1], arr: tens.three_seven },
     { types: [1, 1], arr: nines.four_five },
   ],
   mesh: [2, 2],
@@ -625,8 +622,8 @@ export const PAP15P = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: tens.five_five },
-    { types: [1, 1, 1], arr: tens.four_six },
-    { types: [1, 1, 1], arr: tens.three_seven },
+    { types: [1, 1], arr: tens.four_six },
+    { types: [1, 1], arr: tens.three_seven },
     { types: [1, 1, 1], arr: nines.two_two_five },
   ],
   mesh: [2, 2],
@@ -693,7 +690,6 @@ export const PAP17P = {
 
 // #endregion
 
-
 // #region Visual Pre Assessment
 
 export const PAP1V = {
@@ -758,7 +754,7 @@ export const PAP3V = {
     { types: [0, 0], arr: fours.one_three },
     { types: [0, 0], arr: fours.two_two },
     { types: [0, 0], arr: fours.one_three },
-    { types: [0, 0,0], arr: threes.one_one_one },
+    { types: [0, 0, 0], arr: threes.one_one_one },
   ],
   mesh: [2, 2],
   value: 4,
@@ -827,7 +823,7 @@ export const PAP5VP = {
   cards: [
     { types: [0, 0], arr: fours.three_one },
     { types: [0, 0], arr: fives.two_three },
-    { types: [0, 0,0], arr: fives.one_one_three },
+    { types: [0, 0, 0], arr: fives.one_one_three },
     { types: [0, 0], arr: fives.one_four },
   ],
   mesh: [2, 2],
@@ -855,7 +851,7 @@ export const PAP6VP = {
   cards: [
     { types: [0, 0], arr: sixes.two_four },
     { types: [0, 0], arr: fives.two_three },
-    { types: [0, 0,0], arr: fives.one_two_two },
+    { types: [0, 0, 0], arr: fives.one_two_two },
     { types: [0, 0], arr: fives.one_four },
   ],
   mesh: [2, 2],
@@ -869,7 +865,7 @@ export const PAP7V = {
   cards: [
     { types: [0, 0], arr: sixes.three_three },
     { types: [0, 0], arr: sixes.two_four },
-    { types: [0, 0,0], arr: sixes.two_two_two },
+    { types: [0, 0, 0], arr: sixes.two_two_two },
     { types: [0, 0], arr: fives.two_three },
   ],
   mesh: [2, 2],
@@ -883,7 +879,7 @@ export const PAP7VP = {
   cards: [
     { types: [0, 0], arr: sixes.three_three },
     { types: [0, 0], arr: sixes.two_four },
-    { types: [0, 0,0], arr: sixes.one_five },
+    { types: [0, 0, 0], arr: sixes.one_five },
     { types: [0, 0], arr: fives.two_three },
   ],
   mesh: [2, 2],
@@ -897,7 +893,7 @@ export const PAP8V = {
   cards: [
     { types: [0, 0], arr: sixes.one_five },
     { types: [0, 0], arr: sixes.two_four },
-    { types: [0, 0,0], arr: sixes.two_two_two },
+    { types: [0, 0, 0], arr: sixes.two_two_two },
     { types: [0, 0], arr: sevens.three_four },
   ],
   mesh: [2, 2],
@@ -911,7 +907,7 @@ export const PAP8VP = {
   cards: [
     { types: [0, 0], arr: sixes.one_five },
     { types: [0, 0], arr: sixes.two_four },
-    { types: [0, 0,0], arr: sixes.two_two_two },
+    { types: [0, 0, 0], arr: sixes.two_two_two },
     { types: [0, 0], arr: sevens.two_five },
   ],
   mesh: [2, 2],
@@ -924,7 +920,7 @@ export const PAP9V = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: sixes.one_five },
-    { types: [0, 0,0], arr: sevens.two_two_three },
+    { types: [0, 0, 0], arr: sevens.two_two_three },
     { types: [0, 0, 0], arr: sevens.three_four },
     { types: [0, 0], arr: sevens.two_five },
   ],
@@ -938,8 +934,8 @@ export const PAP9VP = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: sixes.three_three },
-    { types: [0, 0,0], arr: sevens.two_two_three },
-    { types: [0, 0,0], arr: sevens.three_four },
+    { types: [0, 0, 0], arr: sevens.two_two_three },
+    { types: [0, 0, 0], arr: sevens.three_four },
     { types: [0, 0], arr: sevens.two_five },
   ],
   mesh: [2, 2],
@@ -952,8 +948,8 @@ export const PAP10V = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: eights.three_five },
-    { types: [0, 0,0], arr: sevens.two_two_three },
-    { types: [0, 0,0], arr: sevens.one_six },
+    { types: [0, 0, 0], arr: sevens.two_two_three },
+    { types: [0, 0, 0], arr: sevens.one_six },
     { types: [0, 0], arr: sevens.two_five },
   ],
   mesh: [2, 2],
@@ -966,8 +962,8 @@ export const PAP10VP = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: eights.three_five },
-    { types: [0, 0,0], arr: sevens.two_two_three },
-    { types: [0, 0,0], arr: sevens.three_four },
+    { types: [0, 0, 0], arr: sevens.two_two_three },
+    { types: [0, 0, 0], arr: sevens.three_four },
     { types: [0, 0], arr: sevens.two_five },
   ],
   mesh: [2, 2],
@@ -994,7 +990,7 @@ export const PAP11VP = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: eights.two_six },
-    { types: [0, 0,0], arr: eights.two_two_four },
+    { types: [0, 0, 0], arr: eights.two_two_four },
     { types: [0, 0], arr: eights.four_four },
     { types: [0, 0], arr: sevens.three_four },
   ],
@@ -1008,7 +1004,7 @@ export const PAP12V = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: eights.three_five },
-    { types: [0, 0,0], arr: eights.four_four },
+    { types: [0, 0, 0], arr: eights.four_four },
     { types: [0, 0, 0], arr: eights.two_two_four },
     { types: [0, 0], arr: nines.four_five },
   ],
@@ -1022,7 +1018,7 @@ export const PAP12VP = {
   grid: [2, 2],
   cards: [
     { types: [0, 0], arr: eights.three_five },
-    { types: [0, 0,0], arr: eights.four_four },
+    { types: [0, 0, 0], arr: eights.four_four },
     { types: [0, 0, 0], arr: eights.two_two_four },
     { types: [0, 0], arr: nines.three_six },
   ],
@@ -1153,7 +1149,7 @@ export const PAP17V = {
     { types: [0, 0], arr: elevens.four_seven },
   ],
   mesh: [2, 2],
-  value: 6,
+  value: 10,
   type: "number",
   counter: counters.black,
 };
@@ -1167,22 +1163,18 @@ export const PAP17VP = {
     { types: [0, 0], arr: elevens.four_seven },
   ],
   mesh: [2, 2],
-  value: 6,
+  value: 11,
   type: "number",
   counter: counters.black,
 };
 
 // #endregion
 
-
 // #region Visual/Abstract
-
-
-
 
 // P.re A.ssessment P.uzzle 1 ,  P.re A.ssessment P.uzzle 1 P.ost
 
-export const PAP1C = {
+export const C3_2_A = {
   grid: [2, 2],
   cards: [
     { types: [1, 1], arr: twos.one_one },
@@ -1196,7 +1188,7 @@ export const PAP1C = {
   counter: counters.black,
 };
 
-export const PAP1CA = {
+export const C3_2_B = {
   grid: [2, 2],
   cards: [
     { types: [0], arr: twos.two },
@@ -1210,13 +1202,13 @@ export const PAP1CA = {
   counter: counters.black,
 };
 
-export const PAP1CP = {
+export const C3_2_C = {
   grid: [2, 2],
   cards: [
     { types: [1, 0], arr: twos.one_one },
     { types: [0, 0], arr: threes.one_two },
     { types: [0, 1], arr: threes.one_two },
-    { types: [1,1,1], arr: threes.one_one_one },
+    { types: [1, 1, 1], arr: threes.one_one_one },
   ],
   mesh: [2, 2],
   value: 3,
@@ -1224,7 +1216,7 @@ export const PAP1CP = {
   counter: counters.black,
 };
 
-export const PAP1CPA = {
+export const C3_2_D = {
   grid: [2, 2],
   cards: [
     { types: [1, 0], arr: twos.one_one },
@@ -1251,7 +1243,6 @@ export const PAP2C = {
   type: "number",
   counter: counters.black,
 };
-
 
 export const PAP2CA = {
   grid: [2, 2],
@@ -1280,7 +1271,6 @@ export const PAP2CP = {
   type: "number",
   counter: counters.black,
 };
-
 
 export const PAP2CPA = {
   grid: [2, 2],
@@ -1717,8 +1707,8 @@ export const PAP17CP = {
 };
 
 export const AP_C = [
-  [PAP1C, PAP1CP,PAP1CA,PAP1CPA],
-  [PAP2C, PAP2CP,PAP2CA, PAP2CPA],
+  [C3_2_A, C3_2_C, C3_2_B, C3_2_D,PAP3CP],
+  [PAP2C, PAP2CP, PAP2CA, PAP2CPA,PAP3C],
   [PAP3C, PAP3CP],
   [PAP4C, PAP4CP],
   [PAP5C, PAP5CP],
@@ -1737,11 +1727,11 @@ export const AP_C = [
 ];
 
 export const AP_A = [
-  [PAP1, PAP1P],
-  [PAP2, PAP2P],
-  [PAP3, PAP3P],
-  [PAP4, PAP4P],
-  [PAP5, PAP5P],
+  [A3_2_A, A3_2_B,A3_4_A],
+  [A3_4_A, A3_4_B],
+  [A4_3_A, A4_3_B],
+  [A4_5_A, A4_5_B],
+  [A5_4_A, A5_4_B],
   [PAP6, PAP6P],
   [PAP7, PAP7P],
   [PAP8, PAP8P],
@@ -1757,8 +1747,8 @@ export const AP_A = [
 ];
 
 export const AP_V = [
-  [PAP1V, PAP1VP],
-  [PAP2V, PAP2VP],
+  [PAP1V, PAP1VP,PAP2VP],
+  [PAP2V, PAP2VP,PAP3V],
   [PAP3V, PAP3VP],
   [PAP4V, PAP4VP],
   [PAP5V, PAP5VP],
@@ -1776,33 +1766,30 @@ export const AP_V = [
   [PAP17V, PAP17VP],
 ];
 
-
-
 // #endregion
 
 // #region Assessments
 export const Assessment_Visual = {
   type: levelTypes.assessment,
   name: "Visual Assessment",
-  puzzles: AP_V
-}
+  puzzles: AP_V,
+};
 
 export const Assessment_Combined = {
   type: levelTypes.assessment,
   name: "Visual / Abstract Assessment",
-  puzzles: AP_C
-}
+  puzzles: AP_C,
+};
 
 export const Assessment_Abstract = {
   type: levelTypes.assessment,
   name: "Abstract Assessment",
-  puzzles: AP_A
-}
-
+  puzzles: AP_A,
+};
 
 // #endregion
 
-// #region Sevens 
+// #region Sevens
 
 export const SP1 = {
   customMesh: meshTypes.NS_SEVEN,
@@ -1811,7 +1798,7 @@ export const SP1 = {
   delta: -1,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP2 = {
@@ -1821,7 +1808,7 @@ export const SP2 = {
   delta: -2,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP3 = {
@@ -1831,7 +1818,7 @@ export const SP3 = {
   delta: 1,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP4 = {
@@ -1841,7 +1828,7 @@ export const SP4 = {
   delta: -1,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP5 = {
@@ -1851,7 +1838,7 @@ export const SP5 = {
   delta: -2,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP6 = {
@@ -1861,7 +1848,7 @@ export const SP6 = {
   delta: -2,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP7 = {
@@ -1871,7 +1858,7 @@ export const SP7 = {
   delta: -1,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP8 = {
@@ -1881,7 +1868,7 @@ export const SP8 = {
   delta: -2,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP9 = {
@@ -1891,7 +1878,7 @@ export const SP9 = {
   delta: 1,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const SP10 = {
@@ -1901,17 +1888,17 @@ export const SP10 = {
   delta: 1,
   mesh: [3, 3],
   random: false,
-  counter: counters.rainbow
+  counter: counters.rainbow,
 };
 
 export const Sevens = {
   name: "Sevens",
-  puzzles: [SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10]
-}
+  puzzles: [SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8, SP9, SP10],
+};
 
-// #endregion 
+// #endregion
 
-// #region NS?
+// #region NumberShapes: 10's
 
 export const NS_TP1 = {
   customMesh: meshTypes.NS_TEN,
@@ -1920,48 +1907,47 @@ export const NS_TP1 = {
   delta: -1,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
-export const NS_TP2  = {
+export const NS_TP2 = {
   customMesh: meshTypes.NS_TEN,
   grid: [2, 2],
   value: 9,
   delta: -3,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
-export const NS_TP3  = {
+export const NS_TP3 = {
   customMesh: meshTypes.NS_TEN,
   grid: [2, 2],
   value: 9,
   delta: -2,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
-export const NS_TP4  = {
+export const NS_TP4 = {
   customMesh: meshTypes.NS_TEN,
   grid: [2, 2],
   value: 8,
   delta: -2,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
-
-export const NS_TP5  = {
+export const NS_TP5 = {
   customMesh: meshTypes.NS_TEN,
   grid: [2, 2],
   value: 8,
   delta: 1,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
 export const NS_TP6 = {
@@ -1971,7 +1957,7 @@ export const NS_TP6 = {
   delta: 1,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
 export const NS_TP7 = {
@@ -1981,7 +1967,7 @@ export const NS_TP7 = {
   delta: -1,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
 export const NS_TP8 = {
@@ -1991,7 +1977,7 @@ export const NS_TP8 = {
   delta: 1,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
 export const NS_TP9 = {
@@ -2001,7 +1987,7 @@ export const NS_TP9 = {
   delta: -1,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
 export const NS_TP10 = {
@@ -2011,9 +1997,8 @@ export const NS_TP10 = {
   delta: 2,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
-
 
 export const NS_TP11 = {
   customMesh: meshTypes.NS_TEN,
@@ -2022,13 +2007,25 @@ export const NS_TP11 = {
   delta: 2,
   mesh: [3, 3],
   random: false,
-  counter: counters.red
+  counter: counters.red,
 };
 
 export const NS_Tens = {
   name: "Ten Number Shape",
-  puzzles: [NS_TP1,NS_TP2,NS_TP3,NS_TP4,NS_TP5,NS_TP6,NS_TP7,NS_TP8,NS_TP9,NS_TP10,NS_TP11]
-}
+  puzzles: [
+    NS_TP1,
+    NS_TP2,
+    NS_TP3,
+    NS_TP4,
+    NS_TP5,
+    NS_TP6,
+    NS_TP7,
+    NS_TP8,
+    NS_TP9,
+    NS_TP10,
+    NS_TP11,
+  ],
+};
 
 // #endregion
 
@@ -2041,7 +2038,7 @@ const HLWR1 = {
   random: false,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR2 = {
   grid: [5, 5],
@@ -2050,7 +2047,7 @@ const HLWR2 = {
   random: false,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR3 = {
   grid: [5, 5],
@@ -2059,7 +2056,7 @@ const HLWR3 = {
   random: false,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR4 = {
   grid: [5, 5],
@@ -2068,7 +2065,7 @@ const HLWR4 = {
   random: false,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR5 = {
   grid: [5, 5],
@@ -2077,7 +2074,7 @@ const HLWR5 = {
   random: false,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR6 = {
   grid: [5, 5],
@@ -2085,7 +2082,7 @@ const HLWR6 = {
   delta: 5,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR7 = {
   grid: [5, 5],
@@ -2093,7 +2090,7 @@ const HLWR7 = {
   delta: 4,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR8 = {
   grid: [5, 5],
@@ -2101,7 +2098,7 @@ const HLWR8 = {
   delta: 4,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 const HLWR9 = {
   grid: [5, 5],
@@ -2109,13 +2106,12 @@ const HLWR9 = {
   delta: -3,
   mesh: [5, 5],
   counter: counters.pink,
-}
+};
 
 export const Within_Reason = {
   name: "Hardest Level Within Reason",
-  puzzles: [HLWR1,HLWR2,HLWR3,HLWR4,HLWR5,HLWR6,HLWR7,HLWR9]
-}
-
+  puzzles: [HLWR1, HLWR2, HLWR3, HLWR4, HLWR5, HLWR6, HLWR7, HLWR9],
+};
 
 // #endregion
 
@@ -2214,6 +2210,7 @@ export const EA2 = {
 
 export const Eights = {
   name: "All About Eight",
+  symbolicPuzzlesStartAt: 3,
   puzzles: [EP1, EP2, EP3, EP4, EP5, EP6, EP7],
 };
 
@@ -2558,6 +2555,7 @@ export const PK11 = {
 
 export const FirstNumbers = {
   name: "First Numbers",
+  symbolicPuzzlesStartAt: 0,
   puzzles: [PK1, PK3, PK5, PK7, PK8, PK9, PK10, PK11],
 };
 
@@ -2571,7 +2569,7 @@ export const LM1 = {
   delta: -1,
   random: false,
   mesh: [5, 1],
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM1A = {
@@ -2580,7 +2578,7 @@ export const LM1A = {
   delta: -2,
   random: false,
   mesh: [5, 1],
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM1B = {
@@ -2589,7 +2587,7 @@ export const LM1B = {
   delta: -2,
   random: false,
   mesh: [5, 1],
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM1C = {
@@ -2598,7 +2596,7 @@ export const LM1C = {
   delta: -1,
   random: false,
   mesh: [5, 1],
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM2 = {
@@ -2607,7 +2605,7 @@ export const LM2 = {
   delta: 1,
   mesh: [5, 1],
   random: false,
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM3 = {
@@ -2616,7 +2614,7 @@ export const LM3 = {
   delta: -2,
   mesh: [5, 1],
   random: false,
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM4 = {
@@ -2625,7 +2623,7 @@ export const LM4 = {
   delta: 1,
   mesh: [5, 1],
   random: false,
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM5 = {
@@ -2633,7 +2631,7 @@ export const LM5 = {
   value: 3,
   delta: 1,
   mesh: [5, 1],
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const LM6 = {
@@ -2641,7 +2639,7 @@ export const LM6 = {
   value: 2,
   delta: 1,
   mesh: [5, 1],
-  counter: counters.darkpurple
+  counter: counters.darkpurple,
 };
 
 export const FiveFrame = {
@@ -2892,7 +2890,6 @@ export const Rainbows = {
 
 // #endregion
 
-
 // #region Diamonds
 export const D1 = {
   grid: [3, 2],
@@ -2950,8 +2947,8 @@ export const D1E = {
 
 export const Diamonds = {
   name: "Diamonds",
-  puzzles: [D1,D1A,D1B,D1C,D1D,D1E]
-}
+  puzzles: [D1, D1A, D1B, D1C, D1D, D1E],
+};
 
 // #endregion
 
@@ -3058,7 +3055,8 @@ export const PKE10 = {
 
 export const EarlyEstimation = {
   name: "Early Estimation",
-  puzzles: [PKE1, PKE2, PKE3, PKE4, PKE5,PKE6, PKE7, PKE8, PKE9, PKE10],
+  symbolicPuzzlesStartAt: 2,
+  puzzles: [PKE1, PKE2, PKE3, PKE4, PKE5, PKE6, PKE7, PKE8, PKE9, PKE10],
 };
 
 // #endregion
@@ -3139,6 +3137,7 @@ export const C8 = {
 
 export const CountingFiveToTen = {
   name: "Counting Five to Ten",
+  symbolicPuzzlesStartAt: 4,
   puzzles: [C1, C2, C3, C4, C5, C6, C7, C8],
 };
 
@@ -3171,7 +3170,6 @@ export const TF3 = {
 };
 
 // #endregion
-
 
 // #region
 export const L2 = {
@@ -3410,8 +3408,8 @@ export const E1G = {
 
 export const EstimationLevelOne = {
   name: "Estimation Level Two",
-  puzzles: [E1A,E1B,E1C,E1D,E1E,E1F,E1G]
-}
+  puzzles: [E1A, E1B, E1C, E1D, E1E, E1F, E1G],
+};
 
 // #endregion
 
@@ -3472,8 +3470,107 @@ export const Dragon = {
 
 // #endregion
 
+// #region Sixteen Minus
 
-// #region The Rest
+export const SM_1 = {
+  grid: [4, 4],
+  value: 14,
+  delta: -5,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_2 = {
+  grid: [4, 4],
+  value: 14,
+  delta: -4,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_3 = {
+  grid: [4, 4],
+  value: 14,
+  delta: -3,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_4 = {
+  grid: [4, 4],
+  value: 15,
+  delta: -3,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_5 = {
+  grid: [4, 4],
+  value: 16,
+  delta: -1,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_6 = {
+  grid: [4, 4],
+  value: 15,
+  delta: -1,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_7 = {
+  grid: [4, 4],
+  value: 13,
+  delta: 1,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_8 = {
+  grid: [4, 4],
+  value: 12,
+  delta: 3,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_9 = {
+  grid: [4, 4],
+  value: 12,
+  delta: -3,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const SM_10 = {
+  grid: [4, 4],
+  value: 11,
+  delta: 3,
+  random: false,
+  mesh: [4, 4],
+  counter: counters.darkpurple,
+};
+
+export const Sixteen_Minus = {
+  name: "Some Part of Sixteen",
+  puzzles: [SM_1, SM_2, SM_3, SM_4, SM_5, SM_6, SM_7, SM_8, SM_9, SM_10],
+};
+
+// #endregion
+
+// #region Legacy puzzles
+
 export const L7 = {
   grid: [2, 2],
   value: 5,
@@ -3625,7 +3722,9 @@ export const L21 = {
   mesh: [5, 4],
 };
 
-export const L22 = {
+// #region Advanced Diamonds
+
+export const AD1 = {
   grid: [3, 3],
   value: 12,
   delta: -5,
@@ -3634,7 +3733,7 @@ export const L22 = {
   counter: counters.diamond,
 };
 
-export const L22A = {
+export const AD2 = {
   grid: [3, 3],
   value: 9,
   delta: 4,
@@ -3642,7 +3741,7 @@ export const L22A = {
   random: false,
   counter: counters.diamond,
 };
-export const L22B = {
+export const AD3 = {
   grid: [3, 3],
   value: 9,
   delta: 5,
@@ -3651,7 +3750,7 @@ export const L22B = {
   counter: counters.diamond,
 };
 
-export const L22C = {
+export const AD4 = {
   grid: [3, 3],
   value: 6,
   delta: 4,
@@ -3660,7 +3759,7 @@ export const L22C = {
   counter: counters.diamond,
 };
 
-export const L22D = {
+export const AD5 = {
   grid: [3, 3],
   value: 14,
   delta: -4,
@@ -3668,6 +3767,109 @@ export const L22D = {
   random: false,
   counter: counters.diamond,
 };
+
+
+export const AD6 = {
+  grid: [3, 3],
+  value: 15,
+  delta: 3,
+  mesh: [5, 5],
+  counter: counters.diamond,
+};
+
+export const AD7 = {
+  grid: [3, 4],
+  value: 14,
+  delta: 4,
+  mesh: [5, 5],
+  counter: counters.diamond,
+};
+
+export const AD8 = {
+  grid: [3, 4],
+  value: 18,
+  delta: 4,
+  mesh: [5, 5],
+  counter: counters.diamond,
+};
+
+export const AD9 = {
+  grid: [3, 3],
+  value: 10,
+  delta: -3,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD10 = {
+  grid: [3, 3],
+  value: 20,
+  delta: -7,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD11 = {
+  grid: [3, 3],
+  value: 18,
+  delta: -4,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD12 = {
+  grid: [3, 3],
+  value: 22,
+  delta: -6,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD13 = {
+  grid: [3, 3],
+  value: 10,
+  delta: 6,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD14 = {
+  grid: [3, 3],
+  value: 12,
+  delta: 8,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD15 = {
+  grid: [3, 3],
+  value: 15,
+  delta: 5,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.diamond,
+};
+
+export const AD16 = {
+  grid: [4, 4],
+  value: 9,
+  delta: 2,
+  mesh: [5, 5],
+  counter: counters.diamond,
+};
+
+export const Advanced_Diamonds = {
+  name: "Sevens",
+  puzzles: [AD1,AD2,AD3,AD4,AD5,AD6,AD7,AD8,AD9,AD10,AD11,AD12,AD13,AD14,AD15,AD16],
+};
+
+// #endregion
 
 export const L23 = {
   grid: [3, 3],
@@ -3767,101 +3969,6 @@ export const L36 = {
   mesh: [5, 5],
 };
 
-export const L37 = {
-  grid: [3, 3],
-  value: 15,
-  delta: 3,
-  mesh: [5, 5],
-  counter: counters.diamond,
-};
-
-export const L38 = {
-  grid: [3, 4],
-  value: 14,
-  delta: 4,
-  mesh: [5, 5],
-  counter: counters.diamond,
-};
-
-export const L39 = {
-  grid: [3, 4],
-  value: 18,
-  delta: 4,
-  mesh: [5, 5],
-  counter: counters.diamond,
-};
-
-export const L40 = {
-  grid: [3, 3],
-  value: 10,
-  delta: -3,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L40A = {
-  grid: [3, 3],
-  value: 20,
-  delta: -7,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L40B = {
-  grid: [3, 3],
-  value: 18,
-  delta: -4,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L40C = {
-  grid: [3, 3],
-  value: 22,
-  delta: -6,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L40D = {
-  grid: [3, 3],
-  value: 10,
-  delta: 6,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L40E = {
-  grid: [3, 3],
-  value: 12,
-  delta: 8,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L40F = {
-  grid: [3, 3],
-  value: 15,
-  delta: 5,
-  mesh: [5, 5],
-  random: false,
-  counter: counters.diamond,
-};
-
-export const L41 = {
-  grid: [4, 4],
-  value: 9,
-  delta: 2,
-  mesh: [5, 5],
-  counter: counters.diamond,
-};
-
 export const L42 = {
   grid: [4, 4],
   value: 8,
@@ -3883,7 +3990,17 @@ export const L44 = {
   mesh: [4, 4],
 };
 
+export const LegacyPuzzles = {
+  name: "Legacy Puzzles",
+  puzzles: [
+   AD1,
+  ]
+};
+
+
 // #endregion
+
+
 
 // #region Square Levels
 
@@ -3995,8 +4112,8 @@ export const S5 = {
 
 export const Squares = {
   name: "Squares",
-  puzzles: [S1,S1A,S1B,S1C,S1D,S1E,S1F,S2,S2A]
-}
+  puzzles: [S1, S1A, S1B, S1C, S1D, S1E, S1F, S2, S2A],
+};
 
 // #endregion
 
@@ -4012,31 +4129,98 @@ export const PMT = {
 
 export const PMT1 = {
   grid: [2, 2],
-  value: 10,
+  value: 9,
   delta: 1,
+  random: false,
   mesh: [4, 4],
   counter: counters.blue,
 };
 
 export const PMT2 = {
   grid: [2, 2],
-  value: 10,
-  delta: 1,
+  value: 11,
+  delta: -2,
+  random: false,
   mesh: [5, 3],
   counter: counters.blue,
 };
 
 export const PMT3 = {
   grid: [3, 2],
+  value: 12,
+  delta: -3,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT4 = {
+  grid: [3, 2],
+  value: 12,
+  delta: -2,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT5 = {
+  grid: [3, 2],
   value: 10,
-  delta: 1,
+  delta: -3,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT6 = {
+  grid: [3, 2],
+  value: 10,
+  delta: -2,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT7 = {
+  grid: [3, 2],
+  value: 10,
+  delta: -4,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT8 = {
+  grid: [3, 2],
+  value: 10,
+  delta: -3,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT9 = {
+  grid: [3, 2],
+  value: 10,
+  delta: -2,
+  random: false,
+  mesh: [4, 3],
+  counter: counters.blue,
+};
+
+export const PMT10 = {
+  grid: [3, 2],
+  value: 12,
+  delta: -2,
+  random: false,
   mesh: [4, 3],
   counter: counters.blue,
 };
 
 export const TenPlusOrMinusOne = {
   name: "Ten Plus or Minus One",
-  puzzles: [PMT, PMT1, PMT2, PMT3],
+  symbolicPuzzlesStartAt: 8,
+  puzzles: [PMT, PMT1, PMT2, PMT3, PMT4, PMT5, PMT6, PMT7, PMT8, PMT9, PMT10],
 };
 
 // #endregion
@@ -4097,10 +4281,57 @@ export const SAMI6 = {
   counter: counters.red,
 };
 
+export const SAMI7 = {
+  grid: [4, 4],
+  value: 9,
+  delta: 10,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.lightblue,
+};
+
+export const SAMI8 = {
+  grid: [4, 4],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+export const SAMI9 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.red,
+};
+
+export const SAMI10 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
 export const Saami = {
   name: "Saami",
-  puzzles: [SAMI1,SAMI2,SAMI3,SAMI4,SAMI5,SAMI6]
-}
+  puzzles: [
+    SAMI1,
+    SAMI2,
+    SAMI3,
+    SAMI4,
+    SAMI5,
+    SAMI6,
+    SAMI7,
+    SAMI8,
+    SAMI9,
+    SAMI10,
+  ],
+};
 
 // #endregion
 
@@ -4153,8 +4384,8 @@ export const LEST5 = {
 
 export const EstimationLevelTwo = {
   name: "Estimation Level One",
-  puzzles: [LEST1,LEST2,LEST3,LEST4,LEST5]
-}
+  puzzles: [LEST1, LEST2, LEST3, LEST4, LEST5],
+};
 
 // #endregion
 
@@ -4167,21 +4398,7 @@ export const EstimationLevelTwo = {
 
 */
 
-// #region Grouping Puzzles
-
-export const GPThreeA = {
-  grid: [2, 2],
-  cards: [
-    { types: [1, 0, 1], arr: threes.one_one_one },
-    { types: [1, 1], arr: threes.two_one },
-    { types: [0, 1], arr: twos.one_one },
-    { types: [0, 1], arr: threes.two_one },
-  ],
-  mesh: [2, 2],
-  value: 3,
-  type: "number",
-  counter: counters.black,
-};
+// #region Abstract Puzzles
 
 export const AP1 = {
   grid: [2, 2],
@@ -4345,13 +4562,13 @@ const tstLevel = [
   EstimationLevelOne.puzzles[0],
   TenPlusOrMinusOne.puzzles[0],
   GradeOneOpener.puzzles[0],
-  EstimationLevelTwo.puzzles[0]]
+  EstimationLevelTwo.puzzles[0],
+];
 
 const TEST = {
   name: "Test Level",
-  puzzles: tstLevel
-}
-
+  puzzles: tstLevel,
+};
 
 export const LEVELS = {
   tenplusorminusone: TenPlusOrMinusOne,
@@ -4370,41 +4587,46 @@ export const LEVELS = {
   test: TEST,
 };
 
-
-
-export const getRandomElement = (arr)=>{
-  let mod = arr.length
-  let rand = getRandomInt(10*mod)
-  let i = rand%mod
-  return arr[i]
-}
+export const getRandomElement = (arr) => {
+  let mod = arr.length;
+  let rand = getRandomInt(10 * mod);
+  let i = rand % mod;
+  return arr[i];
+};
 
 // This randomizes the "visual/symbolic" cards in the progression.
-export const crushProgression = ()=>{
-  let prog = []
+export const assessmentProgression = (level) => {
+  let prog = [];
   // These arrays may change in length but should be roughly the same
-  const A = AP_A.length 
-  const V = AP_V.length 
-  const C = AP_C.length
-  const ceil = Math.min(A,V,C)
-  for(let n=0;n<ceil;n++){
-    let v = getRandomElement(AP_V[n])
-    let c = getRandomElement(AP_C[n])
-    let a = getRandomElement(AP_A[n])
-    prog.push(...[c,a])
+  const A = AP_A.length;
+  const V = AP_V.length;
+  const C = AP_C.length;
+  const ceil = Math.min(A, V, C);
+
+  let start = 0;
+
+  if (level != null) {
+    start = level.symbolicPuzzlesStartAt ? level.symbolicPuzzlesStartAt : 0;
   }
 
-  return prog
-}
+  for (let n = start; n < ceil; n++) {
+    let v = getRandomElement(AP_V[n]);
+    let c = getRandomElement(AP_C[n]);
+    let a = getRandomElement(AP_A[n]);
+    prog.push(...[v, c, a]);
+  }
+
+  return prog;
+};
 
 
 // #region All Levels
 
-export const crushlevels = [
+export const saamiPuzzles = [
   ...Saami.puzzles,
+  ...FirstNumbers.puzzles,
   ...EarlyEstimation.puzzles,
   ...Doubles.puzzles,
-  ...FirstNumbers.puzzles,
   ...FiveFrame.puzzles,
   ...Sevens.puzzles,
   ...Eights.puzzles,
@@ -4413,61 +4635,17 @@ export const crushlevels = [
   ...KindergartenOpener.puzzles,
   ...Rainbows.puzzles,
   ...Dragon.puzzles,
+  ...Within_Reason.puzzles,
   ...Squares.puzzles,
+  ...Sixteen_Minus.puzzles,
   ...CountingFiveToTen.puzzles,
+  ...Advanced_Diamonds.puzzles,
   ...ThreeByThreeByThree.puzzles,
   ...EstimationLevelOne.puzzles,
   ...TenPlusOrMinusOne.puzzles,
   ...GradeOneOpener.puzzles,
   ...EstimationLevelTwo.puzzles,
   ...NS_Tens.puzzles,
-  ...Within_Reason.puzzles,
-  L7,
-  L8,
-  L9,
-  L9A,
-  L9B,
-  L9C,
-  L9D,
-  L9E,
-  L21,
-  L22,
-  L22A,
-  L22B,
-  L22C,
-  L22D,
-  L23,
-  L24,
-  L25,
-  L26,
-  L27,
-  L28,
-  L29,
-  L30,
-  L31,
-  L32,
-  L33,
-  L34,
-  L35,
-  L36,
-  L37,
-  L38,
-  L39,
-  L40,
-  L40A,
-  L40B,
-  L40C,
-  L40E,
-  L40F,
-  L41,
-  L42,
-  L43,
-  L22,
-  L22A,
-  L22B,
-  L22C,
-  L22D,
 ];
 
 // #endregion
-

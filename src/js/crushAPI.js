@@ -43,9 +43,9 @@ import {
   counters,
   levelTypes,
   LEVELS,
-  crushlevels,
-  PM,
-  crushProgression,
+  saamiPuzzles,
+  assessmentCardCustomCoordinates,
+  assessmentProgression,
 } from "./crushlevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBERSHAPES } from "./numbershapes";
 
@@ -67,17 +67,6 @@ let LINE_COLORS = {
   black: 0x000000,
 };
 
-let quizEvery = 5
-let progression = crushProgression()
-let levels = crushlevels;
-
-let mod = levels.length;
-let pmod = progression.length
-
-let NUMBER_OF_LIVES = 9;
-let levelCounter = 0;
-let progressionCounter = 0;
-let lifeCounter = NUMBER_OF_LIVES;
 
 const initLevel = {
   grid: [2, 2],
@@ -87,6 +76,26 @@ const initLevel = {
 };
 
 export const init = (app, setup) => {
+
+
+  // Check for Custom Level (IDEA: no such thing as custom lvl)
+  let customLevel = null
+  customLevel = LEVELS[setup.level];
+  
+  let quizEvery = 5
+
+  let progression = assessmentProgression(customLevel)
+  let levels = saamiPuzzles;
+  
+  let mainLevelsMod = levels.length;
+  let assessmentMod = progression.length
+  
+  const NUMBER_OF_LIVES = 9;
+  let levelCounter = 0;
+  let progressionCounter = 0;
+  let lifeCounter = NUMBER_OF_LIVES;
+
+
   // UI
   let plusHeart;
 
@@ -106,7 +115,6 @@ export const init = (app, setup) => {
   // #region Init Levels
 
   // Check to see if setup represents a custom level.
-  let customLevel = LEVELS[setup.level];
 
   // Parse Slug
   const potentialLevel = setup.level.substring(5);
@@ -116,7 +124,7 @@ export const init = (app, setup) => {
   if (prefix === "level") {
     let notNumber = isNaN(potentialLevel);
     // Check to see if valid number was provided.
-    if (!notNumber && potentialLevel > 0 && potentialLevel <= mod) {
+    if (!notNumber && potentialLevel > 0 && potentialLevel <= mainLevelsMod) {
       levelCounter = potentialLevel - 1;
       levelStartedAt = levelCounter;
     }
@@ -125,15 +133,15 @@ export const init = (app, setup) => {
   // Check the type of the custom level coming in.
   if (customLevel && customLevel.type == levelTypes.assessment){
     levels = customLevel.puzzles.map(ppArr=>{
-      const mod = ppArr.length
+      const _mod = ppArr.length
       const int = getRandomInt(100)
-      const i = int%mod
+      const i = int%_mod
       return ppArr[i]
     })
-    mod = levels.length;
+    mainLevelsMod = levels.length;
   } else if (customLevel) {
     levels = customLevel.puzzles;
-    mod = levels.length;
+    mainLevelsMod = levels.length;
   }
 
   // #endregion
@@ -266,7 +274,6 @@ export const init = (app, setup) => {
     SPACE_BETWEEN_CARDS * (initLevel.grid[1] - 1);
   let delta = CARD_WIDTH + SPACE_BETWEEN_CARDS;
 
-  let BLUE_COUNTER = new PIXI.Texture.from(BlueBall);
   let RED_SQUARE_COUNTER = new PIXI.Texture.from(RedSquare);
   let DIAMOND_COUNTER = new PIXI.Texture.from(Diamond);
 
@@ -401,11 +408,11 @@ export const init = (app, setup) => {
         updateLevelDescriptor();
 
         // Safely initializing to initLevel
-        let newLevel = levels[levelCounter % mod];
+        let newLevel = levels[levelCounter % mainLevelsMod];
 
         // MOOOOOOOOOO
         if (levelCounter%quizEvery == 0){
-           newLevel = progression[progressionCounter%pmod]
+           newLevel = progression[progressionCounter%assessmentMod]
            progressionCounter++
         } 
 
@@ -505,7 +512,7 @@ export const init = (app, setup) => {
 
     livesText.text = lifeCounter;
     updateLevelDescriptor(0);
-    const newLevel = levels[levelCounter % mod];
+    const newLevel = levels[levelCounter % mainLevelsMod];
     updateLayoutParams(setup.width, setup.height, newLevel);
     pool.loadLevel(newLevel);
 
@@ -558,7 +565,6 @@ export const init = (app, setup) => {
       let offsetX = CARD_WIDTH / 2 - shapeHeight / 2;
 
 
-
       this.balls.forEach((b) => {
         this.removeChild(b);
         b.texture = COUNTER_TEXTURE;
@@ -570,10 +576,9 @@ export const init = (app, setup) => {
       // We probably want to have different "card types"
       if (this.level.type == "number") {
 
-   
         const card = this.level.cards[acc];
         const { arr, types } = card;
-        const coords = PM[arr.length];
+        const coords = assessmentCardCustomCoordinates[arr.length];
 
         shuffleArray(coords);
 
@@ -769,19 +774,6 @@ export const init = (app, setup) => {
     }
   }
 
-  /*
-
-    - Navigate To Page
-    - Page Loads
-    - Landing Page for Game
-    - Start Clicked
-    - First Cards
-    - Click - Incorrect: Reveal
-    - Click - Correct: Success
-    - Next Cards 
-
-
-  */
 
   function updateLayoutParams(width, height, newLevel) {
     currentLevel = newLevel;
@@ -862,8 +854,7 @@ export const init = (app, setup) => {
   }
 
   function startGame() {
-    const startLevel = levels[levelCounter % mod];
-
+    const startLevel = levels[levelCounter % mainLevelsMod];
 
     updateLayoutParams(setup.width, setup.height, startLevel);
 
@@ -876,24 +867,12 @@ export const init = (app, setup) => {
     Tween.to(livesText, { duration: 2, alpha: 1, ease: "elastic" });
     Tween.to(livesHeart, { duration: 2, alpha: 1, ease: "elastic" });
     Tween.to(levelText, { duration: 2, alpha: 1, ease: "elastic" });
-    Tween.to(helpButton, { duration: 2, alpha: 1, ease: "elastic" });
+    Tween.to(helpButton, { delay: 2, duration: 1, y: MARGIN_TOP, ease: "elastic" });
 
     livesText.text = NUMBER_OF_LIVES;
     helpButton.text = "?";
 
     Tween.to(this, { y: -this.height, onComplete: onComplete });
-  }
-
-  function updateScore(lvl) {
-    const totalMesh = lvl.mesh[0] * lvl.mesh[1];
-    const value = lvl.value;
-    const whiteSpaceDifficultyFactor = (totalMesh - value) / totalMesh;
-
-    const totalBalls = lvl.grid[0] * lvl.grid[1] * lvl.value;
-
-    const ballCredit = totalBalls * whiteSpaceDifficultyFactor;
-
-    return Math.abs(ballCredit / lvl.delta);
   }
 
   function makeInteractive() {
@@ -906,6 +885,8 @@ export const init = (app, setup) => {
       backGround.interactive = true;
     }, 2000);
 
+
+    // Blue numerals behind the cards that show the value. 
     NUMERALS.forEach((n) => {
       n.x = -CARD_WIDTH;
       n.alpha = 0;
@@ -948,8 +929,6 @@ export const init = (app, setup) => {
       const {timer,focusTime } = scoreObject
 
       const levelScore = Math.round(Math.pow(2,11/(1+(timer-focusTime)/1000))/30)
-
-      console.log("score",levelScore)
 
       scoreObject.score += levelScore
       levelText.text = "Score: " + scoreObject.score
@@ -1073,7 +1052,7 @@ export const init = (app, setup) => {
     endOfGameText = new PIXI.Text("blank", {
       fontWeight: "bold",
       fontFamily: "Quicksand",
-      fontSize: setup.height / 10,
+      fontSize: setup.height / 15,
     });
     endOfGameText.style.fill = TEXT_COLOR;
     endOfGameText.y = setup.height;
@@ -1095,18 +1074,17 @@ export const init = (app, setup) => {
       fontFamily: "Quicksand",
       fontSize: FONT_SIZE,
     });
-    helpButton.style.fill = TEXT_COLOR;
+    helpButton.style.fill = 0xff1f5e; 
     helpButton.anchor.set(0);
     helpButton.interactive = true;
     helpButton.x = setup.width - 2 * helpButton.width;
-    helpButton.y = MARGIN_TOP;
+    helpButton.y = -5*MARGIN_TOP;
     helpButton.on("pointerdown", help);
     app.stage.addChild(helpButton);
 
     levelText.alpha = 0;
     livesHeart.alpha = 0;
     livesText.alpha = 0;
-    helpButton.alpha = 0;
 
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
@@ -1114,7 +1092,7 @@ export const init = (app, setup) => {
           fill: LINE_COLORS.blue,
           fontWeight: "bold",
           fontFamily: "Quicksand",
-          fontSize: CARD_WIDTH / 2,
+          fontSize: CARD_WIDTH / 2.5,
         });
         t.x = originX + delta * i + CARD_WIDTH / 2;
         t.y = originY + delta * j + CARD_WIDTH / 2;
