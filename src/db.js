@@ -220,6 +220,11 @@ export const saami = {
       url: "../interactives/saami/earlyestimation",
     },
     {
+      type: LINK_TYPES.GAME,
+      text: "Ten Frames",
+      url: "../interactives/saami/tens",
+    },
+    {
       type: LINK_TYPES.IOS_APP,
       text: "App Store Link for NumberShapes Game",
       url: "https://apps.apple.com/us/app/numbershapes/id1444912086",

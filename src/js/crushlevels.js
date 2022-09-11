@@ -2236,6 +2236,23 @@ export const TP2 = {
   counter: counters.red,
 };
 
+export const TP2A = {
+  grid: [2, 2],
+  value: 7,
+  delta: -1,
+  mesh: [5, 2],
+  random: false,
+  counter: counters.red,
+};
+
+export const TP2B = {
+  grid: [2, 2],
+  value: 6,
+  delta: 1,
+  mesh: [5, 2],
+  counter: counters.red,
+};
+
 export const TP3 = {
   grid: [3, 2],
   value: 7,
@@ -2244,6 +2261,44 @@ export const TP3 = {
   random: false,
   counter: counters.red,
 };
+
+export const TP3A = {
+  grid: [3, 2],
+  value: 8,
+  delta: -1,
+  mesh: [5, 2],
+  random: false,
+  counter: counters.red,
+};
+
+
+export const TP3B = {
+  grid: [3, 2],
+  value: 7,
+  delta: -1,
+  mesh: [5, 2],
+  random: false,
+  counter: counters.red,
+};
+
+export const TP3C = {
+  grid: [3, 2],
+  value: 6,
+  delta: 1,
+  mesh: [5, 2],
+  random: false,
+  counter: counters.red,
+};
+
+export const TP3D = {
+  grid: [3, 2],
+  value: 5,
+  delta: 1,
+  mesh: [5, 2],
+  random: false,
+  counter: counters.red,
+};
+
 
 export const TP4 = {
   grid: [3, 3],
@@ -2288,39 +2343,12 @@ export const TP8 = {
   mesh: [5, 2],
   random: false,
   counter: counters.red,
-};
-
-export const TA1 = {
-  grid: [2, 2],
-  cards: [
-    { types: [0, 0], arr: tens.four_six },
-    { types: [0, 0], arr: tens.five_five },
-    { types: [0, 0], arr: nines.one_eight },
-    { types: [0, 0], arr: tens.three_seven },
-  ],
-  mesh: [2, 2],
-  value: 10,
-  counter: counters.black,
-  type: puzzleTypes.number,
-};
-
-export const TA2 = {
-  grid: [2, 2],
-  cards: [
-    { types: [0, 1], arr: tens.two_eight },
-    { types: [0, 0], arr: tens.five_five },
-    { types: [0, 0, 0], arr: nines.three_three_three },
-    { types: [0, 1], arr: tens.three_seven },
-  ],
-  mesh: [2, 2],
-  value: 10,
-  counter: counters.black,
-  type: puzzleTypes.number,
-};
+}
 
 export const Tens = {
   name: "All About Eight",
-  puzzles: [TP1, TP2, TP3, TP4, TP5, TP6, TP7, TP8],
+  symbolicPuzzlesStartAt: 3,
+  puzzles: [TP1, TP2, TP2A, TP2B, TP3,TP3A, TP3B, TP3C, TP3D, TP4, TP5, TP6, TP7, TP8],
 };
 
 // #endregion
