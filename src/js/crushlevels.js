@@ -4638,10 +4638,13 @@ export const assessmentProgression = (level) => {
   }
 
   for (let n = start; n < ceil; n++) {
+
+    // There is a set at each index so students don't see the same puzzle over and over.
     let v = getRandomElement(AP_V[n]);
     let c = getRandomElement(AP_C[n]);
     let a = getRandomElement(AP_A[n]);
     prog.push(...[v, c, a]);
+    
   }
 
   return prog;

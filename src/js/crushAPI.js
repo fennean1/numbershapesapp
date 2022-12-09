@@ -17,6 +17,8 @@ import NewPinkBall from "../assets/NewPinkBall.png";
 import RedSquare from "../assets/Square.png";
 import Diamond from "../assets/Diamond.png";
 import StartButton from "../assets/GoButton.png";
+import RegularStart from "../assets/RegularStart.png"
+import SupriseStart from "../assets/SupriseStart.png"
 import Heart from "../assets/Heart.png";
 import CrushHelp from "../assets/CrushHelp.png";
 
@@ -120,7 +122,7 @@ export const init = (app, setup) => {
   const potentialLevel = setup.level.substring(5);
   const prefix = setup.level.substring(0, 5);
 
-  // Level previx is a keyword
+  // Level previx is a keyword - level skip feature...deprecate?
   if (prefix === "level") {
     let notNumber = isNaN(potentialLevel);
     // Check to see if valid number was provided.
@@ -130,7 +132,8 @@ export const init = (app, setup) => {
     }
   }
 
-  // Check the type of the custom level coming in.
+  // MOOO: This is insane: 
+  //Check the type of the custom level coming in.
   if (customLevel && customLevel.type == levelTypes.assessment){
     levels = customLevel.puzzles.map(ppArr=>{
       const _mod = ppArr.length
@@ -222,6 +225,7 @@ export const init = (app, setup) => {
   let pool;
 
   let startButton;
+  let surpriseButton;
   let levelText;
   let helpButton;
   let endOfGameModal;
@@ -412,6 +416,7 @@ export const init = (app, setup) => {
 
         // MOOOOOOOOOO
         if (levelCounter%quizEvery == 0){
+          console.log('Quiz Every?')
            newLevel = progression[progressionCounter%assessmentMod]
            progressionCounter++
         } 
@@ -853,8 +858,14 @@ export const init = (app, setup) => {
     });
   }
 
-  function startGame() {
+  function startGame(surprise) {
+
+    if (surprise){
+      levelCounter = getRandomInt(levels.length)
+    }
+
     const startLevel = levels[levelCounter % mainLevelsMod];
+    
 
     updateLayoutParams(setup.width, setup.height, startLevel);
 
@@ -872,7 +883,7 @@ export const init = (app, setup) => {
     livesText.text = NUMBER_OF_LIVES;
     helpButton.text = "?";
 
-    Tween.to(this, { y: -this.height, onComplete: onComplete });
+    Tween.to([startButton,surpriseButton], { y: -startButton.height, onComplete: onComplete });
   }
 
   function makeInteractive() {
@@ -975,15 +986,25 @@ export const init = (app, setup) => {
     backGround.height = setup.height;
     app.stage.addChild(backGround);
 
-    startButton = new PIXI.Sprite.from(StartButton);
+    startButton = new PIXI.Sprite.from(RegularStart);
     startButton.anchor.set(0.5);
     startButton.interactive = true;
     startButton.x = setup.width / 2;
-    startButton.y = setup.height / 2;
+    startButton.y = setup.height / 4;
     startButton.width = CARD_WIDTH * 1.5;
-    startButton.height = CARD_WIDTH * 1.5;
-    startButton.on("pointerdown", startGame);
+    startButton.height = startButton.width/4;
+    startButton.on("pointerdown", ()=>startGame(false));
     app.stage.addChild(startButton);
+
+    surpriseButton = new PIXI.Sprite.from(SupriseStart);
+    surpriseButton.anchor.set(0.5);
+    surpriseButton.interactive = true;
+    surpriseButton.x = setup.width / 2;
+    surpriseButton.y = setup.height / 2;
+    surpriseButton.width = CARD_WIDTH * 1.5;
+    surpriseButton.height = surpriseButton.width/4
+    surpriseButton.on("pointerdown", ()=>startGame(true));
+    app.stage.addChild(surpriseButton);
 
     livesText = new PIXI.Text("b", {
       fontWeight: "bold",
