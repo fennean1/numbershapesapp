@@ -94,6 +94,22 @@ class CardPool {
         }
         keys = [...keys,...keys]
       break;
+      case "SIMPLE_MATCHING":
+        for (let c = 0;c<6;c++){
+          for (let n = 0;n<4;n++){
+            keys.push({color: c,number: n})
+          }
+        }
+        keys = [...keys,...keys]
+      break;
+      case "HENRY_MATCHING":
+        for (let c = 0;c<6;c++){
+          for (let n = 0;n<3;n++){
+            keys.push({color: c,number: n})
+          }
+        }
+        keys = [...keys,...keys]
+      break;
       default:
     }
     return keys

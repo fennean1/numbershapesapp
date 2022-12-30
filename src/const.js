@@ -39,6 +39,7 @@ export const STEP_TYPES = {
   TEMPERATURE: "icon",
 }
 
+// MAPS URL TO SETUP DATA!!!
 export const SETUPS = {
   multiplication_groups: {},
   hidden_eggs: {type: 6},
@@ -46,6 +47,8 @@ export const SETUPS = {
   card_matching: {type: "MEDIUM_MATCHING"},
   card_matching_advanced: {type: "ADVANCED_MATCHING"},
   card_matching_basic: {type: "BASIC_MATCHING"},
+  card_matching_simple: {type: "SIMPLE_MATCHING"},
+  card_matching_henry: {type: "HENRY_MATCHING"},
   saami: {type: "GAME_MODE"}
 }
 
