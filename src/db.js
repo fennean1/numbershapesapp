@@ -466,6 +466,16 @@ export const card_matching = {
   LINKS: [
     {
       type: LINK_TYPES.GAME,
+      text: "Match Game Numbers 1 to 3",
+      url: "../interactives/match_game/card_matching_henry",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Match Game Numbers 1 to 4",
+      url: "../interactives/match_game/card_matching_simple",
+    },
+    {
+      type: LINK_TYPES.GAME,
       text: "Match Game Numbers 2 to 5",
       url: "../interactives/match_game/card_matching_basic",
     },

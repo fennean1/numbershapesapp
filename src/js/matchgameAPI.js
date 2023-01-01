@@ -1,12 +1,10 @@
 import * as PIXI from "pixi.js";
 import {TweenMax,TweenLite,TimelineLite} from "gsap";
-import Clouds from "../assets/Clouds.png";
 import Mountains from "../assets/Mountains.png";
 import Grass from "../assets/Grass.png";
 import BlankCard from "../assets/BlankCard.png";
 import {BLUE,RED,GREEN,ORANGE,PURPLE,PINK,NUMERAL,BALLS,BUTTONS} from "../AssetManager.js"
 import {shuffle} from "./api.js"
-import { Tween } from "gsap/gsap-core";
 
 
 export const init = (app, setup) => {
