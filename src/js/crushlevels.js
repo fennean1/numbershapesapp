@@ -1769,10 +1769,11 @@ export const AP_V = [
 // #endregion
 
 // #region Assessments
+// MOOOO
 export const Assessment_Visual = {
   type: levelTypes.assessment,
   name: "Visual Assessment",
-  puzzles: AP_V,
+  puzzles: AP_V, // This is coming in as a 2D array and then we're checking within the main app. SHuffle this using "Assment Progression"
 };
 
 export const Assessment_Combined = {
@@ -4598,23 +4599,6 @@ const TEST = {
   puzzles: tstLevel,
 };
 
-export const LEVELS = {
-  tenplusorminusone: TenPlusOrMinusOne,
-  firstnumbers: FirstNumbers,
-  earlyestimation: EarlyEstimation,
-  countingfivetoten: CountingFiveToTen,
-  doubles: Doubles,
-  eights: Eights,
-  tens: Tens,
-  abstractpuzzles: AbstractPuzzles,
-  assessmentonetoten: Assessment_Abstract,
-  saami_number_talks: Assessment_Abstract,
-  visualsymbolictoten: Assessment_Combined,
-  visualtoten: Assessment_Visual,
-  testlevel: TEST,
-  test: TEST,
-};
-
 export const getRandomElement = (arr) => {
   let mod = arr.length;
   let rand = getRandomInt(10 * mod);
@@ -4623,7 +4607,7 @@ export const getRandomElement = (arr) => {
 };
 
 // This randomizes the "visual/symbolic" cards in the progression.
-export const assessmentProgression = (level) => {
+export const assessmentProgression = (level,type) => {
   let prog = [];
   // These arrays may change in length but should be roughly the same
   const A = AP_A.length;
@@ -4643,16 +4627,27 @@ export const assessmentProgression = (level) => {
     let v = getRandomElement(AP_V[n]);
     let c = getRandomElement(AP_C[n]);
     let a = getRandomElement(AP_A[n]);
-    prog.push(...[v, c, a]);
+
+    if (type == "visual"){
+      prog.push(...[v]);
+    } else if (type == "combined"){
+      prog.push(...[c]);
+    } else if (type=="abstract"){
+      prog.push(...[a]);
+    } else {
+      prog.push(...[v,c,a]);
+    }
     
   }
-
   return prog;
 };
 
 
+
+
 // #region All Levels
 
+// Main Game
 export const saamiPuzzles = [
   ...Saami.puzzles,
   ...FirstNumbers.puzzles,
@@ -4678,5 +4673,50 @@ export const saamiPuzzles = [
   ...EstimationLevelTwo.puzzles,
   ...NS_Tens.puzzles,
 ];
+
+
+export const Abstract_Progression = {
+  name: "All abstract puzzles.",
+  symbolicPuzzlesStartAt: 3,
+  puzzles: assessmentProgression(null,"abstract"),
+};
+
+export const Visual_Progression = {
+  name: "All abstract puzzles.",
+  symbolicPuzzlesStartAt: 3,
+  puzzles: assessmentProgression(null,"visual"),
+};
+
+export const Combined_Progression = {
+  name: "All combined puzzles.",
+  symbolicPuzzlesStartAt: 3,
+  puzzles: assessmentProgression(null,"combined"),
+};
+
+export const All_Progression = {
+  name: "All in sequence puzzles.",
+  symbolicPuzzlesStartAt: 3,
+  puzzles: assessmentProgression(),
+};
+
+
+console.log(assessmentProgression(null,"abstract"),Tens)
+// Custom Levels
+export const LEVELS = {
+  tenplusorminusone: TenPlusOrMinusOne,
+  firstnumbers: FirstNumbers,
+  earlyestimation: EarlyEstimation,
+  countingfivetoten: CountingFiveToTen,
+  doubles: Doubles,
+  eights: Eights,
+  tens: Tens,
+  visualpuzzles: Visual_Progression,
+  combinedpuzzles: Combined_Progression,
+  abstractpuzzles: Abstract_Progression,
+  cpa: All_Progression,
+  testlevel: TEST,
+  test: TEST,
+};
+
 
 // #endregion

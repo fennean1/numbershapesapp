@@ -132,17 +132,8 @@ export const init = (app, setup) => {
     }
   }
 
-  // MOOO: This is insane: 
-  //Check the type of the custom level coming in.
-  if (customLevel && customLevel.type == levelTypes.assessment){
-    levels = customLevel.puzzles.map(ppArr=>{
-      const _mod = ppArr.length
-      const int = getRandomInt(100)
-      const i = int%_mod
-      return ppArr[i]
-    })
-    mainLevelsMod = levels.length;
-  } else if (customLevel) {
+  // Check custom level.
+  if (customLevel) {
     levels = customLevel.puzzles;
     mainLevelsMod = levels.length;
   }

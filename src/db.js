@@ -131,17 +131,27 @@ export const saami_number_talks = {
   LINKS: [
     {
       type: LINK_TYPES.GAME,
-      text: "Symbolic Saami Number Talks",
-      url: "../interactives/saami/saami_number_talks",
+      text: "Original Saami Number Talks",
+      url: "../interactives/saami/cpa",
     },
     {
       type: LINK_TYPES.GAME,
       text: "Visual / Symbolic Saami Number Talks",
-      url: "../interactives/saami/visualsymbolictoten",
+      url: "../interactives/saami/combinedpuzzles",
     },
     {
       type: LINK_TYPES.GAME,
-      text: "Original Saami Game",
+      text: "Visual Saami Number Talks",
+      url: "../interactives/saami/visualpuzzles",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Abstract Saami Number Talks",
+      url: "../interactives/saami/abstractpuzzles",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Saami Game",
       url: "../interactives/saami/saami",
     },
   ],
