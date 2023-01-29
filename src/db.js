@@ -151,6 +151,21 @@ export const saami_number_talks = {
     },
     {
       type: LINK_TYPES.GAME,
+      text: "Ten Frames",
+      url: "../interactives/saami/tens",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Kindergarten Numbers",
+      url: "../interactives/saami/firstnumbers",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Ten Plus or Minus One",
+      url: "../interactives/saami/tenplusorminusone",
+    },
+    {
+      type: LINK_TYPES.GAME,
       text: "Saami Game",
       url: "../interactives/saami/saami",
     },

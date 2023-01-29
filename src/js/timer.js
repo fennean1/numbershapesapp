@@ -38,7 +38,7 @@ function createCircle(){
       circles.push(createCircle())
     }
 
-    let minutes = 5
+    let minutes = 10
 
 
 
