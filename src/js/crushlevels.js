@@ -4699,8 +4699,6 @@ export const All_Progression = {
   puzzles: assessmentProgression(),
 };
 
-
-console.log(assessmentProgression(null,"abstract"),Tens)
 // Custom Levels
 export const LEVELS = {
   tenplusorminusone: TenPlusOrMinusOne,

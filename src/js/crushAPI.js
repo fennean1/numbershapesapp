@@ -13,6 +13,11 @@ import NewDarkPurpleBall from "../assets/NewDarkPurpleBall.png";
 import NewLightBlueBall from "../assets/NewLightBlueBall.png";
 import NewPinkBall from "../assets/NewPinkBall.png";
 
+import LetterA from "../assets/A.png";
+import LetterB from "../assets/B.png";
+import LetterC from "../assets/C.png";
+import LetterD from "../assets/D.png";
+
 //import HalfBall from "../assets/HalfBall.png";
 import RedSquare from "../assets/Square.png";
 import Diamond from "../assets/Diamond.png";
@@ -50,6 +55,7 @@ import {
   assessmentProgression,
 } from "./crushlevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBERSHAPES } from "./numbershapes";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 let NUMERALS = [];
 
@@ -207,6 +213,13 @@ export const init = (app, setup) => {
     8: new PIXI.Texture.from(eight),
     9: new PIXI.Texture.from(nine),
     10: new PIXI.Texture.from(ten),
+  };
+
+  const LETTER_CARDS = {
+    1: new PIXI.Sprite.from(LetterA),
+    3: new PIXI.Sprite.from(LetterB),
+    2: new PIXI.Sprite.from(LetterC),
+    4: new PIXI.Sprite.from(LetterD),
   };
 
   // Flags
@@ -526,6 +539,7 @@ export const init = (app, setup) => {
       this.mesh = level.mesh;
       this.maxMeshDim = Math.max(this.mesh[0], this.mesh[1]);
       this.unit = CARD_WIDTH / (this.maxMeshDim + 1);
+      this.indicator = null
       this.init();
     }
 
@@ -572,8 +586,13 @@ export const init = (app, setup) => {
       // We probably want to have different "card types"
       if (this.level.type == "number") {
 
+
+  
+
+
         const card = this.level.cards[acc];
         const { arr, types } = card;
+
         const coords = assessmentCardCustomCoordinates[arr.length];
 
         shuffleArray(coords);
@@ -708,12 +727,17 @@ export const init = (app, setup) => {
 
       for (let i = 0; i < level.grid[0]; i++) {
         for (let j = 0; j < level.grid[1]; j++) {
+
           let c = this.cards[acc];
+
 
           // Handling offcard
           let potentialValue = level.value;
 
+          // Off card is pre-set in "Number" levels. 
           if (acc == r && level.type != "number") {
+
+          
             const randMod = getRandomInt(20);
 
             if (level.random == false) {
@@ -734,6 +758,19 @@ export const init = (app, setup) => {
           c.j = j;
           app.stage.addChild(c);
           this.activeCards.push(c);
+
+          if (level.type == "number"){
+            c.indicator = LETTER_CARDS[acc%4+1]
+            c.indicator.width = CARD_WIDTH/8
+            c.indicator.height = CARD_WIDTH/8
+            c.indicator.x = c.indicator.height/5
+            c.indicator.y = c.indicator.width/5
+            c.addChild(c.indicator)
+          } else {
+            c.removeChild(c.indicator)
+          }
+
+
           acc++;
         }
       }
@@ -840,6 +877,7 @@ export const init = (app, setup) => {
     cardGraphics.beginFill(0xffffff);
     cardGraphics.lineStyle(CARD_WIDTH / 50, LINE_COLOR);
     cardGraphics.drawRoundedRect(0, 0, CARD_WIDTH, CARD_WIDTH, CARD_WIDTH / 10);
+
     CARD_TEXTURE = app.renderer.generateTexture(cardGraphics);
 
     Object.keys(ABSTRACT_CARDS).forEach((k) => {

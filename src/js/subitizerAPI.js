@@ -42,7 +42,6 @@ const BALL_STATES = {
   RANDOM: 2,
 }
 
-const OBJS = [RedEgg,BlueBall,Coin]
 const EGGS = [RedEgg,YellowEgg, PurpleEgg, GreenEgg, BlueEgg,OrangeEgg]
 
 
@@ -151,11 +150,7 @@ export const init = (app, setup) => {
 
     
     function revealEquation(state){
-      console.log("new alpha")
 
-      console.log("show equation",showEquation)
-      console.log("state",state)
-    
 
           showEquation = state != null ? state : !showEquation
           let newAlpha = showEquation ? 1 : 0
@@ -269,7 +264,7 @@ export const init = (app, setup) => {
     function moveSplat(ballState,cords){
       switch (ballState) {
       case BALL_STATES.FRAME:
-          console.log("CALLING FRAME")
+
           let frameWidth = balls.length > 5 ? 5*dx : balls.length*dx
           let kX = randBetween(0,5)
           let kY = randBetween(-1,2)
