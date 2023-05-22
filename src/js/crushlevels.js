@@ -4252,6 +4252,7 @@ export const TenPlusOrMinusOne = {
   puzzles: [PMT, PMT1, PMT2, PMT3, PMT4, PMT5, PMT6, PMT7, PMT8, PMT9, PMT10],
 };
 
+
 // #endregion
 
 // #region PREKEST
@@ -4340,11 +4341,129 @@ export const SAMI9 = {
 export const SAMI10 = {
   grid: [5, 5],
   value: 11,
+  delta: 7,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.red,
+};
+
+export const SAMI11 = {
+  grid: [5, 5],
+  value: 11,
   delta: 9,
   mesh: [5, 5],
   random: false,
   counter: counters.purple,
 };
+
+export const SAMI12 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI13 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI14 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI15 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI16 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI17 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI18 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI19 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI20 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI21 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI22 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
+export const SAMI23 = {
+  grid: [5, 5],
+  value: 11,
+  delta: 9,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.purple,
+};
+
 
 export const Saami = {
   name: "Saami",
@@ -4363,6 +4482,8 @@ export const Saami = {
 };
 
 // #endregion
+
+
 
 // #region Four By Four Large Number Estimation
 
@@ -4628,7 +4749,9 @@ export const assessmentProgression = (level,type) => {
     let c = getRandomElement(AP_C[n]);
     let a = getRandomElement(AP_A[n]);
 
+
     if (type == "visual"){
+
       prog.push(...[v]);
     } else if (type == "combined"){
       prog.push(...[c]);
@@ -4640,6 +4763,12 @@ export const assessmentProgression = (level,type) => {
     
   }
   return prog;
+};
+
+const Pre_Kindergarten = {
+  name: "prek",
+  type: "visual",
+  puzzles: [...Saami.puzzles,...Doubles.puzzles,...Sevens.puzzles,...FiveFrame.puzzles,...FirstNumbers.puzzles,...Rainbows.puzzles,],
 };
 
 
@@ -4714,6 +4843,8 @@ export const LEVELS = {
   cpa: All_Progression,
   testlevel: TEST,
   test: TEST,
+  prek: Pre_Kindergarten,
+  calicos: Pre_Kindergarten,
 };
 
 

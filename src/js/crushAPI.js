@@ -88,12 +88,17 @@ export const init = (app, setup) => {
 
   // Check for Custom Level (IDEA: no such thing as custom lvl)
   let customLevel = null
-  customLevel = LEVELS[setup.level];
-  
-  let quizEvery = 5
 
-  let progression = assessmentProgression(customLevel)
+  customLevel = LEVELS[setup.level];
+
+  let quizEvery = (setup.level == "calicos" || setup.level == "prek") ? 10 : 5
+
+
+  let progression = assessmentProgression(null,customLevel && customLevel.type)
+
   let levels = saamiPuzzles;
+
+  console.log("custom level",customLevel)
   
   let mainLevelsMod = levels.length;
   let assessmentMod = progression.length
