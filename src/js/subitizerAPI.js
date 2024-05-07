@@ -15,7 +15,7 @@ import LineButton from "../assets/LineButton.png";
 import EquationButton from "../assets/EquationButton.png";
 import ShuffleButton from "../assets/ShuffleButton.png";
 import MoreAppsButton from "../assets/MoreAppsButton.png";
-import PotOfGold from "../assets/PotOfGold.png";
+import PotOfGold from "../assets/PureGlassBubble.png";
 import Coin from "../assets/Coin.png";
 import PurpleEgg from '../assets/PurpleEgg.png'
 import YellowEgg from '../assets/YellowEgg.png'

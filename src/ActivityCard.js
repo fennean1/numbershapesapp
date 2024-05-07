@@ -7,19 +7,14 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
+
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-
-import { List, ListItem } from "@mui/material";
 import Button from '@mui/material/Button';
 import Chat from "./Chat.js";
-
-import { Routes, Route, useParams, useNavigate} from "react-router-dom";
 
 
 const ExpandMore = styled((props) => {
@@ -36,12 +31,9 @@ const ExpandMore = styled((props) => {
 export default function ActivityCard(props) {
   // CONTROLLER / HOOKS
 
-  const [open, setDialogOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
-  const navigateTo = useNavigate()
 
   const handleExpandClick = () => {
-    console.log("handleExpandClick");
     setExpanded(!expanded);
   };
 

@@ -24,7 +24,7 @@ export default function Interactive(props) {
         elementRef = me;
       }}
       width="100%"
-      viewBox="0 0 500 500"
+      viewBox="0 0 1280 720"
     >
     </svg>
   );

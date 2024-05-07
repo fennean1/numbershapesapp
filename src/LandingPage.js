@@ -16,7 +16,6 @@ export default function LandingPage() {
       <Typography variant = "h7">
         andrewfenner@numbershapes.com
       </Typography>
-
     </div>
   );
 }

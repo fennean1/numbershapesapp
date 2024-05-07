@@ -5,6 +5,7 @@ export const INTERACTIVE_TYPES = {
   MATCH_GAME: "match_game",
   MULTIPLICATION: "multiplication",
   SAAMI: "saami",
+  OPAL: "opal",
 }
 
 export const ACTORS = {
@@ -49,7 +50,9 @@ export const SETUPS = {
   card_matching_basic: {type: "BASIC_MATCHING"},
   card_matching_simple: {type: "SIMPLE_MATCHING"},
   card_matching_henry: {type: "HENRY_MATCHING"},
-  saami: {type: "GAME_MODE"}
+  saami: {type: "GAME_MODE"},
+  opal: {type: "THIS_IS_OPAL"}
+
 }
 
 export const TAGS = {

@@ -6,6 +6,7 @@ import Subitizer from './Interactives/Subitizer';
 import Multiplication from './Interactives/Multiplication';
 import MatchGame from "./Interactives/MatchGame"
 import Crush from "./Interactives/Crush"
+import Opal from "./Interactives/Opal"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 import InteractiveSVG from "./InteractiveSVG"
@@ -77,6 +78,11 @@ const Main = () => (
       exact
       path="interactives/saami/:activityname"
       element={<Crush fullScreen = {true}/>}
+    />
+        <Route
+      exact
+      path="interactives/opal/:activityname"
+      element={<Opal fullScreen = {true}/>}
     />
     <Route
       exact

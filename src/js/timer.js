@@ -1,6 +1,8 @@
 // Problem que setup
 import { gsap, Timeline, Tween, Elastic , Linear} from "gsap/gsap-core";
 import * as NS from "./numbershapes.js"
+
+
 export const init = (e, setup) => {
 
 
