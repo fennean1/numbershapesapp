@@ -356,7 +356,7 @@ export const subtraction_spheres = {
     { actor: ACTORS.STUDENT, text: "Five!" },
   ],
   INTRO: {
-    TEXT: "In this activity, students learn about 'Take-Away' subtraction by intepreting pictures with mising parts. ",
+    TEXT: "In this activity, students learn about 'Take-Away' subtraction by intepreting pictures with missing parts. ",
   },
   SLIDES: [
     {

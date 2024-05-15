@@ -1,21 +1,23 @@
 // Problem que setup
 import * as PIXI from "pixi.js";
-import Clouds from "../assets/Clouds.png";
-import BlueBall from "../assets/BlueBall.png";
 
-import LetterA from "../assets/A.png";
-import LetterB from "../assets/B.png";
-import LetterC from "../assets/C.png";
-import LetterD from "../assets/D.png";
+// APIS
+import {
+  getRandomArray,
+  getRandomInt,
+  shuffleArray,
+  getNRandomElementsFromArray,
+} from "./api.js";
+import { Timeline, Tween, Linear, Sine, Expo, Elastic } from "gsap/gsap-core";
+import {
+  counters,
+  opalLevels,
+  assessmentCardCustomCoordinates,
+} from "./opallevels.js";
+import { getWidthAndHeightOfNumberShape, NUMBERSHAPES } from "./numbershapes";
 
-//import HalfBall from "../assets/HalfBall.png";
-import RedSquare from "../assets/Square.png";
-import Diamond from "../assets/Diamond.png";
-import RegularStart from "../assets/RegularStart.png"
-import SupriseStart from "../assets/SupriseStart.png"
-import Heart from "../assets/Heart.png";
-import CrushHelp from "../assets/CrushHelp.png";
 
+// GOTO: Local Assets
 import one from "../assets/H1.png";
 import two from "../assets/H2.png";
 import three from "../assets/H3.png";
@@ -26,24 +28,7 @@ import seven from "../assets/H7.png";
 import eight from "../assets/H8.png";
 import nine from "../assets/H9.png";
 import ten from "../assets/H10.png";
-
-import {
-  getRandomArray,
-  getRandomInt,
-  Draggable,
-  shuffleArray,
-  getNRandomElementsFromArray,
-} from "./api.js";
-import { Timeline, Tween, Elastic } from "gsap/gsap-core";
-import {
-  counters,
-  LEVELS,
-  saamiPuzzles,
-  assessmentCardCustomCoordinates,
-  assessmentProgression,
-} from "./crushlevels.js";
-import { getWidthAndHeightOfNumberShape, NUMBERSHAPES } from "./numbershapes";
-
+import { duration } from "@mui/material";
 
 let NUMERALS = [];
 
@@ -76,74 +61,135 @@ const TEXTURES = {}
 export const init = (app, setup) => {
 
 
-// PIXI Loader Goes Here
+  const VIEW_WIDTH = setup.width;
+  const VIEW_HEIGHT = setup.height;
+  const MIN_DIM = Math.min(VIEW_WIDTH, VIEW_HEIGHT);
+  const MAX_DIM = Math.max(VIEW_WIDTH, VIEW_HEIGHT);
 
-const optionsExtraLargeAsset = {metadata: {resourceOptions: {width: setup.width*2}}}
-const optionsLargeAsset = {metadata: {resourceOptions: {width: setup.width}}}
-const optionsMediumAsset = {metadata: {resourceOptions: {width: setup.width}}}
-const optionsSmallAsset =  {metadata: {resourceOptions: {width: setup.width}}}
+  const MENU_MARGIN = MIN_DIM * 0.02;
 
+  // TODO: Put the REAL constants here. 
 
-PIXI.Loader.shared
-.add('planet_pink_fire','https://res.cloudinary.com/numbershapes/image/upload/v1714743947/Opal/planet_pink_fire_hgttly.svg',optionsExtraLargeAsset)
-.add('background_opal','https://res.cloudinary.com/numbershapes/image/upload/v1714475090/Opal/background_opal_vbwf4o.svg',optionsLargeAsset)
-.add('gem_pink','https://res.cloudinary.com/numbershapes/image/upload/v1714505893/Opal/PinkGem_tt9cbw.png',optionsLargeAsset)
-.add('small_star','https://res.cloudinary.com/numbershapes/image/upload/v1714758952/Opal/Asset_4_4x_sscyrd.png',optionsSmallAsset)
-.add('gem_blue','https://res.cloudinary.com/numbershapes/image/upload/v1714758952/Opal/Asset_4_4x_sscyrd.png',optionsSmallAsset)
-.add('planet_green_swirl','https://res.cloudinary.com/numbershapes/image/upload/v1714524825/Opal/planet_green_swirl_q8ovc1.svg',optionsLargeAsset)
-.add('tile_rock','https://res.cloudinary.com/numbershapes/image/upload/v1714486943/Opal/tile_rock_pmvaxp.png',optionsLargeAsset)
-.add('planet_pink_comet','https://res.cloudinary.com/numbershapes/image/upload/v1714760344/fghnjm_lqvcfi.svg',optionsLargeAsset)
-.add('gem_green','https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg',optionsSmallAsset).load((loader, resource)=> {     
-   TEXTURES['gem_blue'] = resource.gem_blue.texture
-   TEXTURES['tile_rock'] = resource.tile_rock.texture
-   TEXTURES['small_star'] = resource.small_star.texture
-   TEXTURES['planet_green_swirl'] = resource.planet_green_swirl.texture
-   TEXTURES['planet_pink_comet'] = resource.planet_pink_comet.texture
-   TEXTURES['gem_green'] = resource.gem_green.texture
-   TEXTURES['gem_pink'] = resource.gem_pink.texture
-   TEXTURES['planet_pink_fire'] = resource.planet_pink_fire.texture
-   TEXTURES['background_opal'] = resource.background_opal.texture
-})
+  // PIXI Loader Goes Here
+
+  // GOTO_ASSET Loading
+
+  const optionsExtraLargeAsset = { metadata: { resourceOptions: { width: setup.width * 2 } } }
+  const optionsLargeAsset = { metadata: { resourceOptions: { width: setup.width } } }
+  const optionsMediumAsset = { metadata: { resourceOptions: { width: setup.width / 2 } } }
+  const optionsSmallAsset = { metadata: { resourceOptions: { width: setup.width / 8 } } }
 
 
-  // Check for Custom Level (IDEA: no such thing as custom lvl)
-  let customLevel = null
 
-  customLevel = LEVELS[setup.level];
+  PIXI.Loader.shared
+    .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsExtraLargeAsset)
+    .add('particle_rock_1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715625602/Opal/particle_rock_1_haiujp.svg', optionsSmallAsset)
+    .add('particle_rock_2', 'https://res.cloudinary.com/numbershapes/image/upload/v1715697608/Opal/particle_rock_2_ma2hcc.svg', optionsSmallAsset)
+    .add('planet_pink_fire', 'https://res.cloudinary.com/numbershapes/image/upload/v1714743947/Opal/planet_pink_fire_hgttly.svg', optionsExtraLargeAsset)
+    .add('planet_green_bubble', 'https://res.cloudinary.com/numbershapes/image/upload/v1715781752/Opal/planet_green_bubble_b7hyac.svg', optionsExtraLargeAsset)
+    .add('planet_green_swirl', 'https://res.cloudinary.com/numbershapes/image/upload/v1714524825/Opal/planet_green_swirl_q8ovc1.svg', optionsLargeAsset)
+    .add('planet_orange_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715705216/Opal/planet_orange_rocks_s90iu2.svg', optionsLargeAsset)
+    .add('planet_blue_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715788056/Opal/planet_blue_carved_lnul0v.svg', optionsLargeAsset)
+    .add('planet_pink_comet',"https://res.cloudinary.com/numbershapes/image/upload/v1714760192/planet_pink_comet_2_ja0pr0.svg", optionsExtraLargeAsset)
+    .add('planet_green_carved',"https://res.cloudinary.com/numbershapes/image/upload/v1715793449/Opal/planet_green_carved_tmmnnd.svg", optionsLargeAsset)
+    .add('background_opal', 'https://res.cloudinary.com/numbershapes/image/upload/v1714475090/Opal/background_opal_vbwf4o.svg', optionsLargeAsset)
+    .add('button_go', 'https://res.cloudinary.com/numbershapes/image/upload/v1715192866/Opal/go_button_tlksgj_kuobhs.svg', optionsMediumAsset)
+    .add('counter_square_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1715281973/Opal/counter_square_pink_sjlfk0.png', optionsLargeAsset)
+    .add('counter_diamond_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784606/Opal/counter_blue_diamond_m7dtxu_norw6w.png', optionsLargeAsset)
+    .add('counter_circle_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1715610982/Opal/counter_circle_green_hxk2wz.png', optionsLargeAsset)
+    .add('counter_oval_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715706392/Opal/counter_oval_orange_cdrwvh.png', optionsSmallAsset)
+    .add('small_star', 'https://res.cloudinary.com/numbershapes/image/upload/v1714758952/Opal/Asset_4_4x_sscyrd.png', optionsSmallAsset)
+    .add('tile_rock', 'https://res.cloudinary.com/numbershapes/image/upload/v1714486943/Opal/tile_rock_pmvaxp.png', optionsLargeAsset)
+    .add('bolt_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1715192605/Opal/bolt_pink_g3lifx_gpbngm.svg', optionsSmallAsset)
+    .add('bolt_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1715782917/Opal/bolt_green_eydext.svg', optionsSmallAsset)
+    .add('bolt_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715782918/Opal/bolt_blue_m2h8ue.svg', optionsSmallAsset)
+    .add('bolt_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715782763/Opal/bolt_orange_fqnueq.svg', optionsSmallAsset)
+    .add('gauge_crystal_l1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715192237/gauge_crystal_l1_s5y1jl.svg', optionsLargeAsset)
+    .add('gem_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784648/Opal/gem_orange_yyaxrc.svg', optionsLargeAsset)
+    .add('gem_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1714505893/Opal/PinkGem_tt9cbw.png', optionsLargeAsset)
+    .add('gem_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784649/Opal/gem_blue_pmxanr.svg', optionsLargeAsset)
+    .add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset).load((loader, resource) => {
+     
+      // Rocks
+      TEXTURES['tile_rock'] = resource.tile_rock.texture
+      TEXTURES['particle_rock_1'] = resource.particle_rock_1.texture
+      TEXTURES['particle_rock_2'] = resource.particle_rock_2.texture
 
-  let quizEvery = (setup.level == "calicos" || setup.level == "prek") ? 10 : 5
+      // Counters
+      TEXTURES['counter_circle_green'] = resource.counter_circle_green.texture
+      TEXTURES['counter_square_pink'] = resource.counter_square_pink.texture
+      TEXTURES['counter_diamond_blue'] = resource.counter_diamond_blue.texture
+      TEXTURES['counter_oval_orange'] = resource.counter_oval_orange.texture
+
+      // Background 
+      TEXTURES['small_star'] = resource.small_star.texture
+      TEXTURES['background_opal'] = resource.background_opal.texture
+
+      // Planets
+      TEXTURES['planet_pink_comet'] = resource.planet_pink_comet.texture
+      TEXTURES['planet_green_swirl'] = resource.planet_green_swirl.texture
+      TEXTURES['planet_pink_fire'] = resource.planet_pink_fire.texture
+      TEXTURES['planet_orange_carved'] = resource.planet_orange_carved.texture
+      TEXTURES['planet_green_bubble'] = resource.planet_green_bubble.texture
+      TEXTURES['planet_blue_carved'] = resource.planet_blue_carved.texture
+      TEXTURES['planet_green_carved'] = resource.planet_green_carved.texture
 
 
-  let progression = assessmentProgression(null,customLevel && customLevel.type)
+      // Buttons
+      TEXTURES['button_go'] = resource.button_go.texture
 
-  let levels = saamiPuzzles;
+      // Gems
+      TEXTURES['gem_green'] = resource.gem_green.texture
+      TEXTURES['gem_pink'] = resource.gem_pink.texture
+      TEXTURES['gem_orange'] = resource.gem_orange.texture
+      TEXTURES['gem_blue'] = resource.gem_blue.texture
 
-  let mainLevelsMod = levels.length;
-  let assessmentMod = progression.length
+      // Ships
+      TEXTURES['ship_opal'] = resource.ship_opal.texture
+
+      // Bolts
+      TEXTURES['bolt_pink'] = resource.bolt_pink.texture
+      TEXTURES['bolt_green'] = resource.bolt_green.texture
+      TEXTURES['bolt_blue'] = resource.bolt_blue.texture
+      TEXTURES['bolt_orange'] = resource.bolt_orange.texture  
+
+      // Gauges
+
+      TEXTURES['gauge_crystal_l1'] = resource.gauge_crystal_l1.texture
   
-  const NUMBER_OF_LIVES = 9;
-  let levelCounter = 0;
-  let progressionCounter = 0;
-  let lifeCounter = NUMBER_OF_LIVES;
+    })
 
 
-  // UI
-  let plusHeart;
+  // GOTO_VARIABLES Declerations
+
+  // Counters
+  let puzzleCounter = 0;
+  let levelCounter = 0
+  let lifeCounter = 9
+
+  // Objects
+  let pool;
+
+  // GOTO_STATE Levels/Planets & Puzzles
+  let currentLevel = opalLevels[levelCounter]
+  let puzzlesForCurrentLevel = currentLevel.puzzles
+  let currentLevelLength = puzzlesForCurrentLevel.length;
 
   const scoreObject = {
     score: 0,
+    globalScore: 0,
     timer: 0,
     focusTime: 0,
   }
 
-  setInterval(()=>{
+  setInterval(() => {
     scoreObject.timer += 1
-  },10)
-
+  }, 10)
 
   let LINE_COLOR = 0x1191fa;
   const ABS_CARD_COLOR = LINE_COLORS.black;
 
+  // ASSETS
   const ABSTRACT_CARDS = {
     1: new PIXI.Text("1", {
       fontFamily: "Quicksand",
@@ -210,62 +256,55 @@ PIXI.Loader.shared
     10: new PIXI.Texture.from(ten),
   };
 
-  const LETTER_CARDS = {
-    1: new PIXI.Sprite.from(LetterA),
-    3: new PIXI.Sprite.from(LetterB),
-    2: new PIXI.Sprite.from(LetterC),
-    4: new PIXI.Sprite.from(LetterD),
-  };
 
   // Flags
   let helping = false;
   let learning = false;
 
-  let pool;
-
+  // GOTO_DECLARATIONS -  Global UI Declarations
+  let bolt_bar;
+  let shipOpal;
+  let currentPlanet;
+  let nextPlanet;
   let startButton;
-  let surpriseButton;
-  let levelText;
   let helpButton;
   let endOfGameModal;
   let endOfGameText;
   let helpModal;
-  let livesHeart;
-  let livesText;
   let backGround;
+  let bolt;
+  let bolt_gauge;
+  let stars = []
+  let collectableGem;
+  let barGraphics = new PIXI.Graphics();
+  let blasts = []
+  let topLeftCaveBackground
+  let topRightCaveBackground
+  let bottomLeftCaveBackground
+  let bottomRightCaveBackground
 
-  let currentLevel;
+
+  // GOTO_TIMELINES Definitions 
+  let shipOpalTimeline = new Timeline({ paused: true });
+  let globalTimeline = new Timeline({ paused: true });
+
+  // Game State
+  let currentPuzzle;
 
   const TEXT_COLOR = 0x1191fa;
 
 
-
-  let tlHeartBeat = new Timeline({ paused: true });
-
+  // TODO: Clean up this constants stuff. Tbh this should probably all be some type of state class. 
   let isMobileDevice = setup.width / setup.height < 0.75 ? true : false;
-
   let NEW_CARD_WIDTH = 40;
-
-  let VIEW_WIDTH = setup.width;
-  let VIEW_HEIGHT = setup.height;
-  let MIN_DIM = Math.min(VIEW_WIDTH, VIEW_HEIGHT);
-
-  let MARGIN_TOP = MIN_DIM * 0.02;
-
   let TOP_PADDING = isMobileDevice ? 0.1 * setup.height : 0.05 * setup.height;
-
   let CARD_TEXTURE;
-
   let maxMeshDimension = Math.max(initLevel.mesh[0], initLevel.mesh[1]);
-
   let gridUnitsWide = (maxMeshDimension + 2) * initLevel.grid[0];
   let gridUnitsHigh = (maxMeshDimension + 2) * initLevel.grid[1];
   let gridUnitsMax = Math.max(gridUnitsHigh, gridUnitsWide);
-
   let FONT_SIZE = isMobileDevice ? TOP_PADDING / 2 : TOP_PADDING;
-
   let DEFAULT_COUNTER = "blue";
-
   let UNIT = MIN_DIM / gridUnitsMax;
   let SPACE_BETWEEN_CARDS = UNIT / 4;
   let CARD_WIDTH = (maxMeshDimension + 1) * UNIT;
@@ -277,161 +316,253 @@ PIXI.Loader.shared
     SPACE_BETWEEN_CARDS * (initLevel.grid[1] - 1);
   let delta = CARD_WIDTH + SPACE_BETWEEN_CARDS;
 
-  let NEW_RED_COUNTER;
-  let NEW_PURPLE_COUNTER;
-  let NEW_ORANGE_COUNTER;
-  let NEW_LIGHT_BLUE_COUNTER;
-  let NEW_YELLOW_COUNTER;
-  let NEW_DARK_PURPLE_COUNTER;
-  let NEW_GREEN_COUNTER;
-  let NEW_BLUE_COUNTER;
-  let NEW_PINK_COUNTER;
+  // GOTO_CONSTANTS Decleration
 
+  let BOLT_BAR_WIDTH = CARD_WIDTH / 1.75
 
-  let RED_SQUARE_COUNTER = new PIXI.Texture.from(RedSquare);
-  let DIAMOND_COUNTER = new PIXI.Texture.from(Diamond);
+  let COUNTER_TEXTURE;
 
-  let RAINBOW = [
-    NEW_YELLOW_COUNTER,
-    NEW_LIGHT_BLUE_COUNTER,
-    NEW_ORANGE_COUNTER,
-    NEW_GREEN_COUNTER,
-    NEW_BLUE_COUNTER,
-    NEW_PINK_COUNTER,
-    NEW_PURPLE_COUNTER,
-    NEW_RED_COUNTER,
-    NEW_DARK_PURPLE_COUNTER,
-  ];
-
-  let COUNTER_TEXTURE = NEW_BLUE_COUNTER;
-
-  let C = {}
+  let COUNTERS = {}
+  let BOLTS = {}
 
   let originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
   let originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
 
-  function animateHeart() {
-    const onComplete = () => {
-      updateLives();
-      plusHeart.y = VIEW_HEIGHT + plusHeart.height;
-      plusHeart.x = livesHeart.x;
-    };
 
-    Tween.to(plusHeart, {
-      duration: 0.5,
-      alpha: 1,
-      width: livesHeart.width,
-      height: livesHeart.height,
-      ease: "power4.in",
-      y: livesHeart.y,
-      x: livesHeart.x,
-      onComplete: onComplete,
-    });
+  const starPosition = {
+    span: 0
   }
 
+  function launch() {
+
+    let time = 10
+    let distance = 10 * setup.height
+
+    const onComplete = () => {
+
+      bolt.texture = TEXTURES[currentLevel.bolt]
+      generateBarTexture()
+      Tween.to(bolt, {y: bolt_gauge.y,ease: "bounce",duration: 1})
+
+      // Major Reinitialization Of The Game
+      starPosition.span = 0
+
+      let newPuzzle = puzzlesForCurrentLevel[puzzleCounter % currentLevelLength];
+      newPuzzle.counter = currentLevel.counter
+
+      pool.loadPuzzle(newPuzzle)
+      blasts.forEach(b => b.refresh())
+      dealCards(pool)
+
+      stars.forEach((s, i) => {
+        s.alpha = 1
+        s.x = Math.random() * setup.width
+        s.initialPosition = -Math.random() * setup.height
+        s.y = s.initialPosition
+      })
+    }
+
+    const onUpdate = () => {
+      stars.forEach((s, i) => {
+        s.y = s.initialPosition + starPosition.span % (s.initialPosition - setup.height)
+        if (s.y > setup.height) {
+          s.x = Math.random() * setup.width
+        }
+        if (distance - starPosition.span < 1.5 * setup.height) {
+          s.alpha = (distance - starPosition.span) / (1.5 * setup.height)
+        }
+      })
+    }
+
+
+    const swapPlanets = () => {
+
+      // MOO_
+      let planet_id = "planet_" + currentLevel.planet
+      swapTexture(currentPlanet, TEXTURES[planet_id])
+      currentPlanet.y = -setup.height
+      Tween.to(currentPlanet, { ease: Expo.easeInOut, duration: 3 * time / 4, y: setup.height + currentPlanet.height / 6 })
+    }
+
+    Tween.to(currentPlanet, { ease: Expo.easeInOut, duration: time / 4, y: setup.height + currentPlanet.height, onComplete: swapPlanets })
+    Tween.to(starPosition, { ease: Expo.easeInOut, duration: time, span: distance, onComplete: onComplete, onUpdate: onUpdate })
+    shipOpalTimeline.restart()
+  }
+
+  function calculateScore() {
+    const { timer, focusTime } = scoreObject
+    const levelScore = 10 + Math.round(Math.pow(2, 11 / (1 + (timer - focusTime) / 1000)) / 30)
+    console.log("score", levelScore)
+    scoreObject.score += levelScore
+
+    return levelScore
+  }
+
+  function moveToTheNextPuzzle(){
+     puzzleCounter++;
+
+     // Safely initializing a new Puzzle
+     currentPuzzle = puzzlesForCurrentLevel[puzzleCounter % currentLevelLength];
+     currentPuzzle.counter = currentLevel.counter
+  }
+
+  function moveToTheNextLevel() {
+    // Reset the puzzle counter. 
+    scoreObject.globalScore += scoreObject.score
+    scoreObject.score = 0
+    bolt_bar.width = BOLT_BAR_WIDTH * 0.01
+
+    puzzleCounter = 0
+    levelCounter++
+    currentLevel = opalLevels[levelCounter % opalLevels.length]
+    puzzlesForCurrentLevel = currentLevel.puzzles
+    currentLevelLength = puzzlesForCurrentLevel.length;
+    currentPuzzle = puzzlesForCurrentLevel[0];
+
+  }
+
+
+  function swapTexture(sprite, texture) {
+    let w = sprite.width
+    let h = texture.height / texture.width * w
+    sprite.width = w
+    sprite.height = h
+    sprite.texture = texture
+  }
+
+  function makeStars() {
+
+    for (let i = 0; i < 75; i++) {
+      let star = new PIXI.Sprite(TEXTURES.small_star)
+      star.width = MIN_DIM / 300
+      star.height = MIN_DIM / 300
+      star.x = Math.random() * setup.width
+      star.initialPosition = -Math.random() * setup.height
+      star.y = star.initialPosition
+      app.stage.addChild(star)
+      stars.push(star)
+    }
+  }
+
+  // GOTO_TIMELINE Callbacks 
+  function onGemCollected() {
+    const onComplete = () => {
+      if (scoreObject.score >= 100) {
+        app.stage.addChild(shipOpal)
+        Tween.to(bolt,{duration: 0.5,x: shipOpal.x+shipOpal.width/2,y: shipOpal.y+shipOpal.height/4,onComplete: ()=>{
+          bolt.x = bolt_gauge.x 
+          bolt.y = bolt_gauge.y - MIN_DIM / 2
+        }})
+        moveToTheNextLevel()
+        launch()
+      } else {
+        moveToTheNextPuzzle()
+        pool.loadPuzzle(currentPuzzle);
+        dealCards(pool);
+      }
+    }
+
+
+      collectableGem.alpha = 0
+      app.stage.addChild(bolt)
+      let to = Math.min(scoreObject.score / 100 * BOLT_BAR_WIDTH, BOLT_BAR_WIDTH)
+      Tween.to(bolt_bar, { width: to, ease: "bounce",onComplete: onComplete})
+  }
+
+  // GOTO_EVENTS Card Clicked 
   function cardClicked(e) {
 
     // Learning is when you can manipulate the dots. 
     if (!learning) {
       if (e.target.isOffCard == true) {
-        // CORRECT
+        // GOTO: CORRECT
 
-        let heartDelta = {dx: livesHeart.x+livesHeart.width/2,dy: livesHeart.y+livesHeart.height/2}
+        calculateScore()
 
-        pool.cards.forEach((c,i)=>{
-          
-          Tween.to(c.bg,{alpha: 0})
-          !c.dropped && c.interactive && c.balls.forEach((b,j)=>{
-            let d = Math.sqrt((c.x+b.x)*(c.x+b.x)+(c.y+b.y)*(c.y+b.y))
-            Tween.to(b,{duration: Math.sqrt(d/1000),ease: "expo.in",x: -c.x+heartDelta.dx-b.width, y:-c.y+heartDelta.dy-b.height})
-          })
-        })
+        e.target.dropped = true
 
-        if (currentLevel.type == "number") {
-          lifeCounter++;
-          animateHeart();
-        }
-
-        levelCounter++;
-        updateLevelDescriptor();
-
-        // Safely initializing to initLevel
-        let newLevel = levels[levelCounter % mainLevelsMod];
-
-        // MOOOOOOOOOO
-        if (levelCounter%quizEvery == 0){
-           newLevel = progression[progressionCounter%assessmentMod]
-           progressionCounter++
-        } 
-
-        // Some new levels don't have a counter specified.
-        if (!newLevel.counter) {
-          newLevel.counter = DEFAULT_COUNTER;
-        }
-
-        backGround.interactive = false;
-
-        // Not sure why update layout params is called here. 
-        updateLayoutParams(setup.width, setup.height, newLevel);
-
-
-        setTimeout(()=>{
-          pool.loadLevel(newLevel);
-          dealCards(pool);
-        },2000)
-
-        /*
+        e.target.alpha = 0;
+        let b = blasts.shift()
+        app.stage.addChild(collectableGem)
+        app.stage.addChild(b)
+        b.x = e.target.x + e.target.width / 2
+        b.y = e.target.y + e.target.height / 2
+        b.alpha = 1
+        b.explode()
+        blasts.push(b)
+        
+      
         const onComplete = () => {
-          pool.loadLevel(newLevel);
-          dealCards(pool);
+
+          pool.activeCards.forEach((c, i) => {
+            Tween.to(c.balls,{duration: 0,alpha: 0})
+          });
+
+            Tween.to(collectableGem, { x: bolt.x + collectableGem.width / 2, y: bolt.y + collectableGem.height / 2, duration: 0.5, ease: Expo.easeIn, onComplete: onGemCollected })
+
+            pool.activeCards.forEach((c, i) => {
+              if (c.dropped == false) {
+                blasts[i].x = c.x + CARD_WIDTH / 2
+                blasts[i].y = c.y + CARD_WIDTH / 2
+                blasts[i].alpha = 1
+                blasts[i].explode()
+                c.bg.alpha = 0
+              }
+            })   
         };
 
-        Tween.to(pool.activeCards, {
-          alpha: 0,
-          duration: 0.01,
-          ease: "power4.in",
-          onComplete: onComplete,
-        });
-        */
+        pool.activeCards.forEach((c, i) => {
+          if (i < pool.activeCards.length - 1) {
+            Tween.to(c.balls,{x: collectableGem.x - c.x, y: collectableGem.y - c.y, duration: 0.5, ease: Expo.easeIn})
+          } else {
+            Tween.to(c.balls,{x: collectableGem.x - c.x, y: collectableGem.y - c.y, duration: 0.5, ease: Expo.easeIn,onComplete: onComplete})
+          }
+        })
+
       } else {
-        // READ: INCORRECT
-        pool.activeCards.forEach((c) => (c.interactive = false));
-        backGround.interactive = false;
+
+        // GOTO: INCORRECT
+        pool.activeCards.forEach(c => c.interactive = false);
+
         const onComplete = () => {
-          pool.activeCards.forEach((c) => (c.interactive = true));
-          backGround.interactive = true;
+          pool.activeCards.forEach((c) => {
+            if (!c.dropped) {
+              c.interactive = true
+            }
+          });
           if (lifeCounter == 0) {
             endGame();
           }
         };
 
-        app.stage.addChild(e.target.numeral);
+        //app.stage.addChild(e.target.numeral);
 
         e.target.dropped = true
 
-        Tween.fromTo(e.target.numeral, { alpha: 1 }, { duration: 3, alpha: 0 });
-        Tween.to(e.target.bg, {
-          onComplete: onComplete,
-          alpha: 0,
-        });
+        /*
+        let b = blasts.shift()
+        app.stage.addChild(b)
+        b.x = e.target.x + e.target.width / 2
+        b.y = e.target.y + e.target.height / 2
+        b.alpha = 1
+        b.explode()
+        blasts.push(b)
+        */
 
-        let t = e.target
 
-        let ds = e.target.balls.map(b=>Math.sqrt(Math.pow(t.x+b.x-setup.width/2,2)+Math.pow(t.y+b.y-setup.height,2)))
+        e.target.bg.alpha = 0
+        Tween.to([e.target.balls], { onComplete: onComplete, duration: 1, y: "-=50", alpha: 0 })
 
-        let max = Math.max(...ds)
-
-        e.target.balls.forEach((b,i)=>{
-          let d = Math.sqrt(Math.pow(t.x+b.x-setup.width/2,2)+Math.pow(t.y+b.y-setup.height/2,2))
-          console.log('d',d)
-          Tween.to(b,{duration: d/Math.sqrt(50*max),y: setup.height,x: setup.width/2-e.target.x, ease: "expo.in"})
-        })
-       
         lifeCounter--;
-        updateLives();
       }
     }
   }
+
+  function transitionToCave() {
+    console.log("transitioning to cave")
+    Tween.to(currentPlanet, { width: 4 * MIN_DIM, height: 4 * MIN_DIM, x: setup.width / 2, y: setup.height / 2, duration: 5 })
+  }
+
 
   function endGame() {
     const onComplete = () => {
@@ -479,18 +610,84 @@ PIXI.Loader.shared
       y: 1.1 * setup.height,
       ease: "elastic",
     });
-    levelCounter = 0;
-    progressionCounter = 0;
-    lifeCounter = NUMBER_OF_LIVES;
+    puzzleCounter = 0;
 
-    livesText.text = lifeCounter;
-    updateLevelDescriptor(0);
-    const newLevel = levels[levelCounter % mainLevelsMod];
+    const newLevel = puzzlesForCurrentLevel[puzzleCounter % currentLevelLength];
+    newLevel.counter = currentLevel.counter
     updateLayoutParams(setup.width, setup.height, newLevel);
     pool.loadLevel(newLevel);
 
-    scoreObject.score = 0 
+    scoreObject.score = 0
     scoreObject.time = 0
+  }
+
+  class Blast extends PIXI.Container {
+    constructor() {
+      super();
+      this.t = 0
+      this.particles = []
+      this.dt = 50
+    }
+
+    h(t, dy) {
+      return 2 * t * t - (20 + dy * 10) * t
+    }
+
+    w(t, dx) {
+      return t / this.dt * dx * setup.width / 2
+    }
+
+    cancel() {
+      this.tween.pause()
+    }
+
+    onUpdate(e) {
+      this.particles.forEach((p, i) => {
+        p.y = this.h(this.t, p.vector.dy)
+        p.x = this.w(this.t, p.vector.dx)
+        p.rotation = this.t / (Math.PI * 2) * p.vector.dx
+      })
+
+    }
+
+    onComplete() {
+      this.t = 0
+      this.particles.forEach((p, i) => {
+        p.vector = { dx: 1 - 2 * Math.random(), dy: Math.random() }
+      })
+    }
+
+    explode() {
+      this.tween.restart()
+    }
+
+    refresh() {
+      this.particles.forEach((p, i) => {
+        p.width = CARD_WIDTH / 5 + Math.random() * CARD_WIDTH / 10
+        p.height = CARD_WIDTH / 5 + Math.random() * CARD_WIDTH / 10
+      })
+    }
+
+    init() {
+
+      this.tween = Tween.to(this, { duration: 1.75, ease: Linear.easeNone, t: this.dt, onComplete: this.onComplete.bind(this), onUpdate: this.onUpdate.bind(this) })
+
+      for (let i = 0; i < 10; i++) {
+        let t = i % 3 == 0 ? TEXTURES.particle_rock_1 : TEXTURES.particle_rock_2
+        let s = new PIXI.Sprite(t);
+        s.anchor.set(0.5)
+        s.width = MIN_DIM / 30 + Math.random() * MIN_DIM / 80;
+        s.height = MIN_DIM / 30 + Math.random() * MIN_DIM / 80;
+        s.y = 0
+        s.x = 0
+        s.vector = { dx: 1 - 2 * Math.random(), dy: Math.random() }
+        this.particles.push(s)
+        this.addChild(s);
+      }
+
+      app.stage.addChild(this);
+    }
+
   }
 
   class Card extends PIXI.Container {
@@ -504,6 +701,7 @@ PIXI.Loader.shared
       this.maxMeshDim = Math.max(this.mesh[0], this.mesh[1]);
       this.unit = CARD_WIDTH / (this.maxMeshDim + 1);
       this.indicator = null
+      this.pivot.set(0.5)
       this.init();
     }
 
@@ -519,11 +717,12 @@ PIXI.Loader.shared
         this.level.counter = counters.default;
       }
 
-      const c = C[this.level.counter];
+      const c = COUNTERS[this.level.counter];
       LINE_COLOR = c.stroke;
-      COUNTER_TEXTURE =  c.texture
+      COUNTER_TEXTURE = c.texture
 
 
+      // RESET CARD SIZE & TEXTURE
       this.apparentWidth = CARD_WIDTH;
       this.apparentHeight = CARD_WIDTH;
 
@@ -536,15 +735,17 @@ PIXI.Loader.shared
       let shapeHeight = this.mesh[0] * this.unit;
       let shapeWidth = this.mesh[1] * this.unit;
 
-
+      // Top left offset for drawing. 
       let offsetY = CARD_WIDTH / 2 - shapeWidth / 2;
       let offsetX = CARD_WIDTH / 2 - shapeHeight / 2;
 
 
+      // RESET BALLS
       this.balls.forEach((b) => {
         this.removeChild(b);
-        b.x = 0 
+        b.x = 0
         b.y = 0
+        b.alpha = 1
         b.texture = COUNTER_TEXTURE;
         b.width = this.unit;
         b.height = this.unit;
@@ -605,38 +806,32 @@ PIXI.Loader.shared
         // Switch to Array Type Here 
         let array = getRandomArray(this.mesh[0], this.mesh[1], value);
 
-        if (this.level.customMesh){
-          
-            // Get array from number
+        if (this.level.customMesh) {
+
+          // Get array from number
           let meshVal = this.level.customMesh.value
           array = NUMBERSHAPES[meshVal](0.5)
 
           // Get dimensions of array
-          const hw = getWidthAndHeightOfNumberShape(array,0.5)
- 
+          const hw = getWidthAndHeightOfNumberShape(array, 0.5)
+
           // recalculate offset (it appears that the offset calculations needs to be adjusted by a half.)
-          offsetY = CARD_WIDTH / 2 - (hw.height+0.5)*this.unit/2;
-          offsetX = CARD_WIDTH / 2 - (hw.width+0.5)*this.unit/2;  
-          
-          array = getNRandomElementsFromArray(array,value)
+          offsetY = CARD_WIDTH / 2 - (hw.height + 0.5) * this.unit / 2;
+          offsetX = CARD_WIDTH / 2 - (hw.width + 0.5) * this.unit / 2;
+
+          array = getNRandomElementsFromArray(array, value)
 
           // Clean array (2d array instead of array of objects)
-          array = array.map(e=> {return [e.x,e.y]})
+          array = array.map(e => { return [e.x, e.y] })
         } else {
           array = getRandomArray(this.mesh[0], this.mesh[1], value);
         }
-       
+
 
 
         array.forEach((c, i) => {
           let sprite = this.balls[i];
-
-          if (this.level.counter == "rainbow") {
-            sprite.texture = RAINBOW[i % 9];
-          } else {
-            sprite.texture = COUNTER_TEXTURE;
-          }
-
+          sprite.texture = COUNTER_TEXTURE;
           sprite.width = this.unit;
           sprite.height = this.unit;
           sprite.x = c[0] * this.unit + offsetX;
@@ -644,6 +839,7 @@ PIXI.Loader.shared
           this.addChild(sprite);
         });
       }
+
     }
 
     init() {
@@ -652,6 +848,7 @@ PIXI.Loader.shared
 
       for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
+          // Inititalize with green texture. This is arbitrary.
           let s = new PIXI.Sprite(TEXTURES.gem_green)
           s.interactive = false;
           this.balls.push(s);
@@ -672,7 +869,14 @@ PIXI.Loader.shared
       this.init();
     }
 
-    loadLevel(level) {
+    loadPuzzle(level) {
+
+      if (!level.counter) {
+        level.counter = DEFAULT_COUNTER;
+      }
+
+      // LOL: This is a hack.
+      updateLayoutParams(setup.width, setup.height, level);
       this.activeCards = [];
 
       this.dim = CARD_WIDTH;
@@ -705,7 +909,7 @@ PIXI.Loader.shared
           // Off card is pre-set in "Number" levels. 
           if (acc == r && level.type != "number") {
 
-          
+
             const randMod = getRandomInt(20);
 
             if (level.random == false) {
@@ -727,16 +931,19 @@ PIXI.Loader.shared
           app.stage.addChild(c);
           this.activeCards.push(c);
 
-          if (level.type == "number"){
-            c.indicator = LETTER_CARDS[acc%4+1]
-            c.indicator.width = CARD_WIDTH/8
-            c.indicator.height = CARD_WIDTH/8
-            c.indicator.x = c.indicator.height/5
-            c.indicator.y = c.indicator.width/5
+          // Deprecating letter indicators.
+          /*
+          if (level.type == "number") {
+            c.indicator = LETTER_CARDS[acc % 4 + 1]
+            c.indicator.width = CARD_WIDTH / 8
+            c.indicator.height = CARD_WIDTH / 8
+            c.indicator.x = c.indicator.height / 5
+            c.indicator.y = c.indicator.width / 5
             c.addChild(c.indicator)
           } else {
             c.removeChild(c.indicator)
           }
+          */
 
 
           acc++;
@@ -756,90 +963,75 @@ PIXI.Loader.shared
     }
   }
 
-  function backgroundPointerDown() {
-    learning = !learning;
-    if (learning) {
-      this.alpha = 0.6;
-      app.renderer.backgroundColor = 0x000000;
-      pool.activeCards.forEach((c) => {
-        c.balls.forEach((b) => {
-          b.interactive = true;
-          b.wiggle();
-        });
-      });
-    } else {
-      this.alpha = 1;
-      pool.activeCards.forEach((c) => {
-        c.balls.forEach((b) => (b.interactive = false));
-      });
-    }
+  function inititalizeLevel(level) {
+    currentLevel = opalLevels[levelCounter % opalLevels.length]
+    puzzlesForCurrentLevel = currentLevel.puzzles
+    currentLevelLength = puzzlesForCurrentLevel.length;
   }
 
 
-  function updateLayoutParams(width, height, newLevel) {
-    currentLevel = newLevel;
 
-    VIEW_WIDTH = width;
-    VIEW_HEIGHT = height;
+
+  // Should probably define global layout params as S. 
+  function updateLayoutParams(width, height, newPuzzle) {
+    currentPuzzle = newPuzzle;
 
     // New Algo
 
-    if (!newLevel.counter) {
-      newLevel.counter = DEFAULT_COUNTER;
-    }
+    newPuzzle.counter = currentLevel.counter
 
-    LINE_COLOR = LINE_COLORS[newLevel.counter];
+    collectableGem.texture = TEXTURES[currentLevel.collectable]
+
+    LINE_COLOR = LINE_COLORS[newPuzzle.counter];
 
     // Logic for laying out cards in different dimensions
     if (isMobileDevice) {
-      let tempM0 = newLevel.grid[0];
-      let tempM1 = newLevel.grid[1];
-      newLevel.grid = [tempM1, tempM0];
-      NEW_CARD_WIDTH = (0.8 * VIEW_WIDTH) / newLevel.grid[0];
+      let tempM0 = newPuzzle.grid[0];
+      let tempM1 = newPuzzle.grid[1];
+      newPuzzle.grid = [tempM1, tempM0];
+      NEW_CARD_WIDTH = (0.8 * VIEW_WIDTH) / newPuzzle.grid[0];
     } else {
       if (VIEW_HEIGHT < VIEW_WIDTH) {
-        NEW_CARD_WIDTH = (0.7 * VIEW_HEIGHT) / newLevel.grid[1];
+        NEW_CARD_WIDTH = (0.7 * VIEW_HEIGHT) / newPuzzle.grid[1];
       } else {
-        NEW_CARD_WIDTH = (0.85 * VIEW_WIDTH) / newLevel.grid[0];
+        NEW_CARD_WIDTH = (0.85 * VIEW_WIDTH) / newPuzzle.grid[0];
       }
     }
 
-    MIN_DIM = Math.min(VIEW_WIDTH, VIEW_HEIGHT);
+    maxMeshDimension = Math.max(newPuzzle.mesh[0], newPuzzle.mesh[1]);
 
-    maxMeshDimension = Math.max(newLevel.mesh[0], newLevel.mesh[1]);
-
-    MARGIN_TOP = MIN_DIM * 0.02;
-
-    const maxGridDim = Math.max(newLevel.grid[0], newLevel.grid[1]);
+    const maxGridDim = Math.max(newPuzzle.grid[0], newPuzzle.grid[1]);
 
     TOP_PADDING = isMobileDevice ? 0.1 * setup.height : 0.02 * setup.height;
 
-    gridUnitsWide = (newLevel.mesh[0] + 2) * newLevel.grid[0];
-    gridUnitsHigh = (newLevel.mesh[1] + 2) * newLevel.grid[1];
+    gridUnitsWide = (newPuzzle.mesh[0] + 2) * newPuzzle.grid[0];
+    gridUnitsHigh = (newPuzzle.mesh[1] + 2) * newPuzzle.grid[1];
     gridUnitsMax = Math.max(gridUnitsHigh, gridUnitsWide);
 
     SPACE_BETWEEN_CARDS = MIN_DIM / 50 / (maxGridDim - 1);
     CARD_WIDTH = NEW_CARD_WIDTH;
-    UNIT = CARD_WIDTH / maxMeshDimension;
-    UNIT = (CARD_WIDTH - UNIT) / maxMeshDimension;
 
-    if (newLevel.type == "number") {
+    let MAX_UNIT = CARD_WIDTH / (maxMeshDimension);
+    let PADDED_UNIT = (CARD_WIDTH - 1.2 * MAX_UNIT) / maxMeshDimension;
+    UNIT = PADDED_UNIT
+
+    if (newPuzzle.type == "number") {
       UNIT = UNIT * 1.9;
-      shuffleArray(newLevel.cards);
+      shuffleArray(newPuzzle.cards);
     }
 
     GRID_WIDTH =
-      CARD_WIDTH * newLevel.grid[0] +
-      SPACE_BETWEEN_CARDS * (newLevel.grid[0] - 1);
+      CARD_WIDTH * newPuzzle.grid[0] +
+      SPACE_BETWEEN_CARDS * (newPuzzle.grid[0] - 1);
     GRID_HEIGHT =
-      CARD_WIDTH * newLevel.grid[1] +
-      SPACE_BETWEEN_CARDS * (newLevel.grid[1] - 1);
+      CARD_WIDTH * newPuzzle.grid[1] +
+      SPACE_BETWEEN_CARDS * (newPuzzle.grid[1] - 1);
     delta = CARD_WIDTH + SPACE_BETWEEN_CARDS;
 
     originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
     originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
 
-    LINE_COLOR = C[newLevel.counter].stroke;
+    LINE_COLOR = COUNTERS[newPuzzle.counter].stroke;
 
     CARD_TEXTURE = TEXTURES.tile_rock
 
@@ -852,42 +1044,33 @@ PIXI.Loader.shared
 
   function startGame(surprise) {
 
-    if (surprise){
-      levelCounter = getRandomInt(levels.length)
+    makeStars()
+
+    if (surprise) {
+      puzzleCounter = getRandomInt(puzzlesForCurrentLevel.length)
     }
 
-    const startLevel = levels[levelCounter % mainLevelsMod];
-    
+    const startLevel = puzzlesForCurrentLevel[puzzleCounter % currentLevelLength];
 
-    updateLayoutParams(setup.width, setup.height, startLevel);
-
-    pool.loadLevel(startLevel);
+    pool.loadPuzzle(startLevel);
 
     const onComplete = () => {
       dealCards(pool);
     };
 
-    Tween.to(livesText, { duration: 2, alpha: 1, ease: "elastic" });
-    Tween.to(livesHeart, { duration: 2, alpha: 1, ease: "elastic" });
-    Tween.to(levelText, { duration: 2, alpha: 1, ease: "elastic" });
-    Tween.to(helpButton, { delay: 2, duration: 1, y: MARGIN_TOP, ease: "elastic" });
-
-    livesText.text = NUMBER_OF_LIVES;
-    helpButton.text = "?";
-
-    Tween.to([startButton,surpriseButton], { y: -startButton.height, onComplete: onComplete });
+    Tween.to(startButton, { y: -startButton.height, onComplete: onComplete });
   }
 
   function makeInteractive() {
+    blasts.forEach((b) => {
+      b.cancel()
+    });
     this._targets[0].interactive = true;
+    collectableGem.alpha = 1;
   }
 
   function dealCards(pool) {
-    scoreObject.focusTime = scoreObject.timer
-    setTimeout(() => {
-      backGround.interactive = true;
-    }, 2000);
-
+    scoreObject.focusTime = scoreObject.timer // There's got to be a better name / place for this. 
 
     // Blue numerals behind the cards that show the value. 
     NUMERALS.forEach((n) => {
@@ -904,6 +1087,12 @@ PIXI.Loader.shared
 
         n.x = _x + CARD_WIDTH / 2;
         n.y = _y + CARD_WIDTH / 2;
+
+        if (c.isOffCard == true) {
+          collectableGem.x = _x + CARD_WIDTH / 2;
+          collectableGem.y = _y + CARD_WIDTH / 2;
+          collectableGem.alpha = 0
+        }
 
         n.fill = LINE_COLOR;
         n.text = c.value;
@@ -925,24 +1114,11 @@ PIXI.Loader.shared
     });
   }
 
-  function updateLevelDescriptor(val) {
-    if (val != null){
-      levelText.text = "Score: " + val
-    } else {
-      const {timer,focusTime } = scoreObject
-
-      const levelScore = Math.round(Math.pow(2,11/(1+(timer-focusTime)/1000))/30)
-
-      scoreObject.score += levelScore
-      levelText.text = "Score: " + scoreObject.score
-    }
-  }
-
-  function updateLives() {
-    livesText.text = lifeCounter;
-    tlHeartBeat.restart();
-    tlHeartBeat.pause();
-    tlHeartBeat.play();
+  // GOTO_TIMELINE Functions 
+  function buildShipTimeline() {
+    app.stage.addChild(shipOpal)
+    shipOpalTimeline.to(shipOpal, { y: setup.height / 2 - shipOpal.height / 2, x: setup.width / 2 - shipOpal.width / 2, duration: 4, ease: Expo.easeInOut })
+    shipOpalTimeline.to(shipOpal, { duration: 3, y: setup.height - shipOpal.height - MENU_MARGIN, x: MENU_MARGIN }, "+=3")
   }
 
   function help() {
@@ -967,108 +1143,61 @@ PIXI.Loader.shared
     }
   }
 
+
+  function generateBarTexture() {
+    let colors = {bolt_blue: "0x63dbff", bolt_green: "0x00c91e", bolt_pink: "0xff52e2", bolt_orange: "0xff860d"}
+
+    barGraphics.clear()
+    barGraphics.beginFill(colors[currentLevel.bolt])
+    barGraphics.drawRoundedRect(0, 0, 500, 50, 20)
+    barGraphics.endFill()
+    bolt_bar.texture = app.renderer.generateTexture(barGraphics)
+  }
+
   function load() {
 
-    /// New State Stuff
+    inititalizeLevel()
 
-  NEW_RED_COUNTER = TEXTURES.gem_pink
-  NEW_PURPLE_COUNTER =  TEXTURES.gem_pink
-  NEW_ORANGE_COUNTER = TEXTURES.gem_pink
-  NEW_LIGHT_BLUE_COUNTER = TEXTURES.gem_green
-  NEW_YELLOW_COUNTER = TEXTURES.gem_green
-  NEW_DARK_PURPLE_COUNTER = TEXTURES.gem_green
-  NEW_GREEN_COUNTER = TEXTURES.gem_green
-  NEW_BLUE_COUNTER = TEXTURES.gem_green
-  NEW_PINK_COUNTER = TEXTURES.gem_green
-
-  C = {
-    default: {
-      texture: TEXTURES.gem_green,
-      stroke: LINE_COLORS.red,
-      value: 1,
-    },
-    square: {
-      texture: RED_SQUARE_COUNTER,
-      stroke: 0xfc2003,
-      value: 1,
-    },
-    diamond: {
-      texture: DIAMOND_COUNTER,
-      stroke: LINE_COLORS.blue,
-      value: 1,
-    },
-    blue: {
-      texture: NEW_BLUE_COUNTER,
-      stroke: LINE_COLORS.blue,
-      value: 1,
-    },
-    red: {
-      texture: NEW_RED_COUNTER,
-      stroke: LINE_COLORS.red,
-      value: 1,
-    },
-    green: {
-      texture: NEW_GREEN_COUNTER,
-      stroke: LINE_COLORS.green,
-      value: 1,
-    },
-    yellow: {
-      texture: NEW_YELLOW_COUNTER,
-      stroke: LINE_COLORS.yellow,
-      value: 1,
-    },
-    pink: {
-      texture: NEW_PINK_COUNTER,
-      stroke: LINE_COLORS.pink,
-      value: 1,
-    },
-    lightblue: {
-      texture: NEW_LIGHT_BLUE_COUNTER,
-      stroke: LINE_COLORS.lightblue,
-      value: 1,
-    },
-    orange: {
-      texture: NEW_ORANGE_COUNTER,
-      stroke: LINE_COLORS.orange,
-      value: 1,
-    },
-    purple: {
-      texture: NEW_PURPLE_COUNTER,
-      stroke: LINE_COLORS.purple,
-      value: 1,
-    },
-    rainbow: {
-      texture: NEW_PINK_COUNTER,
-      stroke: LINE_COLORS.pink,
-      value: 1,
-    },
-    darkpurple: {
-      texture: NEW_DARK_PURPLE_COUNTER,
-      stroke: LINE_COLORS.darkpurple,
-      value: 1,
-    },
-    black: {
-      texture: NEW_DARK_PURPLE_COUNTER,
-      stroke: LINE_COLORS.black,
-      value: 1,
-    },
-  };
+    COUNTERS = {
+      default: {
+        texture: TEXTURES.planet_green_swirl,
+        stroke: LINE_COLORS.red,
+        value: 1,
+      },
+      circle_green: {
+        texture: TEXTURES.counter_circle_green,
+        stroke: LINE_COLORS.green,
+        value: 1,
+      },
+      square_pink: {
+        texture: TEXTURES.counter_square_pink,
+        stroke: LINE_COLORS.pink,
+        value: 1,
+      },
+      diamond_blue: {
+        texture: TEXTURES.counter_diamond_blue,
+        stroke: LINE_COLORS.blue,
+        value: 1,
+      },
+      oval_orange: {
+        texture: TEXTURES.counter_oval_orange,
+        stroke: LINE_COLORS.blue,
+        value: 1,
+      },
+    };
 
 
+    // GOTO_BUILD_TIMELINES
 
 
 
     pool = new CardPool(initLevel);
 
 
-    let gr = new PIXI.Graphics()
-        gr.beginFill(0xffffff);
-        gr.drawCircle(500, 500, 10);
-        gr.endFill();
+    // #region GOTO_UI Definitions 
 
-
+    // GOTO: Initialize Assets Here
     backGround = new PIXI.Sprite(TEXTURES.background_opal);
-    backGround.on("pointerdown", backgroundPointerDown);
     backGround.x = 0;
     backGround.y = 0;
     backGround.width = setup.width;
@@ -1077,83 +1206,60 @@ PIXI.Loader.shared
     app.stage.addChild(backGround)
 
 
+    collectableGem = new PIXI.Sprite(TEXTURES[currentLevel.collectable]);
+    collectableGem.width = MIN_DIM / 10
+    collectableGem.height = MIN_DIM / 10
+    collectableGem.anchor.set(0.5)
+    collectableGem.alpha = 0
+    app.stage.addChild(collectableGem)
 
-    startButton = new PIXI.Sprite.from(RegularStart);
+    startButton = new PIXI.Sprite(TEXTURES.button_go);
     startButton.anchor.set(0.5);
     startButton.interactive = true;
     startButton.x = setup.width / 2;
-    startButton.y = setup.height / 4;
-    startButton.width = CARD_WIDTH * 1.5;
-    startButton.height = startButton.width/4;
-    startButton.on("pointerdown", ()=>startGame(false));
+    startButton.y = setup.height / 2;
+    startButton.width = CARD_WIDTH / 1.5;
+    startButton.height = TEXTURES.button_go.height / TEXTURES.button_go.width * startButton.width
+    startButton.on("pointerdown", () => startGame(false));
     app.stage.addChild(startButton);
 
-    surpriseButton = new PIXI.Sprite.from(SupriseStart);
-    surpriseButton.anchor.set(0.5);
-    surpriseButton.interactive = true;
-    surpriseButton.x = setup.width / 2;
-    surpriseButton.y = setup.height / 2;
-    surpriseButton.width = CARD_WIDTH * 1.5;
-    surpriseButton.height = surpriseButton.width/4
-    surpriseButton.on("pointerdown", ()=>startGame(true));
-    app.stage.addChild(surpriseButton);
 
-    livesText = new PIXI.Text("b", {
-      fontWeight: "bold",
-      fontFamily: "Quicksand",
-      fontSize: FONT_SIZE,
-    });
-    livesText.style.fill = TEXT_COLOR;
-    livesText.x = MARGIN_TOP;
-    livesText.y = MARGIN_TOP;
-    //app.stage.addChild(livesText);
+    shipOpal = new PIXI.Sprite(TEXTURES.ship_opal);
+    shipOpal.aspectRatio = TEXTURES.ship_opal.width / TEXTURES.ship_opal.height
+    shipOpal.width = MIN_DIM / 5
+    shipOpal.height = shipOpal.width / shipOpal.aspectRatio
+    shipOpal.alpha = 1
+    shipOpal.y = setup.height - shipOpal.height - MENU_MARGIN
+    shipOpal.x = MENU_MARGIN
+    app.stage.addChild(shipOpal)
 
-    livesHeart = new PIXI.Sprite.from(Heart);
-    livesHeart.width = FONT_SIZE;
-    livesHeart.height = FONT_SIZE;
-    livesHeart.anchor.set(0.5, 0.5);
-    app.stage.addChild(livesHeart);
-    livesHeart.y = MARGIN_TOP + livesHeart.height / 2;
-    livesHeart.x = livesText.x + livesText.width * 2.5;
+    // GOTO_ENERGY
 
-    plusHeart = new PIXI.Sprite.from(Heart);
-    plusHeart.width = MIN_DIM / 2;
-    plusHeart.height = MIN_DIM / 2;
-    //app.stage.addChild(plusHeart);
-    plusHeart.anchor.set(0.5, 0.5);
-    plusHeart.alpha = 0;
-    plusHeart.x = livesHeart.x;
-    plusHeart.y = VIEW_HEIGHT + livesHeart.height;
+    bolt_gauge = new PIXI.Sprite(TEXTURES.gauge_crystal_l1);
+    bolt_gauge.aspectRatio = TEXTURES.gauge_crystal_l1.width / TEXTURES.gauge_crystal_l1.height
+    bolt_gauge.width = CARD_WIDTH / 1.5;
+    bolt_gauge.height = bolt_gauge.width / bolt_gauge.aspectRatio
+    bolt_gauge.x = MENU_MARGIN
+    bolt_gauge.y = MENU_MARGIN
 
-    levelText = new PIXI.Text("0", {
-      fontWeight: "bold",
-      fontFamily: "Quicksand",
-      fontSize: FONT_SIZE,
-    });
-    levelText.anchor.x = 0.5;
-    levelText.style.fill = TEXT_COLOR;
-    levelText.x = setup.width / 2;
-    levelText.y = MARGIN_TOP;
-    app.stage.addChild(levelText);
+    bolt_bar = new PIXI.Sprite(TEXTURES.progress_bar_pink);
+    bolt_bar.anchor.x = 0
+    bolt_bar.anchor.y = 0.5
+    bolt_bar.width = BOLT_BAR_WIDTH * 0.01
+    bolt_bar.height = bolt_gauge.height / 4
+    bolt_bar.x = MENU_MARGIN + bolt_bar.height
+    bolt_bar.y = MENU_MARGIN + bolt_gauge.height / 2.5
 
-    let heartWidth = livesHeart.width;
+    bolt = new PIXI.Sprite(TEXTURES[currentLevel.bolt]);
+    bolt.aspectRatio = TEXTURES.bolt_pink.width / TEXTURES.bolt_pink.height
+    bolt.height = bolt_gauge.height
+    bolt.width = bolt.height * bolt.aspectRatio
+    bolt.x = bolt_gauge.x
+    bolt.y = bolt_gauge.y
 
-    tlHeartBeat.to(livesHeart, {
-      width: heartWidth * 0.5,
-      height: heartWidth * 1.1,
-      duration: 0.25,
-    });
-    tlHeartBeat.to(livesHeart, {
-      width: heartWidth * 1.1,
-      height: heartWidth * 0.5,
-      duration: 0.25,
-    });
-    tlHeartBeat.to(livesHeart, {
-      width: heartWidth,
-      height: heartWidth,
-      duration: 0.5,
-      ease: "elastic",
-    });
+    app.stage.addChild(bolt_gauge);
+    app.stage.addChild(bolt_bar);
+    app.stage.addChild(bolt)
 
     endOfGameModal = new PIXI.Graphics();
     endOfGameModal.beginFill(0xffffff);
@@ -1172,7 +1278,7 @@ PIXI.Loader.shared
     endOfGameText.x = setup.width / 2;
     endOfGameText.anchor.set(0.5);
 
-    helpModal = new PIXI.Sprite.from(CrushHelp);
+    helpModal = new PIXI.Sprite.from(TEXTURES.bolt_pink);
     helpModal.width = MIN_DIM;
     helpModal.height = MIN_DIM;
     helpModal.anchor.set(0.5);
@@ -1187,22 +1293,19 @@ PIXI.Loader.shared
       fontFamily: "Quicksand",
       fontSize: FONT_SIZE,
     });
-    helpButton.style.fill = 0xff1f5e; 
+    helpButton.style.fill = 0xff1f5e;
     helpButton.anchor.set(0);
     helpButton.interactive = true;
     helpButton.x = setup.width - 2 * helpButton.width;
-    helpButton.y = -5*MARGIN_TOP;
+    helpButton.y = -5 * MENU_MARGIN;
     helpButton.on("pointerdown", help);
     app.stage.addChild(helpButton);
 
-    levelText.alpha = 0;
-    livesHeart.alpha = 0;
-    livesText.alpha = 0;
 
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
         let t = new PIXI.Text("5", {
-          fill: LINE_COLORS.blue,
+          fill: "#333333",
           fontWeight: "bold",
           fontFamily: "Quicksand",
           fontSize: CARD_WIDTH / 2.5,
@@ -1216,44 +1319,59 @@ PIXI.Loader.shared
     }
 
     function assetTest() {
-      Object.keys(TEXTURES).forEach((k,i)=>{
-        console.log("Creating,",k)
+      Object.keys(TEXTURES).forEach((k, i) => {
+        console.log("Creating,", k)
         let a = new PIXI.Sprite(TEXTURES[k])
         a.width = 100
         a.height = 100
-        a.x = 100*(i+1)
+        a.x = 100 * (i + 1)
         a.y = 0
         app.stage.addChild(a)
       })
     }
 
-    let planet = new PIXI.Sprite(TEXTURES.planet_pink_comet)
-    planet.anchor.set(0.5)
-    planet.width = setup.width/1.5
-    planet.height = planet.width*0.7
-    planet.x = setup.width/2 
-    planet.y = setup.height
-    app.stage.addChild(planet)
+    currentPlanet = new PIXI.Sprite(TEXTURES.planet_pink_fire)
+    currentPlanet.aspectRatio = TEXTURES.planet_pink_fire.width / TEXTURES.planet_pink_fire.height
+    currentPlanet.anchor.set(0.5)
+    currentPlanet.width = setup.width / 1.5
+    currentPlanet.height = currentPlanet.width / currentPlanet.aspectRatio
+    currentPlanet.x = setup.width / 2
+    currentPlanet.y = setup.height + currentPlanet.height / 6
+    app.stage.addChild(currentPlanet)
 
-   // assetTest()
+    nextPlanet = new PIXI.Sprite(TEXTURES.planet_green_swirl)
+    nextPlanet.aspectRatio = TEXTURES.planet_green_swirl.width / TEXTURES.planet_green_swirl.height
+    nextPlanet.anchor.set(0.5)
+    nextPlanet.width = setup.width / 1.5
+    nextPlanet.height = nextPlanet.width / nextPlanet.aspectRatio
+    nextPlanet.x = setup.width / 2
+    nextPlanet.y = -5 * setup.height
+    app.stage.addChild(nextPlanet)
+
+    bolt.texture = TEXTURES[currentLevel.bolt]
+    generateBarTexture()
+    let planet_id = "planet_" + currentLevel.planet
+    console.log("planet_id", planet_id)
+    currentPlanet.texture = TEXTURES[planet_id]
+
+    // #endregion GOTO_UI Definitions
+
+    // GOTO_BLAST
 
 
-    const obj = {
-      radius: 3,
-      x: 0, 
-      y: 0,
+    for (let i = 0; i < 25; i++) {
+      let b = new Blast();
+      b.init();
+      b.x = setup.width / 8 + 100 * i * Math.random()
+      b.y = setup.height / 8 + 50 * i * Math.random()
+      b.alpha = 0
+      blasts.push(b)
     }
 
-    const onUpdate = ()=>{
-      gr.clear()
-      gr.beginFill(0xffffff);
-      gr.drawCircle(100, 100, obj.radius);
-      gr.endFill();
 
-    }
 
-    Tween.to(obj,{duration:2,radius: 500,onUpdate: onUpdate})
-
+    // GOTO_TIMELINE Function Calls 
+    buildShipTimeline()
 
   }
 
