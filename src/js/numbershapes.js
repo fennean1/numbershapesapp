@@ -173,3 +173,5 @@ export const NUMBERSHAPES = {
   9: NINE,
   10:TEN,
 };
+
+export const NUMBER_SHAPES = [ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN];

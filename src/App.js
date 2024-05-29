@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route,useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LandingPage from './LandingPage';
 import ActivityPage from './ActivityPage';
 import Subitizer from './Interactives/Subitizer';
@@ -10,7 +10,7 @@ import Opal from "./Interactives/Opal"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 import InteractiveSVG from "./InteractiveSVG"
-import { ThemeProvider, createTheme } from '@mui/material/styles'; 
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
@@ -64,53 +64,53 @@ function ScrollToTop() {
 
 const Main = () => (
   <Routes>
-        <Route
+    <Route
       exact
       path="interactives/fractionlist"
-      element={<FractionList fullScreen = {true}/>}
+      element={<FractionList fullScreen={true} />}
     />
-            <Route
+    <Route
       exact
       path="interactives/timer"
-      element={<InteractiveSVG fullScreen = {true}/>}
+      element={<InteractiveSVG fullScreen={true} />}
     />
     <Route
       exact
       path="interactives/saami/:activityname"
-      element={<Crush fullScreen = {true}/>}
+      element={<Crush fullScreen={true} />}
     />
-        <Route
+    <Route
       exact
       path="interactives/opal/:activityname"
-      element={<Opal fullScreen = {true}/>}
+      element={<Opal fullScreen={true} />}
     />
     <Route
       exact
       path="interactives/multiplication/:activityname"
-      element={<Multiplication fullScreen = {true}/>}
+      element={<Multiplication fullScreen={true} />}
     />
     <Route
       exact
       path="interactives/subitizer/:activityname"
-      element={<Subitizer fullScreen = {true}/>}
+      element={<Subitizer fullScreen={true} />}
     />
     <Route
       exact
       path="interactives/match_game/:activityname"
-      element={<MatchGame fullScreen = {true}/>}
+      element={<MatchGame fullScreen={true} />}
     />
-    <Route path="/" element={<LandingPage/>} />
-    <Route path="/activities/:activityname" element={<ActivityPage/>} />
+    <Route path="/" element={<LandingPage />} />
+    <Route path="/activities/:activityname" element={<ActivityPage />} />
   </Routes>
 )
 
 const App = () => {
   return (
-    <ThemeProvider theme = {theme}>
-    <BrowserRouter>
-    <ScrollToTop/>
-    <Main />
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Main />
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

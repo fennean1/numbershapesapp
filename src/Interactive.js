@@ -9,6 +9,7 @@ const app = new PIXI.Application(0, 0, {
 });
 app.renderer.backgroundColor = 0xffffff;
 app.renderer.resolution = window.devicePixelRatio;
+console.log("window.devicePixelRatio",window.devicePixelRatio)  
 app.renderer.autoDensity = true;
 PIXI.settings.scaleMode = PIXI.SCALE_MODES.NEAREST
 
@@ -24,18 +25,16 @@ export default function Interactive(props) {
       ...props.setup,
     };
 
-    console.log("props.setup")
 
     app.renderer.resize(
       elementRef.clientWidth,
       elementRef.clientHeight
     );
 
-      console.log("setup",setup)
+    elementRef.appendChild(app.view)
 
     props.script.init(app,setup)
 
-    elementRef.appendChild(app.view)
     
   return ()=>{console.log("unmounting")}},[]);
   
