@@ -1,47 +1,27 @@
-// Problem que setup
 import * as PIXI from "pixi.js";
-
 // APIS
+// Problem que setup
 import {
   getRandomArray,
   getRandomInt,
   shuffleArray,
   getNRandomElementsFromArray,
 } from "./api.js";
-import { Timeline, Tween, Linear, set, Sine, Expo, Elastic } from "gsap/gsap-core";
+import { Timeline, Tween, Linear, Circ, Sine, Expo, Elastic } from "gsap/gsap-core";
 import {
   counters,
-  opalLevels,
+  opalLevels as LEVELS,
   assessmentCardCustomCoordinates,
-  assessmentProgression,
+  SM_1,
 } from "./opallevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBER_SHAPES } from "./numbershapes";
+import { alpha } from "@mui/material";
 
 
+// START HERE: Session Tracking (Metadata for each level) and processing "remainders" as well as puzzle counter. 
 
 
-let NUMERALS = [];
-
-let LINE_COLORS = {
-  darkpurple: 0x5940ff,
-  lightblue: 0x70e0ff,
-  pink: 0xff0593,
-  yellow: 0xfced0f,
-  blue: 0x1191fa,
-  red: 0xff4545,
-  purple: 0xb407f2,
-  orange: 0xff860d,
-  green: 0x00c91e,
-  rainbow: 0xff2465,
-  square: 0x00b30f,
-  diamond: 0xff2465,
-  black: 0x000000,
-};
-
-const BAR_COLORS = { bolt_blue: "0x63dbff", bolt_green: "0x00c91e", plant_icon: "0x00c91e",bolt_yellow: "0xfced0f", bolt_pink: "0xff52e2", bolt_red: "0xf0003c", bolt_orange: "0xff860d" }
-
-
-
+// MOOO - Someday remove the init level dependency.
 const initLevel = {
   grid: [2, 2],
   value: 3,
@@ -49,21 +29,67 @@ const initLevel = {
   mesh: [2, 2],
 };
 
-const TEXTURES = {}
-
 export const init = (app, setup) => {
+
+  // #region Convenience Objects Declarations
+
+  let SESSIONS = []
+  let NUMERALS = [];
+  let LAYERS = {}
+  let GROUPS = {}
+  let COUNTERS = {}
+  const TEXTURES = {}
+  const BAR_COLORS = { bolt_blue: "0x63dbff", bolt_green: "0x00c91e", plant_icon: "0x00c91e", bolt_yellow: "0xfced0f", bolt_pink: "0xff52e2", bolt_red: "0xf0003c", bolt_orange: "0xff860d" }
+
+
+  // #endregion
 
 
   const VIEW_WIDTH = setup.width;
   const VIEW_HEIGHT = setup.height;
   const MIN_DIM = Math.min(VIEW_WIDTH, VIEW_HEIGHT);
   const MAX_DIM = Math.max(VIEW_WIDTH, VIEW_HEIGHT);
-  const MENU_MARGIN = MIN_DIM * 0.02;
-  const FONT_SIZE_SCORE = MIN_DIM * 0.02;
+  const MENU_MARGIN = MIN_DIM * 0.05;
+  const MENU_MARGIN_VERTICAL = MENU_MARGIN * 1.5;
+  const MENU_MARGIN_HORIZONTAL = MENU_MARGIN * 1.5
+  const PROGRESS_CIRCLE_DIM = MENU_MARGIN_VERTICAL / 4
   const SIZE_CAROUSEL_HEIGHT = MIN_DIM / 5
   const POINT_CAROUSEL_Y = setup.height / 2
-  const IS_MOBILE_SIZE = window.innerWidth < 600;
-  const IS_MOBILE_RATIO = setup.width / setup.height < 0.75 ? true : false;
+  const DEFAULT_COUNTER = "blue";
+
+  // TODO: Clean up this constants stuff. Tbh this should probably all be some type of state class. 
+  let isMobileDevice = setup.width / setup.height < 0.75 ? true : false;
+  let NEW_CARD_WIDTH = 40;
+  let TOP_PADDING = isMobileDevice ? 0.1 * setup.height : 0.05 * setup.height;
+  let ICON_ROTATION = -Math.PI / 7
+
+
+  let maxMeshDimension = Math.max(initLevel.mesh[0], initLevel.mesh[1]);
+  let gridUnitsWide = (maxMeshDimension + 2) * initLevel.grid[0];
+  let gridUnitsHigh = (maxMeshDimension + 2) * initLevel.grid[1];
+  let gridUnitsMax = Math.max(gridUnitsHigh, gridUnitsWide);
+
+
+
+  let UNIT = MIN_DIM / gridUnitsMax;
+  let SPACE_BETWEEN_CARDS = UNIT / 4;
+  let CARD_WIDTH = (maxMeshDimension + 1) * UNIT;
+  let GRID_WIDTH =
+    CARD_WIDTH * initLevel.grid[0] +
+    SPACE_BETWEEN_CARDS * (initLevel.grid[0] - 1);
+  let GRID_HEIGHT =
+    CARD_WIDTH * initLevel.grid[1] +
+    SPACE_BETWEEN_CARDS * (initLevel.grid[1] - 1);
+  let delta = CARD_WIDTH + SPACE_BETWEEN_CARDS;
+
+
+  let BOLT_BAR_WIDTH = CARD_WIDTH / 1.75
+
+  let COUNTER_TEXTURE;
+
+
+  let originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
+  let originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
 
   // TODO: Put the REAL constants here. 
 
@@ -81,10 +107,16 @@ export const init = (app, setup) => {
 
   PIXI.Loader.shared
     .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsExtraLargeAsset)
+    .add('gauge_radial', "https://res.cloudinary.com/numbershapes/image/upload/v1717188538/Opal/radial_gauge2_up4uap.png", optionsLargeAsset)
+    .add("plant_full", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_full_jxoqya.png", optionsLargeAsset)
+    .add("plant_one", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_one_mq9vzi.png", optionsLargeAsset)
+    .add("plant_two", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_two_jdjyfw.png", optionsLargeAsset)
+    .add("plant_empty", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_none_wduy6k.png", optionsLargeAsset)
+    .add("circle_white", "https://res.cloudinary.com/numbershapes/image/upload/v1717513048/circle_white_zqyw9u.svg", optionsSmallAsset)
     .add('particle_rock_1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715625602/Opal/particle_rock_1_haiujp.svg', optionsSmallAsset)
     .add('particle_rock_2', 'https://res.cloudinary.com/numbershapes/image/upload/v1715697608/Opal/particle_rock_2_ma2hcc.svg', optionsSmallAsset)
     .add('planet_pink_fire', 'https://res.cloudinary.com/numbershapes/image/upload/v1714743947/Opal/planet_pink_fire_hgttly.svg', optionsExtraLargeAsset)
-    .add('plant_icon', "https://res.cloudinary.com/numbershapes/image/upload/v1715894087/Opal/plan_icon_ddukrb.png", optionsMediumAsset)
+    .add('plant_icon', "https://res.cloudinary.com/numbershapes/image/upload/v1717436178/full_plant_xevl1c.png", optionsMediumAsset)
     .add('planet_green_bubble', 'https://res.cloudinary.com/numbershapes/image/upload/v1715781752/Opal/planet_green_bubble_b7hyac.svg', optionsExtraLargeAsset)
     .add('planet_green_swirl', 'https://res.cloudinary.com/numbershapes/image/upload/v1714524825/Opal/planet_green_swirl_q8ovc1.svg', optionsLargeAsset)
     .add('planet_orange_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715705216/Opal/planet_orange_rocks_s90iu2.svg', optionsLargeAsset)
@@ -93,6 +125,7 @@ export const init = (app, setup) => {
     .add('planet_pink_comet', "https://res.cloudinary.com/numbershapes/image/upload/v1714760192/planet_pink_comet_2_ja0pr0.svg", optionsExtraLargeAsset)
     .add('planet_green_carved', "https://res.cloudinary.com/numbershapes/image/upload/v1715793449/Opal/planet_green_carved_tmmnnd.svg", optionsLargeAsset)
     .add('planet_pink_bubble', "https://res.cloudinary.com/numbershapes/image/upload/v1716322686/Opal/planet_pink_bubbles_j0xmtt.svg", optionsLargeAsset)
+    .add('planet_mystery', "https://res.cloudinary.com/numbershapes/image/upload/v1717378423/planet_mystery_wzwzfa.png", optionsLargeAsset)
     .add('planet_red_swirl', "https://res.cloudinary.com/numbershapes/image/upload/v1717013787/Opal/red_swirl_brdisk.svg", optionsLargeAsset)
     .add('background_opal', 'https://res.cloudinary.com/numbershapes/image/upload/v1715867929/Opal/background_opal_vbwf4o_vvggfz.svg', optionsLargeAsset)
     .add('background_cave', "https://res.cloudinary.com/numbershapes/image/upload/v1716027435/Opal/vecteezy_cave-with-blue-crystals_6758386_g0nhu3.png", optionsLargeAsset)
@@ -107,6 +140,7 @@ export const init = (app, setup) => {
     .add('counter_square_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1715281973/Opal/counter_square_pink_sjlfk0.png', optionsLargeAsset)
     .add('counter_diamond_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784606/Opal/counter_blue_diamond_m7dtxu_norw6w.png', optionsLargeAsset)
     .add('counter_circle_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1715610982/Opal/counter_circle_green_hxk2wz.png', optionsLargeAsset)
+    .add('counter_half_circle_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717093806/counter_half_circle_red_lri518.png', optionsLargeAsset)
     .add('counter_triangle_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716324632/Opal/counte_yellow_triangle_wd0p9v.png', optionsLargeAsset)
     .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1716395459/Opal/counter_red_stick_ufyai6.png', optionsLargeAsset)
     .add('counter_oval_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715706392/Opal/counter_oval_orange_cdrwvh.png', optionsSmallAsset)
@@ -117,9 +151,9 @@ export const init = (app, setup) => {
     .add('bolt_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716395589/Opal/vial_yellow_cjglzh.svg', optionsSmallAsset)
     .add('bolt_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1715782917/Opal/bolt_green_eydext.svg', optionsSmallAsset)
     .add('heart_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1716215671/Opal/heart_red_jk6pva.svg', optionsSmallAsset)
-    .add('bolt_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1717007016/vial_blue_g0tck0.svg', optionsSmallAsset)
-    .add('bolt_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715782763/Opal/bolt_orange_fqnueq.svg', optionsSmallAsset)
-    .add('gauge_crystal_l1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715192237/gauge_crystal_l1_s5y1jl.svg', optionsLargeAsset)
+    .add('bolt_blue', "https://res.cloudinary.com/numbershapes/image/upload/v1717007016/vial_blue_g0tck0.svg", optionsSmallAsset)
+    .add('bolt_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1717263081/Opal/vial_orange_bkurw0.svg', optionsSmallAsset)
+    .add('gauge_crystal_l1', 'https://res.cloudinary.com/numbershapes/image/upload/v1717102272/Opal/gauge_u3dctl.svg', optionsLargeAsset)
     .add('gem_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784648/Opal/gem_orange_yyaxrc.svg', optionsLargeAsset)
     .add('gem_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1714505893/Opal/PinkGem_tt9cbw.png', optionsLargeAsset)
     .add('gem_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717002293/gem_red_ywcs1l.svg', optionsLargeAsset)
@@ -142,6 +176,7 @@ export const init = (app, setup) => {
       TEXTURES['counter_oval_orange'] = resource.counter_oval_orange.texture
       TEXTURES['counter_triangle_yellow'] = resource.counter_triangle_yellow.texture
       TEXTURES['counter_stick_red'] = resource.counter_stick_red.texture
+      TEXTURES['counter_half_circle_red'] = resource.counter_half_circle_red.texture
 
       // Background 
       TEXTURES['small_star'] = resource.small_star.texture
@@ -159,7 +194,14 @@ export const init = (app, setup) => {
       TEXTURES['planet_pink_bubble'] = resource.planet_pink_bubble.texture
       TEXTURES['planet_purple_carved'] = resource.planet_purple_carved.texture
       TEXTURES['planet_red_swirl'] = resource.planet_red_swirl.texture
+      TEXTURES['planet_mystery'] = resource.planet_mystery.texture
 
+
+      // Plants
+      TEXTURES['plant_full'] = resource.plant_full.texture
+      TEXTURES['plant_one'] = resource.plant_one.texture
+      TEXTURES['plant_two'] = resource.plant_two.texture
+      TEXTURES['plant_empty'] = resource.plant_empty.texture
 
       // Buttons
       TEXTURES['button_go'] = resource.button_go.texture
@@ -187,8 +229,13 @@ export const init = (app, setup) => {
       TEXTURES['bolt_red'] = resource.bolt_red.texture
       TEXTURES['heart_red'] = resource.heart_red.texture
 
+      // Circles
+      TEXTURES['circle_white'] = resource.circle_white.texture
+
+
       // MISC
       TEXTURES['gauge_crystal_l1'] = resource.gauge_crystal_l1.texture
+      TEXTURES['gauge_radial'] = resource.gauge_radial.texture
       TEXTURES['stalagmite'] = resource.stalagmite.texture
       TEXTURES['lava_pink'] = resource.lava_pink.texture
       TEXTURES['lava_green'] = resource.lava_green.texture
@@ -202,28 +249,30 @@ export const init = (app, setup) => {
     })
 
 
-  const TOTAL_LIVES = 10
+  const TOTAL_LIVES = 3
 
 
   // GOTO_VARIABLES Declerations
 
   // Counters
   let puzzleIndex = 0;
-  let levelCounter = 0
+  let levelIndex = 5
+  let planetIndex = 0
   let lives = TOTAL_LIVES
 
   // Objects
   let pool;
 
   // GOTO_STATE Levels/Planets & Puzzles
-  let currentLevel = opalLevels[levelCounter]
+  let currentLevel = LEVELS[levelIndex]
   let puzzlesForCurrentLevel = currentLevel.puzzles
   let currentLevelLength = puzzlesForCurrentLevel.length;
+  let currentPuzzle;
 
   const scoreObject = {
-    score: 0,
+    puzzleScore: 0,
     progress: 0,
-    globalScore: 0,
+    totalScore: 0,
     timer: 0,
     focusTime: 0,
   }
@@ -234,7 +283,7 @@ export const init = (app, setup) => {
     space: 'space',
     start: 'start',
     flying: 'flying',
-    ended: 'ended',
+    end: 'end',
   }
 
 
@@ -242,7 +291,7 @@ export const init = (app, setup) => {
     gameOver: false,
     collectableTexture: TEXTURES.seed_one,
     starPosition: { span: setup.height },
-    applicationState: applicationStates.start
+    applicationState: applicationStates.start,
   }
 
   setInterval(() => {
@@ -250,7 +299,7 @@ export const init = (app, setup) => {
   }, 10)
 
   let LINE_COLOR = 0x1191fa;
-  const ABS_CARD_COLOR = LINE_COLORS.black;
+  const ABS_CARD_COLOR = 0x000000
 
   // ASSETS
   const ABSTRACT_CARDS = {
@@ -319,6 +368,8 @@ export const init = (app, setup) => {
     10: null,
   };
 
+  // #region UI Declarations
+
 
   // HOT: GOTO_UI_DECLARATIONS -  Global UI Declarations
   let boltBar;
@@ -327,7 +378,11 @@ export const init = (app, setup) => {
   let currentPlanet;
   let scoreText
   let planetCarousel = []
+  let progressCircles = []
+  let progressCircleBackGround;
   let startButton;
+  let radialProgressBar = new PIXI.Graphics();
+  let gaugeRadial;
 
   let endOfGameModal;
 
@@ -340,6 +395,7 @@ export const init = (app, setup) => {
   let collectable;
   let barGraphics = new PIXI.Graphics();
   let numbershapeGraphics = new PIXI.Graphics();
+  let generatorGraphics = new PIXI.Graphics();
   let blasts = []
   let white;
   let topLeftCaveBackground
@@ -359,56 +415,19 @@ export const init = (app, setup) => {
   new PIXI.Sprite(),
   ]
 
+  // #endregion
+
+  // #region Timeline Declarations
+
   // GOTO_TIMELINES Definitions 
   let flyToNextPlanetTimeline = new Timeline({ paused: true });
-  let globalTimeline = new Timeline({ paused: true });
   let gotoCaveTimeline = new Timeline({ paused: true });
-  let leavePlanetTimeline = new Timeline({ paused: true });
+  let leaveCaveTimeline = new Timeline({ paused: true });
   let endOfGameTimeline = new Timeline({ paused: true });
+  let radialProgressBarTimeline = new Timeline({ paused: true, onComplete: onRadialProgressComplete });
 
 
-  let LAYERS = {}
-  let GROUPS = {}
-  // Game State
-  let currentPuzzle;
-
-  // TODO: Clean up this constants stuff. Tbh this should probably all be some type of state class. 
-  let isMobileDevice = setup.width / setup.height < 0.75 ? true : false;
-  let NEW_CARD_WIDTH = 40;
-  let TOP_PADDING = isMobileDevice ? 0.1 * setup.height : 0.05 * setup.height;
-
-
-  let maxMeshDimension = Math.max(initLevel.mesh[0], initLevel.mesh[1]);
-
-
-  let gridUnitsWide = (maxMeshDimension + 2) * initLevel.grid[0];
-  let gridUnitsHigh = (maxMeshDimension + 2) * initLevel.grid[1];
-  let gridUnitsMax = Math.max(gridUnitsHigh, gridUnitsWide);
-
-
-  let FONT_SIZE = isMobileDevice ? TOP_PADDING / 2 : TOP_PADDING;
-  let DEFAULT_COUNTER = "blue";
-  let UNIT = MIN_DIM / gridUnitsMax;
-  let SPACE_BETWEEN_CARDS = UNIT / 4;
-  let CARD_WIDTH = (maxMeshDimension + 1) * UNIT;
-  let GRID_WIDTH =
-    CARD_WIDTH * initLevel.grid[0] +
-    SPACE_BETWEEN_CARDS * (initLevel.grid[0] - 1);
-  let GRID_HEIGHT =
-    CARD_WIDTH * initLevel.grid[1] +
-    SPACE_BETWEEN_CARDS * (initLevel.grid[1] - 1);
-  let delta = CARD_WIDTH + SPACE_BETWEEN_CARDS;
-
-  // GOTO_CONSTANTS Decleration
-
-  let BOLT_BAR_WIDTH = CARD_WIDTH / 1.75
-
-  let COUNTER_TEXTURE;
-
-  let COUNTERS = {}
-
-  let originX = VIEW_WIDTH / 2 - GRID_WIDTH / 2;
-  let originY = VIEW_HEIGHT / 2 - GRID_HEIGHT / 2;
+  // #endregion
 
 
   function launch() {
@@ -421,18 +440,18 @@ export const init = (app, setup) => {
   function calculateScore() {
     const { timer, focusTime } = scoreObject
     const levelScore = 10 + Math.round(Math.pow(2, 11 / (1 + (timer - focusTime) / 1000)) / 30)
-    console.log("score", levelScore)
-    scoreObject.score += levelScore
-    scoreObject.globalScore += levelScore
-
-    console.log("score", scoreObject.globalScore)
 
     return levelScore
   }
 
-  function layer(appState){
+  function layer(appState) {
     state.applicationState = appState
     LAYERS[appState].forEach(l => { app.stage.addChild(l) })
+  }
+
+  function reveal(appState) {
+    state.applicationState = appState
+    LAYERS[appState].forEach(l => { l.alpha = 1 })
   }
 
 
@@ -442,29 +461,29 @@ export const init = (app, setup) => {
     puzzleIndex++
     currentPuzzle = puzzlesForCurrentLevel[puzzleIndex % currentLevelLength];
     currentPuzzle.counter = currentLevel.counter
-
-
     pool.loadPuzzle(currentPuzzle)
   }
 
   function prepareTheNextLevel() {
     // Reset the puzzle counter. 
-    scoreObject.globalScore += scoreObject.score
-    scoreObject.score = 0
+    scoreObject.totalScore += scoreObject.puzzleScore
+    scoreObject.puzzleScore = 0
+    radialProgressBar.progressAngle = 0
 
     boltBar.width = BOLT_BAR_WIDTH * 0.01
 
-    levelCounter++
+    levelIndex++
     puzzleIndex = 0
-    currentLevel = opalLevels[levelCounter % opalLevels.length]
+    currentLevel = LEVELS[levelIndex % LEVELS.length]
     puzzlesForCurrentLevel = currentLevel.puzzles
     currentLevelLength = puzzlesForCurrentLevel.length;
     collectable.texture = TEXTURES[currentLevel.collectable]
+    currentPuzzle = puzzlesForCurrentLevel[puzzleIndex % currentLevelLength];
+    currentPuzzle.counter = currentLevel.counter
 
     state.collectableTexture = TEXTURES[currentLevel.collectable]
     boltBar.texture = generateBarTexture(BAR_COLORS[currentLevel.icon])
-
-    prepareTheNextPuzzle()
+    pool.loadPuzzle(currentPuzzle)
   }
 
   function swapTexture(sprite, texture) {
@@ -477,7 +496,7 @@ export const init = (app, setup) => {
     sprite.aspectRatio = wh
   }
 
-  function setSpriteSize(sprite, width){
+  function setSpriteSize(sprite, width) {
     sprite.width = width
     sprite.height = width / sprite.aspectRatio
   }
@@ -495,31 +514,19 @@ export const init = (app, setup) => {
     }
   }
 
-  // GOTO_TIMELINE Callbacks 
-  function onCollection() {
+  function onRadialProgressComplete() {
+    // Subtracting one here because it's before it's been incremented.
 
-    // Do right away on collection. 
-    collectable.alpha = 0
-    app.stage.addChild(iconCollectable)
 
-    // Since the beans rotate. 
-    collectable.rotation = 0
-    const onComplete = () => {
-      if (scoreObject.progress >= currentLevel.puzzles.length) {
-        prepareTheNextLevel()
-
-        // Layer / Tween
-        app.stage.addChild(shipOpal)
-        Tween.to(iconCollectable, { duration: 0.5, x: shipOpal.x + shipOpal.width / 2, y: shipOpal.y + shipOpal.height / 4, onComplete: prepareSceneTransition })
-      } else {
-        prepareTheNextPuzzle()
-        dealCards(pool);
-      }
+    if (puzzleIndex + 1 >= currentLevel.puzzles.length) {
+      prepareTheNextLevel()
+      prepareSceneTransition()
+    } else {
+      prepareTheNextPuzzle()
+      dealCards(pool);
     }
-
-    let to = Math.min(scoreObject.progress / currentLevel.puzzles.length * BOLT_BAR_WIDTH, BOLT_BAR_WIDTH)
-    Tween.to(boltBar, { width: to, ease: "bounce", onComplete: onComplete })
   }
+
 
   function pop(x, y, r) {
     let tg = this._targets[0]
@@ -539,7 +546,9 @@ export const init = (app, setup) => {
     if (lives <= 0) {
       endGame();
     } else if (currentLevel.type == "cave") {
-      onCollection();
+      // MOOO - this is where I"m handling the different behavior for the "cave" levels.
+      prepareTheNextPuzzle()
+      dealCards(pool);
     }
   }
 
@@ -550,9 +559,19 @@ export const init = (app, setup) => {
     // Learning is when you can manipulate the dots. 
     if (e.target.isOffCard == true) {
 
+      animateCircles(puzzleIndex + 1)
+
       // GOTO: CORRECT
-      calculateScore()
-      scoreObject.progress++
+      let levelScore = calculateScore()
+      scoreObject.puzzleScore = levelScore
+      scoreObject.totalScore += levelScore
+
+      SESSIONS[planetIndex].score += levelScore
+      console.log("planetIndex,sessionScore",planetIndex,SESSIONS[planetIndex].score)
+
+
+      buildRadialProgressBarTimeline()
+      radialProgressBarTimeline.restart()
 
       e.target.dropped = true
       e.target.alpha = 0;
@@ -572,7 +591,17 @@ export const init = (app, setup) => {
         }
       })
 
-      Tween.to(collectable, { x: iconCollectable.x + collectable.width / 2, y: iconCollectable.y + collectable.height / 2, duration: 0.5, ease: Expo.easeIn, onComplete: onCollection })
+      collectable.width = collectable.originalSize.width
+      collectable.height = collectable.originalSize.height
+
+      let sPercentage = levelScore / 50 + 0.2
+      let apparentHeight = collectable.height * sPercentage
+      let apparentWidth = collectable.width * sPercentage
+
+      // This vary the size of the gem. 
+      if (currentLevel.type != "cave") {
+        Tween.fromTo(collectable, { width: apparentWidth * 1.5, height: apparentHeight * 0.5 }, { duration: 1, width: apparentWidth, height: apparentHeight, ease: "elastic" })
+      }
     } else {
 
       // TODO: Add back numeral support inside caves. 
@@ -590,6 +619,7 @@ export const init = (app, setup) => {
           }
         })
         Tween.to(collectable, { duration: 2, t: 50, onUpdateParams: [collectable.x, collectable.y, rand], ease: Linear.easeNone, onUpdate: pop, onComplete: onWrongAnswerComplete })
+        animateCircles(puzzleIndex + 1)
         // Normal Behavior
       } else {
         e.target.dropped = true
@@ -599,32 +629,38 @@ export const init = (app, setup) => {
 
       // Handling the lives. 
       lives--;
+      let { width, height } = iconLives.originalFrame
       Tween.to(livesBar, { duration: 0.5, width: BOLT_BAR_WIDTH * lives / TOTAL_LIVES, ease: "bounce" })
+      Tween.fromTo(iconLives, { width: 0.75 * width, height: 1.15 * height }, { duration: 2, width: width, height: height, ease: "elastic" })
     }
   }
 
   function prepareSceneTransition() {
 
-    let upcomingLevel = currentLevel 
+    let upcomingLevel = currentLevel
 
     Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 0 })
 
-    boltBar.width = 0 
+    boltBar.width = 0
 
     swapTexture(iconCollectable, TEXTURES[currentLevel.icon])
     iconCollectable.y = -100
-    
+
 
     puzzleIndex = 0
-    scoreObject.progress = 0
-    scoreObject.score = 0
+    scoreObject.puzzleScore = 0
+    radialProgressBar.progressAngle = 0
+    drawRadialProgress()
 
     if (upcomingLevel.type == "cave") {
-      setSpriteSize(iconCollectable, boltGauge.width/5)
+      setSpriteSize(iconCollectable, iconCollectable.originalFrameVial.width * 1.5)
+      iconCollectable.y = boltGauge.y - boltGauge.height
       gotoCaveTimeline.restart()
     } else {
+      iconCollectable.width = iconCollectable.originalFrameVial.width
+      iconCollectable.height = iconCollectable.originalFrameVial.height
       layer(applicationStates.cave)
-      leavePlanetTimeline.restart()
+      leaveCaveTimeline.restart()
     }
 
     app.stage.addChild(white)
@@ -632,25 +668,22 @@ export const init = (app, setup) => {
 
 
   function endGame() {
+    layer(applicationStates.end)
 
-    scoreObject.score = 0
-    endOfGameTimeline.clear()
-    buildEndOfGameTimeline()
     // Need some type of function to clear the screen of everything 
 
     if (currentLevel.type == "cave") {
-      // Play the cave transition
+      // Play the cave transition - true makes it fade out...probably don't need that. 
       caveTearDown(true)
+    } else {
+      // Tear down space level
     }
 
-    pool.reset()
-
-    collectable.alpha = 0
     app.stage.addChild(scoreText)
     scoreText.y = POINT_CAROUSEL_Y - SIZE_CAROUSEL_HEIGHT
 
-    scoreObject.progress = 0
 
+    // Prepare Planet Carousel.
     planetCarousel.forEach((p, i) => {
       p.y = POINT_CAROUSEL_Y
       p.x = setup.width + MIN_DIM / 2 * i
@@ -658,8 +691,45 @@ export const init = (app, setup) => {
       app.stage.addChild(p)
     })
 
-
+    // Rebuild Timeline. 
+    endOfGameTimeline.clear()
+    buildEndOfGameTimeline()
     endOfGameTimeline.restart()
+  }
+
+  class PlanetSummary extends PIXI.Container {
+    constructor(data) {
+      super()
+      const fontStyle = {
+        fill: "#19d5ff",
+        fontFamily: "Silkscreen",
+        fontSize: SIZE_CAROUSEL_HEIGHT / 5
+      };
+      this.planet = data.planet
+      this.backGround = new PIXI.Sprite(TEXTURES.rectangle_black_alpha)
+      this.plants = data.plants + 1
+      this.plasma = data.plasma
+      this.seeds = data.seeds
+      this.plantText = new PIXI.Text("four", fontStyle);
+      this.plasmaText = new PIXI.Text(this.plasma, fontStyle);
+      this.plasmaText.y = SIZE_CAROUSEL_HEIGHT / 5
+      let id = "planet_" + data.planet
+      this.planet = new PIXI.Sprite(TEXTURES[id])
+      this.init()
+    }
+
+    draw() {
+      this.plantText.text = this.plants + 1
+      this.plasmaText.text = this.plasma + 1
+    }
+
+    init() {
+      this.addChild(this.backGround)
+      this.addChild(this.plantText)
+      this.addChild(this.planet)
+      this.addChild(this.plasmaText)
+      this.draw()
+    }
 
   }
 
@@ -875,7 +945,10 @@ export const init = (app, setup) => {
             i % 2 == 0 ? sprite.rotation = Math.PI / 2 : sprite.rotation = -Math.PI / 2
           } else if (currentLevel.shuffle == "stick") {
             i % 2 == 0 ? sprite.rotation = Math.PI / 2 : sprite.rotation = 0
-          } else {
+          } else if (currentLevel.shuffle == "half") {
+            i % 3 == 0 ? sprite.rotation = Math.PI : sprite.rotation = 0
+          }
+          else {
             sprite.rotation = 0
           }
           sprite.width = this.unit;
@@ -977,21 +1050,6 @@ export const init = (app, setup) => {
           app.stage.addChild(c);
           this.activeCards.push(c);
 
-          // Deprecating letter indicators.
-          /*
-          if (level.type == "number") {
-            c.indicator = LETTER_CARDS[acc % 4 + 1]
-            c.indicator.width = CARD_WIDTH / 8
-            c.indicator.height = CARD_WIDTH / 8
-            c.indicator.x = c.indicator.height / 5
-            c.indicator.y = c.indicator.width / 5
-            c.addChild(c.indicator)
-          } else {
-            c.removeChild(c.indicator)
-          }
-          */
-
-
           acc++;
         }
       }
@@ -1011,7 +1069,7 @@ export const init = (app, setup) => {
         for (let j = 0; j < 5; j++) {
           let card = new Card(this.level);
           card.interactive = true;
-          card.on("pointerdown", (e) => cardClicked(e));
+          card.on("pointerdown", cardClicked);
           this.cards.push(card);
         }
       }
@@ -1020,30 +1078,29 @@ export const init = (app, setup) => {
 
   function initializeGameData() {
 
-    // Level Data
-    levelCounter = 0
+    // Levels
+    levelIndex = 0
     puzzleIndex = 0
-    currentLevel = opalLevels[levelCounter % opalLevels.length]
+    planetIndex = 0
+    currentLevel = LEVELS[levelIndex % LEVELS.length]
     state.collectableTexture = TEXTURES[currentLevel.collectable]
     puzzlesForCurrentLevel = currentLevel.puzzles
     currentLevelLength = puzzlesForCurrentLevel.length;
     currentPuzzle = puzzlesForCurrentLevel[puzzleIndex % currentLevelLength];
     currentPuzzle.counter = currentLevel.counter
 
+    // Scoring & Lives
+    lives = TOTAL_LIVES
+    scoreObject.totalScore = 0
+    scoreObject.puzzleScore = 0
   }
 
   // Should probably define global layout params as S. 
   function updateLayoutParams() {
 
-    // New Algo
     let newPuzzle = currentPuzzle;
-
-
     newPuzzle.counter = currentLevel.counter
-
-    collectable.texture = state.collectableTexture
-
-    LINE_COLOR = LINE_COLORS[newPuzzle.counter];
+    collectable.texture = TEXTURES[currentLevel.collectable]
 
     // Logic for laying out cards in different dimensions
     if (isMobileDevice) {
@@ -1111,29 +1168,51 @@ export const init = (app, setup) => {
 
 
   function startGame() {
+    initializeGameData()
 
+    // TODO: Revisit how to ensure that the entire game state is reset. Whe is the level index?
     if (state.gameOver) {
 
+      // Reset Game State
+      state.gameOver = false
+
+      // RESET UI 
+
+      // Planet
       currentPlanet.alpha = 1
       let id = "planet_" + currentLevel.planet
       currentPlanet.texture = TEXTURES[id]
+
+      // Collectables
       iconCollectable.texture = TEXTURES[currentLevel.icon]
-      state.gameOver = false
-      planetCarousel.forEach(p => app.stage.removeChild(p))
+      collectable.texture = TEXTURES[currentLevel.collectable]
+
+
+      // Planet Carousel / Cards
+      planetCarousel.forEach(p => {
+        app.stage.removeChild(p)
+        swapTexture(p, p.originalTexture)
+      })
+
       shipOpal.x = shipOpal.originalFrame.x
       shipOpal.y = shipOpal.originalFrame.y
       shipOpal.alpha = 1
       scoreText.alpha = 0
 
-      lives = TOTAL_LIVES
+
+      // progressCircles
+
+      radialProgressBar.progressAngle = 0
+      drawRadialProgress()
+      drawProgressCircles()
+      pool.loadPuzzle(currentPuzzle)
     }
 
 
-    Tween.to(startButton, {duration: 1, y: -startButton.height });
-    Tween.to(shipOpal, {duration: 2, alpha: 1, y: setup.height / 2 - shipOpal.height / 2, x: setup.width / 2 - shipOpal.width / 2})
-    launch()
 
-    initializeGameData()
+    Tween.to(startButton, { duration: 1, y: -startButton.height });
+    Tween.to(shipOpal, { duration: 2, alpha: 1, y: setup.height / 2, x: setup.width / 2 })
+    launch()
   }
 
   function makeInteractive() {
@@ -1146,9 +1225,6 @@ export const init = (app, setup) => {
 
   function dealCards(pool) {
 
-
-
-
     scoreObject.focusTime = scoreObject.timer // There's got to be a better name / place for this. 
 
     // Blue numerals behind the cards that show the value. 
@@ -1157,6 +1233,7 @@ export const init = (app, setup) => {
       n.alpha = 0;
       app.stage.removeChild(n);
     });
+
 
     pool.cards.forEach((c, i) => {
       if (c.inPlay == true) {
@@ -1167,13 +1244,17 @@ export const init = (app, setup) => {
         n.x = _x + CARD_WIDTH / 2;
         n.y = _y + CARD_WIDTH / 2;
 
+
+        // GOTO_COLLECTABLE Setting 
         if (c.isOffCard == true) {
           collectable.x = _x + CARD_WIDTH / 2;
           collectable.y = _y + CARD_WIDTH / 2;
           collectable.alpha = 0
+          collectable.rotation = 0
+          collectable.width = collectable.originalSize.width
+          collectable.height = collectable.originalSize.height
         }
 
-        n.fill = LINE_COLOR;
         n.text = c.value;
 
         c.numeral = n;
@@ -1198,7 +1279,6 @@ export const init = (app, setup) => {
     resetBlasts()
 
     boltBar.width = BOLT_BAR_WIDTH * 0.01
-
     backGround.texture = TEXTURES.background_cave
 
     let id = "lava_" + currentLevel.color
@@ -1218,9 +1298,14 @@ export const init = (app, setup) => {
     if (fade) {
       Tween.to(GROUPS.caveElements, { alpha: 0, duration: 1, ease: Expo.easeInOut, onComplete: removeCaveStuff })
     } else {
+      /* MOOOOOO - I"m incrementing the planet index here to make
+       sure it doesn't get incremented when the game is over.
+      */
+      planetIndex++
       removeCaveStuff()
     }
 
+    // GOTO_CAROUSEL Planet index incremented here insted of "arrived at next planet" 
 
     currentPlanet.width = setup.width / 1.5
     currentPlanet.height = currentPlanet.width / currentPlanet.aspectRatio
@@ -1229,10 +1314,13 @@ export const init = (app, setup) => {
     currentPlanet.alpha = 1
 
 
+
     backGround.texture = TEXTURES.background_opal
 
+
+    // Layer the elements
     layer(applicationStates.space)
-    GROUPS.gauges.forEach(g => g.alpha = 0) 
+    GROUPS.gauges.forEach(g => g.alpha = 0)
   }
 
   function endOfGameTimelineComplete() {
@@ -1247,48 +1335,113 @@ export const init = (app, setup) => {
     app.stage.addChild(startButton);
   }
 
-  // GOTO_TIMELINE Functions 
-  function buildLeavePlanetTimeline() {
-    leavePlanetTimeline.to(shipOpal, {ease: Sine.easeOut, duration: 1, x: 3 / 4 * setup.width })
-    leavePlanetTimeline.to(shipOpal, { duration: 2, y: 0 }, "<")
-    leavePlanetTimeline.to(shipOpal, { duration: 2, width: 0, height: 0 }, "<")
-    leavePlanetTimeline.to(white, { duration: 1, alpha: 1 })
-    leavePlanetTimeline.call(caveTearDown)
-    leavePlanetTimeline.to(white, { duration: 1, alpha: 0 })
-    leavePlanetTimeline.to(shipOpal, { duration: 0, height: 1, width: 1, y: setup.height + shipOpal.height })
-    leavePlanetTimeline.to(shipOpal, { duration: 1, width: shipOpal.originalFrame.width, height: shipOpal.originalFrame.height, y: setup.height / 2 - shipOpal.height / 2, x: MENU_MARGIN })
-    leavePlanetTimeline.to(shipOpal, { ease: Expo.easeInOut, duration: 2, x: setup.width / 2 - shipOpal.width / 2, onComplete: launch }, "<")
+  // GOTO_TIMELINE Functions
+
+
+  /// Goin
+  function buildRadialProgressBarTimeline() {
+
+    let lastOne = puzzleIndex + 1 == currentLevel.puzzles.length
+
+    radialProgressBarTimeline.clear()
+
+    let angleIncrement = 0
+
+    // If it's a cave every increment is the same. 
+    if (currentLevel.type == "cave") {
+      angleIncrement = 2 * Math.PI / 3
+    } else {
+      // Otherwise it's mapped to the score. 
+      angleIncrement = scoreObject.puzzleScore / 100 * Math.PI * 2
+    }
+
+    let to = radialProgressBar.progressAngle + angleIncrement
+    let cap = 2 * Math.PI
+
+
+    // Animation Timings (jenk)
+    let tt = 1
+
+    let dt1 = (cap - radialProgressBar.progressAngle) / (2 * Math.PI) * tt
+    let dt2 = tt - dt1
+
+
+    radialProgressBarTimeline.to(collectable, { x: iconCollectable.x + collectable.width / 2, y: iconCollectable.y + collectable.height / 2, duration: 0.5, ease: Expo.easeIn, onComplete: () => collectable.alpha = 0 })
+
+    let leftovers = 0
+
+    if (to > 0.99 * cap) {
+      let remainder = to - cap
+      leftovers = remainder
+      radialProgressBarTimeline.to(radialProgressBar, { progressAngle: cap, duration: dt1, ease: Linear.easeNone, onUpdate: drawRadialProgress, onComplete: onRadialProgressFull })
+      radialProgressBarTimeline.to(iconCollectable, { duration: 1, ease: "back.in(0.7)", x: shipOpal.x, y: shipOpal.y, onComplete: onIconDeposit })
+      radialProgressBarTimeline.to(shipOpal, { width: shipOpal.originalFrame.width * 0.9, height: shipOpal.originalFrame.height * 1.1, duration: 0.1, ease: Linear.easeNone })
+      radialProgressBarTimeline.to(shipOpal, { width: shipOpal.originalFrame.width, height: shipOpal.originalFrame.height , duration: 1, ease: "elastic" })
+      radialProgressBarTimeline.to(radialProgressBar, { progressAngle: remainder, duration: dt2, ease: "elastic", onUpdate: drawRadialProgress },"<")
+    } else {
+      leftovers = to
+      radialProgressBarTimeline.to(radialProgressBar, { progressAngle: to, duration: tt, ease: "bounce", onUpdate: drawRadialProgress })
+    }
+
+    if (lastOne) {
+      if (currentLevel.type == "cave") {
+        // Bean Remainder
+      } else {
+        radialProgressBarTimeline.to(iconCollectable, {height: iconCollectable.originalFrameVial.height*leftovers/(2*Math.PI), duration: 0.1})
+        radialProgressBarTimeline.to(iconCollectable, { duration: 1, ease: "back.in(0.7)", x: shipOpal.x, y: shipOpal.y, onComplete: onIconDeposit },"<")
+      }
+     
+    }
+  }
+
+
+  function buildLeaveCaveTimeline() {
+    leaveCaveTimeline.to(shipOpal, { ease: Sine.easeOut, duration: 1, x: 3 / 4 * setup.width })
+    leaveCaveTimeline.to(shipOpal, { duration: 2, y: 0 }, "<")
+    leaveCaveTimeline.to(shipOpal, { duration: 2, width: 0, height: 0 }, "<")
+    leaveCaveTimeline.to(white, { duration: 1, alpha: 1 })
+    leaveCaveTimeline.call(caveTearDown)
+    leaveCaveTimeline.to(white, { duration: 1, alpha: 0 })
+    leaveCaveTimeline.to(shipOpal, { duration: 0, height: 1, width: 1, y: setup.height + shipOpal.height })
+    leaveCaveTimeline.to(shipOpal, { duration: 1, width: shipOpal.originalFrame.width, height: shipOpal.originalFrame.height, y: setup.height / 2 - shipOpal.height / 2, x: MENU_MARGIN })
+    leaveCaveTimeline.to(shipOpal, { ease: Expo.easeInOut, duration: 2, x: setup.width / 2, onComplete: launch }, "<")
   }
 
 
   function onArrivedAtNextPlanet() {
-    //app.stage.addChild(iconCollectable)
-    iconCollectable.height = boltGauge.height
-    iconCollectable.anchor.y = 0.5
-    iconCollectable.rotation = -Math.PI / 20
-    iconCollectable.width = iconCollectable.height * iconCollectable.aspectRatio
     Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 1 })
-    Tween.to(iconCollectable,{duration: 0.5, y: boltGauge.y+boltGauge.height/2, x: boltGauge.x, alpha: 1 })
+    Tween.to(iconCollectable, { duration: 0.5, ease: "elastic", rotation: ICON_ROTATION, y: iconCollectable.originalFrameVial.y, x: iconCollectable.originalFrameVial.x, width: iconCollectable.originalFrameVial.width, height: iconCollectable.originalFrameVial.height, alpha: 1 })
+    drawProgressCircles()
     dealCards(pool)
   }
 
 
+
+
   function buildEndOfGameTimeline() {
 
+    scoreObject.levelScore = 0
+
+    planetCarousel.forEach((p, i) => {
+      if (i > planetIndex) {
+        p.texture = TEXTURES.planet_mystery
+      }
+    })
+
     const onUpdate = () => {
-      let tweenVal = scoreObject.score / scoreObject.globalScore
-      scoreText.text = Math.round(scoreObject.score)
+      let tweenVal = scoreText.value / scoreObject.totalScore
+      scoreText.text = Math.round(scoreText.value)
       scoreText.scale.x = tweenVal * tweenVal
       scoreText.scale.y = tweenVal * tweenVal
       scoreText.alpha = tweenVal * tweenVal
     }
-    let toString = "-=" + (setup.width / 2 + MIN_DIM / 2 * (planetCarousel.length - 1))
+    let toString = "-=" + (setup.width / 2 + MIN_DIM / 2 * (planetIndex))
 
-    endOfGameTimeline.to([currentPlanet, iconLives, iconCollectable, startButton, boltBar, boltGauge, livesBar, livesGauge, white], { duration: 1, alpha: 0 })
-    endOfGameTimeline.to(shipOpal, { duration: 1, y: POINT_CAROUSEL_Y + SIZE_CAROUSEL_HEIGHT / 1.5, x: setup.width / 2 - shipOpal.width / 2, ease: Sine.easeInOut })
+    endOfGameTimeline.to([currentPlanet, iconLives, iconCollectable, startButton, boltBar, boltGauge, livesBar, livesGauge, white, radialProgressBar, gaugeRadial], { duration: 1, alpha: 0 })
+    endOfGameTimeline.to(shipOpal, { duration: 1, y: POINT_CAROUSEL_Y + SIZE_CAROUSEL_HEIGHT*1.2, x: setup.width / 2, ease: Sine.easeInOut })
     endOfGameTimeline.to(planetCarousel, { alpha: 1, duration: 0.5, ease: Sine.easeInOut }, "<")
-    endOfGameTimeline.to(scoreObject, { score: scoreObject.globalScore, duration: 5, ease: Sine.easeInOut, onUpdate: onUpdate }, "<")
-    endOfGameTimeline.to(planetCarousel, { duration: 5, x: toString }, "<")
+    endOfGameTimeline.to(scoreText, { value: scoreObject.totalScore, duration: 5, ease: Sine.easeInOut, onUpdate: onUpdate }, "<")
+    endOfGameTimeline.to(planetCarousel, { duration: levelIndex, x: toString }, "<")
     endOfGameTimeline.call(endOfGameTimelineComplete)
   }
 
@@ -1321,17 +1474,82 @@ export const init = (app, setup) => {
 
     flyToNextPlanetTimeline.to(currentPlanet, { duration: time / 4, y: setup.height + currentPlanet.height, onComplete: swapPlanets })
     flyToNextPlanetTimeline.to(state.starPosition, { ease: Expo.easeInOut, duration: time, span: goTo, onUpdate: updateStars }, "<")
-    flyToNextPlanetTimeline.to(shipOpal, { duration: 1, y: setup.height - shipOpal.height - MENU_MARGIN, x: MENU_MARGIN }, "-=1")
+    flyToNextPlanetTimeline.to(shipOpal, { duration: 1, y: setup.height - shipOpal.height / 2 - MENU_MARGIN, x: MENU_MARGIN + shipOpal.width / 2 }, "-=1")
     flyToNextPlanetTimeline.call(onArrivedAtNextPlanet)
   }
 
-  function onArrivedAtCave(){
-    dealCards(pool)
-    Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 1 })
-    Tween.to(iconCollectable, { duration: 0.5,rotation: 0,y: boltGauge.y+boltGauge.height/4, x: boltGauge.x, alpha: 1 })
+  function onIconDeposit() {
+    iconCollectable.x = iconCollectable.originalFrameVial.x
+    iconCollectable.y = -iconCollectable.originalFrameVial.height
+    Tween.to(iconCollectable, { duration: 1, y: iconCollectable.originalFrameVial.y, x: iconCollectable.originalFrameVial.x, alpha: 1 })
   }
 
-  function buildGoToPlanetTimeline() {
+  function onRadialProgressFull() {
+
+    app.stage.addChild(shipOpal)
+
+    radialProgressBar.progressAngle = 0
+    drawRadialProgress()
+    scoreObject.puzzleScore = 0
+  }
+
+
+  function drawProgressCircles() {
+
+    let width = (currentLevel.puzzles.length - 1) * PROGRESS_CIRCLE_DIM * 2
+
+    let t = generateRect(width + PROGRESS_CIRCLE_DIM * 4, PROGRESS_CIRCLE_DIM * 3, PROGRESS_CIRCLE_DIM * 1.5, null)
+    progressCircleBackGround.texture = t
+    progressCircleBackGround.x = setup.width / 2
+    progressCircleBackGround.y = setup.height - MENU_MARGIN_VERTICAL
+    app.stage.addChild(progressCircleBackGround)
+
+    progressCircles.forEach((c, i) => {
+      if (i < currentLevel.puzzles.length) {
+        c.width = i == puzzleIndex ? PROGRESS_CIRCLE_DIM * 2 : PROGRESS_CIRCLE_DIM
+        c.height = i == puzzleIndex ? PROGRESS_CIRCLE_DIM * 2 : PROGRESS_CIRCLE_DIM
+        c.x = setup.width / 2 - width / 2 + 2 * c.width * i
+        c.y = setup.height - MENU_MARGIN_VERTICAL
+        app.stage.addChild(c)
+      } else {
+        app.stage.removeChild(c)
+      }
+    })
+
+  }
+
+  function drawRadialProgress(reset) {
+
+    let start = 0
+    let end = reset ? 0 : radialProgressBar.progressAngle
+    radialProgressBar.clear();
+    radialProgressBar.lineStyle(MENU_MARGIN / 2, BAR_COLORS[currentLevel.icon]);
+    radialProgressBar.arc(0, 0, 2 * MENU_MARGIN, start, end); // cx, cy, radius, startAngle, endAngle/
+  }
+
+  function onArrivedAtCave() {
+    reveal(applicationStates.cave)
+    drawRadialProgress(true)
+    drawProgressCircles()
+    dealCards(pool)
+    Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 1 })
+    Tween.to(iconCollectable, { duration: 0.5, rotation: 0, y: boltGauge.y - boltGauge.height / 4, x: boltGauge.x, alpha: 1 })
+  }
+
+  function animateCircles(i) {
+    let m = (i - 1) % currentLevel.puzzles.length
+    let n = i % currentLevel.puzzles.length
+    let curr = progressCircles[m]
+    let next = progressCircles[n]
+    if (n == currentLevel.puzzles.length) {
+      Tween.to([...progressCircles, progressCircleBackGround], { duration: 0.5, alpha: 0 })
+    } else {
+      Tween.to(curr, { duration: 0.5, ease: "elastic", width: PROGRESS_CIRCLE_DIM, height: PROGRESS_CIRCLE_DIM })
+      Tween.to(next, { duration: 0.5, ease: "elastic", width: 2 * PROGRESS_CIRCLE_DIM, height: 2 * PROGRESS_CIRCLE_DIM })
+    }
+  }
+
+  function buildGoToCaveTimeline() {
     gotoCaveTimeline.to(shipOpal, { duration: 4, width: 0, height: 0 })
     gotoCaveTimeline.to(shipOpal, { duration: 4, ease: "elastic", x: setup.width / 2, y: setup.height / 2 }, "<")
     gotoCaveTimeline.to(shipOpal, { duration: 0, ease: "elastic", x: 3 / 4 * setup.width, y: MENU_MARGIN * 4 })
@@ -1340,9 +1558,20 @@ export const init = (app, setup) => {
     gotoCaveTimeline.to(white, { duration: 0.5, alpha: 1 }, "-=2")
     gotoCaveTimeline.to(currentPlanet, { duration: 1, alpha: 0 }, "<0.25")
     gotoCaveTimeline.to(white, { duration: 0.5, alpha: 0 })
-    gotoCaveTimeline.to(shipOpal, { duration: 1.5, height: shipOpal.originalFrame.height, width: shipOpal.originalFrame.width, y: setup.height - shipOpal.height },)
-    gotoCaveTimeline.to(shipOpal, { duration: 1.5, x: MENU_MARGIN, ease: Sine.easeIn }, "<")
+    gotoCaveTimeline.to(shipOpal, { duration: 1.5, height: shipOpal.originalFrame.height, width: shipOpal.originalFrame.width, y: setup.height - shipOpal.height / 2 - MENU_MARGIN },)
+    gotoCaveTimeline.to(shipOpal, { duration: 1.5, x: MENU_MARGIN + shipOpal.width / 2, ease: Sine.easeIn }, "<")
     gotoCaveTimeline.call(onArrivedAtCave)
+  }
+
+  function generateRect(w, h, r, id) {
+    generatorGraphics.clear()
+    generatorGraphics.beginFill(0x000000)
+    generatorGraphics.alpha = 0.5
+    generatorGraphics.drawRoundedRect(0, 0, w, h, r)
+    generatorGraphics.endFill()
+    let t = app.renderer.generateTexture(generatorGraphics)
+    id && (TEXTURES[id] = t);
+    return t
   }
 
   function generateNumberShapeTextures(counter) {
@@ -1392,49 +1621,46 @@ export const init = (app, setup) => {
   function load() {
 
 
+
     // Define dynamically generated assets here.
 
     COUNTERS = {
       default: {
         texture: TEXTURES.planet_green_swirl,
-        stroke: LINE_COLORS.red,
         value: 1,
       },
       circle_green: {
         texture: TEXTURES.counter_circle_green,
-        stroke: LINE_COLORS.green,
         value: 1,
       },
       square_pink: {
         texture: TEXTURES.counter_square_pink,
-        stroke: LINE_COLORS.pink,
         value: 1,
       },
       stick_purple: {
         texture: TEXTURES.counter_stick_purple,
-        stroke: LINE_COLORS.purple,
         value: 1,
       },
       diamond_blue: {
         texture: TEXTURES.counter_diamond_blue,
-        stroke: LINE_COLORS.blue,
         value: 1,
       },
       oval_orange: {
         texture: TEXTURES.counter_oval_orange,
-        stroke: LINE_COLORS.blue,
         value: 1,
       },
       stick_red: {
         texture: TEXTURES.counter_stick_red,
-        stroke: LINE_COLORS.red,
         value: 1,
       },
       triangle_yellow: {
         texture: TEXTURES.counter_triangle_yellow,
-        stroke: LINE_COLORS.yellow,
         value: 1,
       },
+      half_circle_red: {
+        texture: TEXTURES.counter_half_circle_red,
+        value: 1,
+      }
     };
 
 
@@ -1443,12 +1669,23 @@ export const init = (app, setup) => {
     initializeGameData()
 
 
+
+
     // Define UI Elements 
-    opalLevels.forEach((l, i) => {
-      console.log(l)
+    LEVELS.forEach((l, i) => {
       if (l.type != "cave") {
+        let d = {
+          plants: 0,
+          seeds: 0,
+          plasma: 0,
+          score: 0,
+          planet: l.planet,
+        }
+        SESSIONS.push(d)
+
         let id = "planet_" + l.planet
         let p = new PIXI.Sprite(TEXTURES[id])
+        p.originalTexture = TEXTURES[id]
         p.anchor.set(0.5)
         p.aspectRatio = TEXTURES[id].width / TEXTURES[id].height
         p.width = SIZE_CAROUSEL_HEIGHT
@@ -1458,9 +1695,6 @@ export const init = (app, setup) => {
       }
     })
 
-
-    // #region GOTO_UI Definitions 
-
     scoreText = new PIXI.Text("0", {
       fill: "#19d5ff",
       fontFamily: "Silkscreen",
@@ -1469,6 +1703,7 @@ export const init = (app, setup) => {
     scoreText.x = setup.width / 2
     scoreText.y = setup.height / 4
     scoreText.anchor.set(0.5);
+    scoreText.value = 0
     scoreText.alpha = 0
 
     app.stage.addChild(scoreText)
@@ -1545,6 +1780,7 @@ export const init = (app, setup) => {
     collectable.width = MIN_DIM / 10
     collectable.height = MIN_DIM / 10
     collectable.anchor.set(0.5)
+    collectable.originalSize = { width: collectable.width, height: collectable.height }
     collectable.alpha = 0
     app.stage.addChild(collectable)
 
@@ -1562,11 +1798,12 @@ export const init = (app, setup) => {
 
     shipOpal = new PIXI.Sprite(TEXTURES.ship_opal);
     shipOpal.aspectRatio = TEXTURES.ship_opal.width / TEXTURES.ship_opal.height
+    shipOpal.anchor.set(0.5)
     shipOpal.width = MIN_DIM / 5
     shipOpal.height = shipOpal.width / shipOpal.aspectRatio
     shipOpal.alpha = 1
     shipOpal.y = setup.height + shipOpal.height
-    shipOpal.x = setup.width / 2 - shipOpal.width / 2
+    shipOpal.x = setup.width / 2
     shipOpal.originalFrame = { x: shipOpal.x, y: shipOpal.y, width: shipOpal.width, height: shipOpal.height }
 
     app.stage.addChild(shipOpal)
@@ -1575,11 +1812,22 @@ export const init = (app, setup) => {
 
     boltGauge = new PIXI.Sprite(TEXTURES.gauge_crystal_l1);
     boltGauge.aspectRatio = TEXTURES.gauge_crystal_l1.width / TEXTURES.gauge_crystal_l1.height
-    boltGauge.width = CARD_WIDTH / 1.5;
+    boltGauge.anchor.y = 0.5
+    boltGauge.width = CARD_WIDTH / 1.6;
     boltGauge.height = boltGauge.width / boltGauge.aspectRatio
-    boltGauge.x = MENU_MARGIN
-    boltGauge.y = MENU_MARGIN
+    boltGauge.x = MENU_MARGIN_HORIZONTAL
+    boltGauge.y = MENU_MARGIN_VERTICAL
     boltGauge.alpha = 0
+
+    gaugeRadial = new PIXI.Sprite(TEXTURES.gauge_radial);
+    gaugeRadial.aspectRatio = TEXTURES.gauge_radial.width / TEXTURES.gauge_radial.height
+    gaugeRadial.anchor.set(0.5)
+    gaugeRadial.width = 4 * (MENU_MARGIN - MENU_MARGIN / 3)
+    gaugeRadial.height = 4 * (MENU_MARGIN - MENU_MARGIN / 3)
+    gaugeRadial.x = MENU_MARGIN_HORIZONTAL
+    gaugeRadial.y = MENU_MARGIN_VERTICAL
+    gaugeRadial.alpha = 0
+    app.stage.addChild(gaugeRadial)
 
     livesGauge = new PIXI.Sprite(TEXTURES.gauge_crystal_l1);
     livesGauge.anchor.x = 1
@@ -1593,17 +1841,17 @@ export const init = (app, setup) => {
     boltBar = new PIXI.Sprite(TEXTURES.progress_bar_pink);
     boltBar.anchor.x = 0
     boltBar.anchor.y = 0.5
-    boltBar.width = BOLT_BAR_WIDTH * 0.01
-    boltBar.height = boltGauge.height / 4
-    boltBar.x = MENU_MARGIN + boltBar.height
-    boltBar.y = MENU_MARGIN + boltGauge.height / 2.5
+    boltBar.width = 0
+    boltBar.height = boltGauge.height * 0.5
+    boltBar.x = MENU_MARGIN_HORIZONTAL + boltBar.height / 2
+    boltBar.y = MENU_MARGIN_VERTICAL - boltBar.height / 6
     boltBar.alpha = 0
 
     livesBar = new PIXI.Sprite(TEXTURES.progress_bar_pink);
-    livesBar.anchor.x = 1
-    livesBar.anchor.y = 0.5
+    livesBar.anchor.x = 1.05
+    livesBar.anchor.y = 0.45
     livesBar.width = BOLT_BAR_WIDTH;
-    livesBar.height = boltGauge.height / 4
+    livesBar.height = boltBar.height
     livesBar.x = setup.width - MENU_MARGIN - boltBar.height / 2
     livesBar.y = MENU_MARGIN + boltGauge.height / 2.5
     livesBar.texture = generateBarTexture("0xed0739")
@@ -1611,12 +1859,13 @@ export const init = (app, setup) => {
 
     iconCollectable = new PIXI.Sprite(TEXTURES[currentLevel.icon]);
     iconCollectable.aspectRatio = TEXTURES.bolt_pink.width / TEXTURES.bolt_pink.height
-    iconCollectable.height = boltGauge.height
-    iconCollectable.anchor.y = 0.5
-    iconCollectable.rotation = -Math.PI / 20
-    iconCollectable.width = iconCollectable.height * iconCollectable.aspectRatio
+    iconCollectable.width = boltGauge.height
+    iconCollectable.anchor.set(0.5)
+    iconCollectable.rotation = ICON_ROTATION
+    iconCollectable.height = iconCollectable.width / iconCollectable.aspectRatio
     iconCollectable.x = boltGauge.x
     iconCollectable.y = boltGauge.y
+    iconCollectable.originalFrameVial = { x: iconCollectable.x, y: iconCollectable.y, width: iconCollectable.width, height: iconCollectable.height }
     iconCollectable.alpha = 0
 
     iconLives = new PIXI.Sprite(TEXTURES.heart_red);
@@ -1625,10 +1874,17 @@ export const init = (app, setup) => {
     iconLives.aspectRatio = TEXTURES.heart_red.width / TEXTURES.heart_red.height
     iconLives.width = iconCollectable.width * 1.5
     iconLives.height = iconLives.width * iconLives.aspectRatio
+    iconLives.originalFrame = { x: iconLives.x, y: iconLives.y, width: iconLives.width, height: iconLives.height }
     iconLives.x = livesGauge.x
     iconLives.y = livesGauge.y + livesGauge.height / 3
     iconLives.alpha = 0
 
+    radialProgressBar = new PIXI.Graphics();
+    radialProgressBar.position = { x: MENU_MARGIN_HORIZONTAL, y: MENU_MARGIN_VERTICAL }
+    radialProgressBar.scale.set(0.55)
+    radialProgressBar.rotation = -Math.PI / 2
+    radialProgressBar.progressAngle = 0
+    app.stage.addChild(radialProgressBar);
 
 
 
@@ -1646,7 +1902,6 @@ export const init = (app, setup) => {
       app.stage.addChild(sp)
     })
     */
-
 
 
     for (let i = 0; i < 5; i++) {
@@ -1695,33 +1950,62 @@ export const init = (app, setup) => {
       blasts.push(b)
     }
 
+    // Create Progress Circles
+    for (let i = 0; i < 12; i++) {
+      let c = new PIXI.Sprite(TEXTURES.circle_white)
+      c.anchor.set(0.5)
+      progressCircles.push(c)
+      app.stage.addChild(c)
+    }
 
-    // States 
+    // Create Progress Circle BackGround
+
+    progressCircleBackGround = new PIXI.Sprite(TEXTURES.circle_white)
+    progressCircleBackGround.anchor.x = 0.5
+    progressCircleBackGround.anchor.y = 0.5
+    drawProgressCircles()
+
     makeStars()
     state.starPosition.span = setup.height
     updateStars()
 
-
     pool = new CardPool(currentPuzzle);
     pool.loadPuzzle(currentPuzzle);
 
-
     // GOTO_TIMELINE Function Calls 
-    buildGoToPlanetTimeline()
-    buildLeavePlanetTimeline()
-    buildEndOfGameTimeline()
-
+    buildGoToCaveTimeline()
+    buildLeaveCaveTimeline()
     updateLayoutParams()
 
+
+
     LAYERS = {
-      cave: [backGround, topLeftCaveBackground, boltGauge, boltBar, collectable,...blasts, iconCollectable, lava, bottomLeftCaveBackground, shipOpal,topRightCaveBackground, bottomRightCaveBackground,livesGauge,livesBar,iconLives],
-      space: [backGround, ...stars, currentPlanet,...blasts, boltGauge, livesGauge, boltBar, livesBar, collectable,iconCollectable, iconLives,shipOpal],
-      start: [backGround,...stars,startButton,shipOpal],
+      cave: [backGround, topLeftCaveBackground, collectable, ...blasts, gaugeRadial, radialProgressBar, iconCollectable, lava, bottomLeftCaveBackground, shipOpal, topRightCaveBackground, bottomRightCaveBackground, livesGauge, livesBar, iconLives],
+      space: [backGround, ...stars, currentPlanet, ...blasts, livesGauge, livesBar, collectable, iconLives, shipOpal, startButton, gaugeRadial, radialProgressBar, iconCollectable],
+      start: [backGround, ...stars, startButton, shipOpal],
+      end: [backGround, ...stars,...planetCarousel, startButton, shipOpal, scoreText],
     }
 
-    GROUPS = {caveElements:[lava, topLeftCaveBackground, bottomLeftCaveBackground, topRightCaveBackground, bottomRightCaveBackground], gauges: [boltGauge, livesGauge, boltBar, livesBar, iconCollectable,iconLives]}
+    GROUPS = { caveElements: [lava, topLeftCaveBackground, bottomLeftCaveBackground, topRightCaveBackground, bottomRightCaveBackground], gauges: [boltGauge, livesGauge, boltBar, livesBar, iconLives, gaugeRadial, radialProgressBar, iconCollectable, ...progressCircles, progressCircleBackGround] }
 
     layer(applicationStates.start)
+
+    generateRect(50, 100, 10, "rectangle_black_alpha")
+
+    const levelDataArchetype = {
+      planet: "foo",
+      score: "bar",
+      color: "blue",
+      cores: 2.6,
+      plants: 3,
+      plasma: 3,
+      seeds: 2,
+    }
+
+    let s = new PlanetSummary(levelDataArchetype)
+    s.x = 100
+    s.y = 100
+    //app.stage.addChild(s)
   }
 
   function wait() {

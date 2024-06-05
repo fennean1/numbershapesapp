@@ -46,6 +46,7 @@ export const counters = {
   oval_orange: "oval_orange",
   triangle_yellow: "triangle_yellow",
   stick_red: "stick_red",
+  half_circle_red: "half_circle_red",
 };
 
 export const collectables = {
@@ -3485,7 +3486,7 @@ export const L6E = {
 
 export const Dragon = {
   name: "Dragon",
-  puzzles: [L6, L6A, L6B, L6C, L6D, L6E],
+  puzzles: [L6, L6A, L6B, L6C, L6D, L6E,L6C, L6D, L6, L6A, L6D, L6E],
 };
 
 // #endregion
@@ -4463,7 +4464,26 @@ export const Saami = {
     SAMI2,
     SAMI3,
     SAMI4,
-    SAMI5
+    SAMI5,
+    SAMI5,
+    SAMI6,
+    SAMI7,
+    SAMI8,
+    SAMI9,
+    SAMI10,
+    SAMI11,
+    SAMI12,
+    SAMI13,
+    SAMI14,
+    SAMI15,
+    SAMI16,
+    SAMI17,
+    SAMI18,
+    SAMI19,
+    SAMI20,
+    SAMI21,
+    SAMI22,
+    SAMI23,
   ],
 };
 
@@ -4799,8 +4819,13 @@ const Pre_Kindergarten = {
 };
 
 
-const SPACE_LEVELS_SIZE = 3
-const CAVE_LEVELS_SIZE = 2
+// GOTO_CONSTRUCTING the Levels
+
+const testing = false
+
+
+const SPACE_LEVELS_SIZE = testing ? 2 : 10
+const CAVE_LEVELS_SIZE = testing ? 1 : 6
 
 
 // GOTO_TEST planets
@@ -4877,10 +4902,10 @@ export const PLANET_FOUR = {
   planet: planets.pink_bubble,
   color: "yellow",
   icon: resource_icons.bolt_yellow,
-  counter: counters.triangle_yellow,
+  counter: counters.half_circle_red,
   collectable: collectables.gem_yellow,
-  puzzles: EstimationLevelOne.puzzles.slice(0,SPACE_LEVELS_SIZE),
-  shuffle: "triangle",
+  puzzles: FiveFrame.puzzles.slice(2,SPACE_LEVELS_SIZE),
+  shuffle: "half",
 };
 
 
@@ -5034,9 +5059,7 @@ export const CAVE_TEN = {
 };
 
 
-const testing = false
-
-const testLevels = [PLANET_FIVE,CAVE_FIVE,PLANET_FOUR,CAVE_FOUR,PLANET_TWO,CAVE_TWO,PLANET_THREE,CAVE_THREE]
+const testLevels = [PLANET_FIVE,PLANET_THREE,PLANET_TWO,CAVE_FIVE,PLANET_FOUR,CAVE_FOUR,PLANET_TWO,CAVE_TWO,PLANET_THREE,CAVE_THREE]
 
 const officialLevels = [
   PLANET_ONE,CAVE_ONE,PLANET_TWO,CAVE_TWO, PLANET_THREE,CAVE_THREE,PLANET_FOUR,CAVE_FOUR,PLANET_FIVE,CAVE_FIVE
