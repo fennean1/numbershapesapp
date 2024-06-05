@@ -12,10 +12,8 @@ import {
   counters,
   opalLevels as LEVELS,
   assessmentCardCustomCoordinates,
-  SM_1,
 } from "./opallevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBER_SHAPES } from "./numbershapes";
-import { alpha } from "@mui/material";
 
 
 // START HERE: Session Tracking (Metadata for each level) and processing "remainders" as well as puzzle counter. 
@@ -517,14 +515,6 @@ export const init = (app, setup) => {
   function onRadialProgressComplete() {
     // Subtracting one here because it's before it's been incremented.
 
-
-    if (puzzleIndex + 1 >= currentLevel.puzzles.length) {
-      prepareTheNextLevel()
-      prepareSceneTransition()
-    } else {
-      prepareTheNextPuzzle()
-      dealCards(pool);
-    }
   }
 
 
@@ -602,6 +592,17 @@ export const init = (app, setup) => {
       if (currentLevel.type != "cave") {
         Tween.fromTo(collectable, { width: apparentWidth * 1.5, height: apparentHeight * 0.5 }, { duration: 1, width: apparentWidth, height: apparentHeight, ease: "elastic" })
       }
+
+      setTimeout(()=>{
+        if (puzzleIndex + 1 >= currentLevel.puzzles.length) {
+          prepareTheNextLevel()
+          prepareSceneTransition()
+        } else {
+          prepareTheNextPuzzle()
+          dealCards(pool);
+        }
+      },1500)
+
     } else {
 
       // TODO: Add back numeral support inside caves. 
