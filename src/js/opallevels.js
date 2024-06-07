@@ -21,6 +21,7 @@ export const resource_icons = {
   bolt_orange: "bolt_orange",
   bolt_yellow: "bolt_yellow",
   bolt_red: "bolt_red",
+  bolt_purple: "bolt_purple", 
   plant_icon: "plant_icon",
 }
 
@@ -46,7 +47,8 @@ export const counters = {
   oval_orange: "oval_orange",
   triangle_yellow: "triangle_yellow",
   stick_red: "stick_red",
-  half_circle_red: "half_circle_red",
+  half_circle_purple: "half_circle_purple",
+  sine_green: "sine_green",
 };
 
 export const collectables = {
@@ -2445,10 +2447,37 @@ export const DP4 = {
   counter: counters.green,
 };
 
+export const DP5 = {
+  grid: [4, 4],
+  value: 5,
+  delta: 5,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.green,
+};
+
+export const DP6 = {
+  grid: [4, 4],
+  value: 10,
+  delta: -5,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.green,
+};
+
+export const DP7 = {
+  grid: [4, 4],
+  value: 6,
+  delta: 6,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.green,
+};
+
 
 export const Doubles = {
   name: "Doubles",
-  puzzles: [DP1, DP2, DP3, DP4],
+  puzzles: [DP1, DP2, DP3, DP4,DP5,DP6,DP7],
 };
 
 // #endregion Stage One
@@ -2466,10 +2495,273 @@ export const PUZZLE_COUNTING_SPACED_1 = {
   counter: counters.green,
 };
 
+export const PUZZLE_COUNTING_SPACED_2 = {
+  grid: [2, 2],
+  value: 5,
+  delta: -3,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.green,
+};
+
+export const PUZZLE_COUNTING_SPACED_3 = {
+  grid: [2, 2],
+  value: 5,
+  delta: -3,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.green,
+};
+
+export const PUZZLE_COUNTING_SPACED_4 = {
+  grid: [2, 2],
+  value: 5,
+  delta: -3,
+  mesh: [4, 4],
+  random: false,
+  counter: counters.green,
+};
+
 const LEVEL_COUNTING_SPACED = {
   name: "Counting Spaced",
-  puzzles: [PUZZLE_COUNTING_SPACED_1,PUZZLE_COUNTING_SPACED_1,PUZZLE_COUNTING_SPACED_1,PUZZLE_COUNTING_SPACED_1,PUZZLE_COUNTING_SPACED_1],
+  puzzles: [PUZZLE_COUNTING_SPACED_1,PUZZLE_COUNTING_SPACED_2,PUZZLE_COUNTING_SPACED_3,PUZZLE_COUNTING_SPACED_4],
 }
+
+
+const PUZZLE_DENSE_SQUARES_1 = {
+  grid: [2, 2],
+  value: 25,
+  delta: -5,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+
+const PUZZLE_DENSE_SQUARES_2 = {
+  grid: [3, 3],
+  value: 25,
+  delta: -5,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_DENSE_SQUARES_3 = {
+  grid: [4, 4],
+  value: 25,
+  delta: -4,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_DENSE_SQUARES_4 = {
+  grid: [3, 3],
+  value: 25,
+  delta: -4,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_DENSE_SQUARES_5 = {
+  grid: [4, 4],
+  value: 25,
+  delta: -3,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_DENSE_SQUARES_6 = {
+  grid: [5, 5],
+  value: 25,
+  delta: -5,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_DENSE_SQUARES_7 = {
+  grid: [5, 5],
+  value: 25,
+  delta: -3,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const LEVEL_DENSE_SQUARES = {
+  name: "Dense Squares",
+  puzzles: [PUZZLE_DENSE_SQUARES_1,PUZZLE_DENSE_SQUARES_2,PUZZLE_DENSE_SQUARES_3,PUZZLE_DENSE_SQUARES_4,PUZZLE_DENSE_SQUARES_5,PUZZLE_DENSE_SQUARES_6,PUZZLE_DENSE_SQUARES_7],
+}
+
+
+
+const PUZZLE_LARGE_LENGTH_1 = {
+  grid: [5, 5],
+  value: 22,
+  delta: -7,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_LARGE_LENGTH_2 = {
+  grid: [5, 5],
+  value: 22,
+  delta: -6,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_LARGE_LENGTH_3 = {
+  grid: [5, 5],
+  value: 15,
+  delta: 7,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_LARGE_LENGTH_4 = {
+  grid: [5, 5],
+  value: 15,
+  delta: -6,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_LARGE_LENGTH_5 = {
+  grid: [5, 5],
+  value: 22,
+  delta: -5,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const PUZZLE_LARGE_LENGTH_6 = {
+  grid: [5, 5],
+  value: 23,
+  delta: -5,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+
+const PUZZLE_LARGE_LENGTH_7 = {
+  grid: [5, 5],
+  value: 24,
+  delta: -2,
+  mesh: [5, 5],
+  random: false,
+  counter: counters.green,
+};
+
+
+const LEVEL_LARGE_LENGTH = {
+  name: "Large Length",
+  puzzles: [PUZZLE_LARGE_LENGTH_1,PUZZLE_LARGE_LENGTH_2,PUZZLE_LARGE_LENGTH_3,PUZZLE_LARGE_LENGTH_4,PUZZLE_LARGE_LENGTH_5,PUZZLE_LARGE_LENGTH_6,PUZZLE_LARGE_LENGTH_7],
+}
+
+const COUNTING_PUZZLE_TEN_FRAME_VERTICAL_1 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [2, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_VERTICAL_2 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [2, 5],
+  random: false,
+  counter: counters.green,
+};
+
+const LCP_TEN_FRAME_VERTICAL = {
+  name: "Counting Spaced Puzzle Ten Frame",
+  puzzles: [COUNTING_PUZZLE_TEN_FRAME_VERTICAL_1,COUNTING_PUZZLE_TEN_FRAME_VERTICAL_2],
+}
+
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_1 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_2 = {
+  grid: [2, 2],
+  value: 7,
+  delta: 2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_3 = {
+  grid: [2, 2],
+  value: 8,
+  delta: -2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_4 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_5 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_6 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+const COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_7 = {
+  grid: [2, 2],
+  value: 9,
+  delta: -2,
+  mesh: [5, 2],
+  random: false,
+  counter: null
+};
+
+
+const LCP_TEN_FRAME_HORIZONTAL = {
+  name: "Counting Spaced Puzzle Ten Frame Horizontal",
+  puzzles: [COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_1,COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_2,COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_3,COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_4,COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_5,COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_6,COUNTING_PUZZLE_TEN_FRAME_HORIZONTAL_7],
+}
+
 
 // #region PRE-K
 
@@ -3235,6 +3527,8 @@ export const L2D = {
   counter: counters.purple,
 };
 // #endregion
+
+
 
 // #region I
 
@@ -4463,10 +4757,6 @@ export const Saami = {
     SAMI1,
     SAMI2,
     SAMI3,
-    SAMI4,
-    SAMI5,
-    SAMI5,
-    SAMI6,
     SAMI7,
     SAMI8,
     SAMI9,
@@ -4821,11 +5111,31 @@ const Pre_Kindergarten = {
 
 // GOTO_CONSTRUCTING the Levels
 
+
 const testing = false
 
 
-const SPACE_LEVELS_SIZE = testing ? 2 : 10
-const CAVE_LEVELS_SIZE = testing ? 1 : 6
+let SPACE_LEVELS_SIZE = testing ? 2 : 7
+let CAVE_LEVELS_SIZE = testing ? 1 : 3
+let SHIFT = 0
+
+
+if (testing == "cycles"){
+  SPACE_LEVELS_SIZE = 4
+  CAVE_LEVELS_SIZE = 3
+} else if (testing == "recent"){
+  SPACE_LEVELS_SIZE = 7
+  CAVE_LEVELS_SIZE = 3
+} else if (testing == "recentrunner"){
+  SPACE_LEVELS_SIZE = 2
+  CAVE_LEVELS_SIZE = 1
+} else if (testing == "runner"){
+  SPACE_LEVELS_SIZE = 2
+  CAVE_LEVELS_SIZE = 1 
+} else if (testing == "construction"){
+  SPACE_LEVELS_SIZE = 7
+  CAVE_LEVELS_SIZE = 3
+}
 
 
 // GOTO_TEST planets
@@ -4836,7 +5146,7 @@ export const PLANET_ONE = {
   icon: resource_icons.bolt_pink,
   counter: counters.square_pink,
   collectable: collectables.gem_pink,
-  puzzles: Saami.puzzles.slice(0,SPACE_LEVELS_SIZE),
+  puzzles: Saami.puzzles.slice(SHIFT,SPACE_LEVELS_SIZE),
 };
 
 
@@ -4849,8 +5159,10 @@ export const CAVE_ONE = {
   counter: counters.square_pink,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FirstNumbers.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FirstNumbers.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
+
+const FIRST_STAGE = [PLANET_ONE,CAVE_ONE]
 
 
 export const PLANET_TWO = {
@@ -4860,7 +5172,7 @@ export const PLANET_TWO = {
   icon: resource_icons.bolt_blue,
   counter: counters.diamond_blue,
   collectable: collectables.gem_blue,
-  puzzles: Dragon.puzzles.slice(0,SPACE_LEVELS_SIZE),
+  puzzles: Dragon.puzzles.slice(SHIFT,SPACE_LEVELS_SIZE),
 };
 
 export const CAVE_TWO = {
@@ -4871,8 +5183,10 @@ export const CAVE_TWO = {
   counter: counters.diamond_blue,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FiveFrame.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FiveFrame.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
+
+const SECOND_STAGE = [PLANET_TWO,CAVE_TWO]
 
 export const PLANET_THREE = {
   name: "Carved Orange",
@@ -4881,7 +5195,7 @@ export const PLANET_THREE = {
   icon: resource_icons.bolt_orange,
   counter: counters.oval_orange,
   collectable: collectables.gem_orange,
-  puzzles: Doubles.puzzles.slice(0,SPACE_LEVELS_SIZE),
+  puzzles: Doubles.puzzles.slice(SHIFT,SPACE_LEVELS_SIZE),
 };
 
 export const CAVE_THREE = {
@@ -4892,21 +5206,24 @@ export const CAVE_THREE = {
   counter: counters.oval_orange,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: LEVEL_COUNTING_SPACED.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: LEVEL_COUNTING_SPACED.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
 
-// YOU ARE HERE
+const THIRD_STAGE = [PLANET_THREE,CAVE_THREE]
+
 
 export const PLANET_FOUR = {
   name: "Pink Bubble Planet",
   planet: planets.pink_bubble,
   color: "yellow",
   icon: resource_icons.bolt_yellow,
-  counter: counters.half_circle_red,
+  counter: counters.triangle_yellow,
   collectable: collectables.gem_yellow,
-  puzzles: FiveFrame.puzzles.slice(2,SPACE_LEVELS_SIZE),
-  shuffle: "half",
+  puzzles: LEVEL_DENSE_SQUARES.puzzles.slice(SHIFT,SPACE_LEVELS_SIZE), 
+  shuffle: "triangle",
 };
+
+console.log("PLANET_FOUR",PLANET_FOUR.puzzles.length)
 
 
 export const CAVE_FOUR = {
@@ -4916,10 +5233,12 @@ export const CAVE_FOUR = {
   icon: resource_icons.plant_icon,
   counter: counters.triangle_yellow,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FirstNumbers.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FirstNumbers.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
   type: levelTypes.cave,
   shuffle: "triangle",
 };
+
+const FOURTH_STAGE = [PLANET_FOUR,CAVE_FOUR]
 
 export const PLANET_FIVE = {
   name: "Red Swirl Planet",
@@ -4928,53 +5247,58 @@ export const PLANET_FIVE = {
   color: "red",
   counter: counters.stick_red,
   collectable: collectables.gem_red,
-  puzzles: Squares.puzzles.slice(0, SPACE_LEVELS_SIZE),
-  shuffle: "stick", 
+  puzzles: LEVEL_LARGE_LENGTH.puzzles.slice(SHIFT,SPACE_LEVELS_SIZE),
 };
 
 
 export const CAVE_FIVE = {
-  name: "Green Carved Planet",
+  name: "Red Swirl Planet",
   planet: planets.red_swirl,
   icon: resource_icons.plant_icon,
   color: "red",
   counter: counters.stick_red,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: Sevens.puzzles.slice(0,CAVE_LEVELS_SIZE),
-  shuffle: "stick", 
+  puzzles: LCP_TEN_FRAME_HORIZONTAL.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
 
+const FIFTH_STAGE = [PLANET_FIVE,CAVE_FIVE]
+
+
+// You Are Here.
+
 export const PLANET_SIX = {
-  name: "Pin Bubble Planet",
-  planet: planets.purple_carved,
-  icon: resource_icons.bolt_orange,
-  color: "yellow",
-  counter: counters.triangle_yellow,
-  collectable: collectables.gem_orange,
-  puzzles: Squares.puzzles.slice(0, SPACE_LEVELS_SIZE),
-  shuffle: true, 
+  name: "Green Carved",
+  planet: planets.green_carved,
+  icon: resource_icons.bolt_green,
+  color: "green",
+  counter: counters.sine_green,
+  collectable: collectables.gem_green,
+  puzzles: LCP_TEN_FRAME_VERTICAL.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  shuffle: false, 
 };
 
 export const CAVE_SIX = {
-  name: "Pink Fire Cave",
-  planet: planets.pink_fire,
-  color: "orange",
+  name: "Purple Carved",
+  planet: planets.green_carved,
+  color: "green",
   icon: resource_icons.plant_icon,
-  counter: counters.square_pink,
+  counter: counters.sine_green,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FiveFrame.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: LCP_TEN_FRAME_VERTICAL.puzzles.slice(SHIFT, CAVE_LEVELS_SIZE),
 };
+
+const SIXTH_STAGE = [PLANET_SIX,CAVE_SIX]
 
 export const PLANET_SEVEN = {
   name: "Pin Bubble Planet",
   planet: planets.purple_carved,
   icon: resource_icons.bolt_yellow,
-  color: "yellow",
+  color: "purple",
   counter: counters.triangle_yellow,
   collectable: collectables.gem_orange,
-  puzzles: Squares.puzzles.slice(0, SPACE_LEVELS_SIZE),
+  puzzles: Squares.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
   shuffle: true, 
 };
 
@@ -4986,9 +5310,10 @@ export const CAVE_SEVEN = {
   counter: counters.square_pink,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FiveFrame.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FiveFrame.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
 
+const SEVENTH_STAGE = [PLANET_SEVEN,CAVE_SEVEN]
 
 export const PLANET_EIGHT = {
   name: "Pin Bubble Planet",
@@ -4997,7 +5322,7 @@ export const PLANET_EIGHT = {
   color: "yellow",
   counter: counters.triangle_yellow,
   collectable: collectables.gem_orange,
-  puzzles: Squares.puzzles.slice(0, SPACE_LEVELS_SIZE),
+  puzzles: Squares.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
   shuffle: true, 
 };
 
@@ -5009,9 +5334,10 @@ export const CAVE_EIGHT = {
   counter: counters.square_pink,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FiveFrame.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FiveFrame.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
 
+const EIGHTH_STAGE = [PLANET_EIGHT,CAVE_EIGHT]
 
 export const PLANET_NINE = {
   name: "Pin Bubble Planet",
@@ -5020,7 +5346,7 @@ export const PLANET_NINE = {
   color: "yellow",
   counter: counters.triangle_yellow,
   collectable: collectables.gem_orange,
-  puzzles: Squares.puzzles.slice(0, SPACE_LEVELS_SIZE),
+  puzzles: Squares.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
   shuffle: true, 
 };
 
@@ -5032,8 +5358,10 @@ export const CAVE_NINE = {
   counter: counters.square_pink,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FiveFrame.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FiveFrame.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
+
+const NINTH_STAGE = [PLANET_NINE,CAVE_NINE]
 
 
 export const PLANET_TEN = {
@@ -5043,7 +5371,7 @@ export const PLANET_TEN = {
   color: "yellow",
   counter: counters.triangle_yellow,
   collectable: collectables.gem_orange,
-  puzzles: Squares.puzzles.slice(0, SPACE_LEVELS_SIZE),
+  puzzles: Squares.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
   shuffle: true, 
 };
 
@@ -5055,18 +5383,54 @@ export const CAVE_TEN = {
   counter: counters.square_pink,
   type: levelTypes.cave,
   collectable: collectables.seed_pink_spotted,
-  puzzles: FiveFrame.puzzles.slice(0,CAVE_LEVELS_SIZE),
+  puzzles: FiveFrame.puzzles.slice(SHIFT,CAVE_LEVELS_SIZE),
 };
 
+const TENTH_STAGE = [PLANET_TEN,CAVE_TEN]
 
-const testLevels = [PLANET_FIVE,PLANET_THREE,PLANET_TWO,CAVE_FIVE,PLANET_FOUR,CAVE_FOUR,PLANET_TWO,CAVE_TWO,PLANET_THREE,CAVE_THREE]
+const cycleLevels = [
+  ...FIRST_STAGE,...SECOND_STAGE
+ ]
+
+const runnerLevels = [
+  ...FIRST_STAGE,
+  ...SECOND_STAGE,
+  ...THIRD_STAGE,
+  ...FOURTH_STAGE,
+  ...FIFTH_STAGE,
+  ...SIXTH_STAGE,
+  ...SEVENTH_STAGE,
+  ...EIGHTH_STAGE,
+  ...NINTH_STAGE,
+  ...TENTH_STAGE,
+]
+
+const testLevels = [PLANET_FOUR,CAVE_FIVE,PLANET_THREE,CAVE_THREE,PLANET_TWO,CAVE_FIVE,PLANET_FOUR,CAVE_FOUR,PLANET_TWO,CAVE_TWO,PLANET_THREE,CAVE_THREE]
 
 const officialLevels = [
-  PLANET_ONE,CAVE_ONE,PLANET_TWO,CAVE_TWO, PLANET_THREE,CAVE_THREE,PLANET_FOUR,CAVE_FOUR,PLANET_FIVE,CAVE_FIVE
- ]
- 
+  ...FIRST_STAGE,...SECOND_STAGE,...THIRD_STAGE,...FOURTH_STAGE,...FIFTH_STAGE]
 
-export const opalLevels = testing ? testLevels : officialLevels
+const mostRecentLevels = [...SIXTH_STAGE,...FIFTH_STAGE,...FOURTH_STAGE,...THIRD_STAGE,...SECOND_STAGE,...FIRST_STAGE]
+
+const constructionLevels = [...SIXTH_STAGE]
+
+ let levels = officialLevels
+
+ if (testing == "cycles"){
+    levels = cycleLevels
+ } else if (testing == "runner"){
+   levels = runnerLevels
+ } else if (testing == "recent"){
+   levels = mostRecentLevels
+ } else if (testing == "recentrunner"){
+   levels = mostRecentLevels
+ } else if (testing == "construction"){
+   levels = constructionLevels
+ }
+
+ console.log("levels",levels)
+
+export const opalLevels = levels
 
 const game = {
   planet_one: "orange ovals, saami puzzles",
