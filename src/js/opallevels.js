@@ -2492,25 +2492,25 @@ export const PUZZLE_COUNTING_SPACED_1 = {
   delta: -3,
   mesh: [4, 4],
   random: false,
-  counter: counters.green,
+  counter: null,
 };
 
 export const PUZZLE_COUNTING_SPACED_2 = {
   grid: [2, 2],
   value: 5,
-  delta: -3,
+  delta: -2,
   mesh: [4, 4],
   random: false,
-  counter: counters.green,
+  counter: null,
 };
 
 export const PUZZLE_COUNTING_SPACED_3 = {
   grid: [2, 2],
   value: 5,
-  delta: -3,
+  delta: -1,
   mesh: [4, 4],
   random: false,
-  counter: counters.green,
+  counter: null,
 };
 
 export const PUZZLE_COUNTING_SPACED_4 = {
@@ -2519,7 +2519,7 @@ export const PUZZLE_COUNTING_SPACED_4 = {
   delta: -3,
   mesh: [4, 4],
   random: false,
-  counter: counters.green,
+  counter: null,
 };
 
 const LEVEL_COUNTING_SPACED = {
@@ -5111,7 +5111,7 @@ const Pre_Kindergarten = {
 
 // GOTO_TESTING The Levels
 
-const testing = false
+const testing = false 
 
 
 let SPACE_LEVELS_SIZE = testing ? 2 : 7
@@ -5134,6 +5134,9 @@ if (testing == "cycles") {
 } else if (testing == "construction") {
   SPACE_LEVELS_SIZE = 7
   CAVE_LEVELS_SIZE = 3
+} else if (testing == "constructioncave") {
+  SPACE_LEVELS_SIZE = 1
+  CAVE_LEVELS_SIZE = 4
 }
 
 
@@ -5428,6 +5431,8 @@ if (testing == "cycles") {
   levels = mostRecentLevels.slice(0,2)
 } else if (testing == "reversed") {
   levels = reversedLevels
+} else if (testing == "constructioncave") {
+  levels = constructionLevels
 }
 
 console.log("levels", levels)

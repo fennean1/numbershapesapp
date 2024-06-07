@@ -147,7 +147,7 @@ export const init = (app, setup) => {
     .add('counter_sine_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1717774976/counter_sine_green_xq7vgh.png', optionsLargeAsset)
     .add('counter_half_circle_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1717776767/circle_half_nihg6h.png', optionsLargeAsset)
     .add('counter_triangle_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716324632/Opal/counte_yellow_triangle_wd0p9v.png', optionsLargeAsset)
-    .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717781824/stick_red_igsc39.png', optionsLargeAsset)
+    .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717790841/Opal/stick_red_srf97k.png', optionsLargeAsset)
     .add('counter_oval_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715706392/Opal/counter_oval_orange_cdrwvh.png', optionsSmallAsset)
     .add('small_star', 'https://res.cloudinary.com/numbershapes/image/upload/v1714758952/Opal/Asset_4_4x_sscyrd.png', optionsExtraSmallAsset)
     .add('tile_rock', 'https://res.cloudinary.com/numbershapes/image/upload/v1717766942/Opal/rock_dark_2_tcmncq.png', optionsLargeAsset)
@@ -1473,7 +1473,7 @@ export const init = (app, setup) => {
   }
 
   function incrementLives(by) {
-    lives = Math.min(lives + by,TOTAL_LIVES)
+    lives = lives + by < 0 ? 0 : Math.min(lives + by,TOTAL_LIVES)
     let { width, height } = iconLives.originalFrame
     Tween.to(livesBar, { duration: 0.5, width: BOLT_BAR_WIDTH * lives / TOTAL_LIVES, ease: "bounce" })
     Tween.fromTo(iconLives, { width: 0.75 * width, height: 1.15 * height }, { duration: 2, width: width, height: height, ease: "elastic" })
