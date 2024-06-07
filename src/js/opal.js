@@ -147,7 +147,7 @@ export const init = (app, setup) => {
     .add('counter_sine_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1717774976/counter_sine_green_xq7vgh.png', optionsLargeAsset)
     .add('counter_half_circle_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1717776767/circle_half_nihg6h.png', optionsLargeAsset)
     .add('counter_triangle_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716324632/Opal/counte_yellow_triangle_wd0p9v.png', optionsLargeAsset)
-    .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717624084/Opal/counter_red_stick_j8lmwn.png', optionsLargeAsset)
+    .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717781824/stick_red_igsc39.png', optionsLargeAsset)
     .add('counter_oval_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715706392/Opal/counter_oval_orange_cdrwvh.png', optionsSmallAsset)
     .add('small_star', 'https://res.cloudinary.com/numbershapes/image/upload/v1714758952/Opal/Asset_4_4x_sscyrd.png', optionsExtraSmallAsset)
     .add('tile_rock', 'https://res.cloudinary.com/numbershapes/image/upload/v1717766942/Opal/rock_dark_2_tcmncq.png', optionsLargeAsset)
@@ -736,6 +736,13 @@ export const init = (app, setup) => {
   function endGame() {
     layer(applicationStates.end)
 
+
+    pool.cards.forEach((c, i) => {
+      c.interactive = false
+    })
+
+    app.stage.removeChild(collectable)
+
     // Need some type of function to clear the screen of everything 
 
     if (currentLevel.type == "cave") {
@@ -797,7 +804,8 @@ export const init = (app, setup) => {
 
       this.plasmaText.y = SIZE_CAROUSEL_HEIGHT / 5
 
-      this.planet = new PIXI.Sprite(TEXTURES[this.data.planetID])
+      this.originalTexture = TEXTURES[this.data.planetID]
+      this.planet = new PIXI.Sprite(this.originalTexture)
       this.planet.anchor.set(0.5)
 
       this.plasmaIcons = []
@@ -1500,8 +1508,7 @@ export const init = (app, setup) => {
       */
 
       // Safely increment the planet index and update the attempts. 
-      let index = incrementPlanetIndex()
-      SESSIONS[index].attempts += 1
+      incrementPlanetIndex()
       removeCaveStuff()
     }
 
@@ -1520,6 +1527,7 @@ export const init = (app, setup) => {
 
     // Layer the elements
     layer(applicationStates.space)
+    app.stage.addChild(white)
     GROUPS.gauges.forEach(g => g.alpha = 0)
   }
 
@@ -1616,14 +1624,15 @@ export const init = (app, setup) => {
     leaveCaveTimeline.to(shipOpal, { duration: 2, width: 0, height: 0 }, "<")
     leaveCaveTimeline.to(white, { duration: 1, alpha: 1 })
     leaveCaveTimeline.call(caveTearDown)
-    leaveCaveTimeline.to(white, { duration: 2, alpha: 0 })
-    leaveCaveTimeline.to(shipOpal, { duration: 0, height: 1, width: 1, y: setup.height + shipOpal.height })
+    leaveCaveTimeline.to(white, { duration: 1.5, alpha: 0 })
+    leaveCaveTimeline.to(shipOpal, { duration: 0, height: 1, width: 1, y: setup.height + shipOpal.height },"<")
     leaveCaveTimeline.to(shipOpal, { duration: 1, width: shipOpal.originalFrame.width, height: shipOpal.originalFrame.height, y: setup.height / 2 - shipOpal.height / 2, x: MENU_MARGIN })
     leaveCaveTimeline.to(shipOpal, { ease: Expo.easeInOut, duration: 2, x: setup.width / 2, onComplete: launch }, "<")
   }
 
 
   function onArrivedAtNextPlanet() {
+    SESSIONS[planetIndex].attempts += 1
     Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 1 })
     Tween.to(iconCollectable, { duration: 0.5, ease: "elastic", rotation: ICON_ROTATION, y: iconCollectable.originalFrameVial.y, x: iconCollectable.originalFrameVial.x, width: iconCollectable.originalFrameVial.width, height: iconCollectable.originalFrameVial.height, alpha: 1 })
     drawProgressCircles()
@@ -1638,7 +1647,8 @@ export const init = (app, setup) => {
     scoreObject.levelScore = 0
 
     planetCarousel.forEach((p, i) => {
-      if (p.attempts == 0) {
+      console.log("p.data.attempts",p.data.attempts)
+      if (p.data.attempts == 0) {
         p.planet.texture = TEXTURES.planet_mystery
       }
       p.draw(SESSIONS[i])
