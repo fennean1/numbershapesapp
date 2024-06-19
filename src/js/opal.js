@@ -6,6 +6,7 @@ import {
   getRandomInt,
   shuffleArray,
   getNRandomElementsFromArray,
+  DraggableContainer,
 } from "./api.js";
 import { Timeline, Tween, Linear, Circ, Sine, Expo, Elastic } from "gsap/gsap-core";
 import {
@@ -14,7 +15,6 @@ import {
   assessmentCardCustomCoordinates,
 } from "./opallevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBER_SHAPES } from "./numbershapes";
-import { purple } from "@mui/material/colors";
 
 // START HERE: Session Tracking (Metadata for each level) and processing "remainders" as well as puzzle counter. 
 
@@ -34,7 +34,6 @@ export const init = (app, setup) => {
   let NUMERALS = [];
   let LAYERS = {}
   let GROUPS = {}
-  let DICT_COUNTERS_TO_PROPS = {}
   let DICT_COLORS_TO_ASSETS = {}
   const TEXTURES = {}
   const BAR_COLORS = { bolt_blue: "0x63dbff", bolt_green: "0x00c91e", plant_icon: "0x00c91e", bolt_yellow: "0xfced0f", bolt_pink: "0xff52e2", bolt_red: "0xf0003c", bolt_orange: "0xff860d" }
@@ -53,9 +52,9 @@ export const init = (app, setup) => {
   const PROGRESS_CIRCLE_DIM = MENU_MARGIN_VERTICAL / 4
   const SIZE_CAROUSEL_HEIGHT = MIN_DIM / 5
   const SIZE_SUMMARY_WIDTH = SIZE_CAROUSEL_HEIGHT / 1.5
-  const POINT_CAROUSEL_Y = setup.height / 2
+  const POINT_CAROUSEL_Y = 3 * MENU_MARGIN_VERTICAL
   const DEFAULT_COUNTER = "blue";
-  
+
   let TOTAL_PLANETS = 0
 
   // Constanst that require assets to load first 
@@ -107,10 +106,10 @@ export const init = (app, setup) => {
   const optionsSmallAsset = { metadata: { resourceOptions: { width: setup.width / 8 } } }
   const optionsExtraSmallAsset = { metadata: { resourceOptions: { width: setup.width / 16 } } }
 
-
-
   PIXI.Loader.shared
     .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsExtraLargeAsset)
+    .add('counter_test', "https://res.cloudinary.com/numbershapes/image/upload/v1718200733/Opal/swooper3_dbjzzm.png", optionsLargeAsset)
+    .add('counter_corners_purple', "https://res.cloudinary.com/numbershapes/image/upload/v1718033225/Opal/corners_purple_ap00so.png", optionsLargeAsset)
     .add('gauge_radial', "https://res.cloudinary.com/numbershapes/image/upload/v1717188538/Opal/radial_gauge2_up4uap.png", optionsLargeAsset)
     .add("plant_full", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_full_jxoqya.png", optionsLargeAsset)
     .add("plant_one", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_one_mq9vzi.png", optionsLargeAsset)
@@ -120,21 +119,29 @@ export const init = (app, setup) => {
     .add('particle_rock_1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715625602/Opal/particle_rock_1_haiujp.svg', optionsSmallAsset)
     .add('particle_rock_2', 'https://res.cloudinary.com/numbershapes/image/upload/v1715697608/Opal/particle_rock_2_ma2hcc.svg', optionsSmallAsset)
     .add('planet_pink_fire', 'https://res.cloudinary.com/numbershapes/image/upload/v1714743947/Opal/planet_pink_fire_hgttly.svg', optionsExtraLargeAsset)
+    .add('planet_blue_vine', 'https://res.cloudinary.com/numbershapes/image/upload/v1718118647/Opal/planet_crazed_blue_nb2nsu.svg', optionsExtraLargeAsset)
     .add('plant_icon', "https://res.cloudinary.com/numbershapes/image/upload/v1717436178/full_plant_xevl1c.png", optionsMediumAsset)
     .add('planet_green_bubble', 'https://res.cloudinary.com/numbershapes/image/upload/v1715781752/Opal/planet_green_bubble_b7hyac.svg', optionsExtraLargeAsset)
     .add('planet_green_swirl', 'https://res.cloudinary.com/numbershapes/image/upload/v1714524825/Opal/planet_green_swirl_q8ovc1.svg', optionsLargeAsset)
     .add('planet_orange_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715705216/Opal/planet_orange_rocks_s90iu2.svg', optionsLargeAsset)
+    .add('planet_earth_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1718295124/Opal/planet_earth_blue_bnxkwk.svg', optionsExtraLargeAsset)
+    .add('planet_yellow_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1718810955/Opal/planet_orange_craters_dsu3mq.svg', optionsExtraLargeAsset)
+    .add("planet_orange_fire", "https://res.cloudinary.com/numbershapes/image/upload/v1718818001/orange_fire_yqztsr.svg", optionsExtraLargeAsset)
+    .add("planet_purple_portal", "https://res.cloudinary.com/numbershapes/image/upload/v1718820110/planet_portal_purple_nk8twa.svg", optionsExtraLargeAsset)
+    .add('planet_purple_craters', 'https://res.cloudinary.com/numbershapes/image/upload/v1718132769/Opal/planet_craters_purple_vhjsc0.svg', optionsExtraLargeAsset)
     .add('planet_blue_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715788056/Opal/planet_blue_carved_lnul0v.svg', optionsLargeAsset)
     .add('planet_purple_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1716322683/Opal/planet_purple_carved_gqbh9p.svg', optionsLargeAsset)
     .add('planet_pink_comet', "https://res.cloudinary.com/numbershapes/image/upload/v1714760192/planet_pink_comet_2_ja0pr0.svg", optionsExtraLargeAsset)
     .add('planet_green_carved', "https://res.cloudinary.com/numbershapes/image/upload/v1715793449/Opal/planet_green_carved_tmmnnd.svg", optionsLargeAsset)
     .add('planet_pink_bubble', "https://res.cloudinary.com/numbershapes/image/upload/v1716322686/Opal/planet_pink_bubbles_j0xmtt.svg", optionsLargeAsset)
+    .add('planet_blue_craters', "https://res.cloudinary.com/numbershapes/image/upload/v1718296788/Opal/planet_craters_blue_sdesbw.svg", optionsLargeAsset)
     .add('planet_mystery', "https://res.cloudinary.com/numbershapes/image/upload/v1717378423/planet_mystery_wzwzfa.png", optionsLargeAsset)
     .add('planet_red_swirl', "https://res.cloudinary.com/numbershapes/image/upload/v1717013787/Opal/red_swirl_brdisk.svg", optionsLargeAsset)
     .add('background_opal', 'https://res.cloudinary.com/numbershapes/image/upload/v1715867929/Opal/background_opal_vbwf4o_vvggfz.svg', optionsLargeAsset)
     .add('background_cave', "https://res.cloudinary.com/numbershapes/image/upload/v1716027435/Opal/vecteezy_cave-with-blue-crystals_6758386_g0nhu3.png", optionsLargeAsset)
     .add('lava_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1715873515/Opal/lava_pink_nuxrtf.png', optionsExtraLargeAsset)
     .add('lava_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1716023841/Opal/lava_green_zfoudb.png', optionsExtraLargeAsset)
+    .add('lava_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1718034303/Opal/lava_purple_m9pwxf.svg', optionsExtraLargeAsset)
     .add("lava_yellow", "https://res.cloudinary.com/numbershapes/image/upload/v1717012484/Opal/lava_yellow_ejtkud.svg", optionsExtraLargeAsset)
     .add("lava_red", "https://res.cloudinary.com/numbershapes/image/upload/v1717015098/Lava_Red_vf5cep.svg", optionsExtraLargeAsset)
     .add('lava_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1716024015/Opal/lava_blue_c99cgr.png', optionsExtraLargeAsset)
@@ -142,10 +149,15 @@ export const init = (app, setup) => {
     .add('button_go', 'https://res.cloudinary.com/numbershapes/image/upload/v1716225263/Opal/play_fy7i2k.svg', optionsMediumAsset)
     .add('button_restart', 'https://res.cloudinary.com/numbershapes/image/upload/v1716225254/Opal/replay_ttvflz.svg', optionsMediumAsset)
     .add('counter_square_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1715281973/Opal/counter_square_pink_sjlfk0.png', optionsLargeAsset)
+    .add('counter_circles_quarter_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1718816493/circles_quarter_red_2_z2qkgf.png', optionsLargeAsset)
     .add('counter_diamond_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784606/Opal/counter_blue_diamond_m7dtxu_norw6w.png', optionsLargeAsset)
+    .add('counter_corners_swoop_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1718296735/Opal/corner_swoop_blue_uws5f5.png', optionsLargeAsset)
     .add('counter_circle_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1715610982/Opal/counter_circle_green_hxk2wz.png', optionsLargeAsset)
     .add('counter_sine_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1717774976/counter_sine_green_xq7vgh.png', optionsLargeAsset)
-    .add('counter_half_circle_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1717776767/circle_half_nihg6h.png', optionsLargeAsset)
+    .add('counter_circle_quarter_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1718819167/circle_quarter_yellow_ucjte4.png', optionsLargeAsset)
+    .add('counter_swoop_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1718825531/swoop_orange_qj77ol.png', optionsLargeAsset)
+    .add('counter_ring_orange', "https://res.cloudinary.com/numbershapes/image/upload/v1718121496/Opal/ring_orange_nmcfvb.png", optionsLargeAsset)
+    .add('counter_circle_half_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1718823955/circle_half_purple_dxgwrt.png', optionsLargeAsset)
     .add('counter_triangle_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716324632/Opal/counte_yellow_triangle_wd0p9v.png', optionsLargeAsset)
     .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717790841/Opal/stick_red_srf97k.png', optionsLargeAsset)
     .add('counter_oval_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715706392/Opal/counter_oval_orange_cdrwvh.png', optionsSmallAsset)
@@ -158,14 +170,21 @@ export const init = (app, setup) => {
     .add('heart_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1716215671/Opal/heart_red_jk6pva.svg', optionsSmallAsset)
     .add('bolt_blue', "https://res.cloudinary.com/numbershapes/image/upload/v1717007016/vial_blue_g0tck0.svg", optionsSmallAsset)
     .add('bolt_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1717263081/Opal/vial_orange_bkurw0.svg', optionsSmallAsset)
-    .add('bolt_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1717770627/Opal/vial_purple_fxmrhq.svg', optionsSmallAsset)  
+    .add('bolt_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1717770627/Opal/vial_purple_fxmrhq.svg', optionsSmallAsset)
     .add('gauge_crystal_l1', 'https://res.cloudinary.com/numbershapes/image/upload/v1717102272/Opal/gauge_u3dctl.svg', optionsLargeAsset)
     .add('gem_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784648/Opal/gem_orange_yyaxrc.svg', optionsLargeAsset)
     .add('gem_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1714505893/Opal/PinkGem_tt9cbw.png', optionsLargeAsset)
+    .add('gem_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1718035179/Opal/gem_purple_ff1fgw.svg', optionsLargeAsset)
     .add('gem_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717002293/gem_red_ywcs1l.svg', optionsLargeAsset)
     .add('gem_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784649/Opal/gem_blue_pmxanr.svg', optionsLargeAsset)
     .add('gem_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1717004212/gem_yellow_a37w4u.svg', optionsLargeAsset)
-    .add("seed_pink_spotted", "https://res.cloudinary.com/numbershapes/image/upload/v1716022992/Opal/seed_red_spotted_hrsbvh.svg", optionsLargeAsset)
+    .add("seed_pink", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_pink_fabz4f.svg", optionsLargeAsset)
+    .add("seed_yellow", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_yellow_ake5d4.svg", optionsLargeAsset)
+    .add("seed_orange", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_orange_qtzmub.svg", optionsLargeAsset)
+    .add("seed_purple", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_purple_jc2i5w.svg", optionsLargeAsset)
+    .add("seed_green", "https://res.cloudinary.com/numbershapes/image/upload/v1718300946/Opal/seed_green_uoxe9s.svg", optionsLargeAsset)
+    .add("seed_blue", "https://res.cloudinary.com/numbershapes/image/upload/v1718302797/Opal/seed_blue_1_ri3uws.svg", optionsLargeAsset)
+    .add("seed_red", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_red_yognmc.svg", optionsLargeAsset)
     .add('white', 'https://res.cloudinary.com/numbershapes/image/upload/v1717771357/Opal/black_ms4izq.svg', optionsLargeAsset)
     .add('stalagmite', 'https://res.cloudinary.com/numbershapes/image/upload/v1715356279/Opal/stalagmite_one_hyroie.svg', optionsLargeAsset)
     .add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset).load((loader, resource) => {
@@ -182,8 +201,14 @@ export const init = (app, setup) => {
       TEXTURES['counter_oval_orange'] = resource.counter_oval_orange.texture
       TEXTURES['counter_triangle_yellow'] = resource.counter_triangle_yellow.texture
       TEXTURES['counter_stick_red'] = resource.counter_stick_red.texture
-      TEXTURES['counter_half_circle_purple'] = resource.counter_half_circle_purple.texture
+      TEXTURES['counter_circle_half_purple'] = resource.counter_circle_half_purple.texture
       TEXTURES['counter_sine_green'] = resource.counter_sine_green.texture
+      TEXTURES['counter_corners_purple'] = resource.counter_corners_purple.texture
+      TEXTURES['counter_circles_quarter_red'] = resource.counter_circles_quarter_red.texture
+      TEXTURES['counter_corners_swoop_blue'] = resource.counter_corners_swoop_blue.texture
+      TEXTURES['counter_test'] = resource.counter_test.texture
+      TEXTURES['counter_circle_quarter_yellow'] = resource.counter_circle_quarter_yellow.texture
+      TEXTURES["counter_swoop_orange"] = resource.counter_swoop_orange.texture
 
       // Background 
       TEXTURES['small_star'] = resource.small_star.texture
@@ -195,13 +220,20 @@ export const init = (app, setup) => {
       TEXTURES['planet_green_swirl'] = resource.planet_green_swirl.texture
       TEXTURES['planet_pink_fire'] = resource.planet_pink_fire.texture
       TEXTURES['planet_orange_carved'] = resource.planet_orange_carved.texture
+      TEXTURES['planet_orange_fire'] = resource.planet_orange_fire.texture
       TEXTURES['planet_green_bubble'] = resource.planet_green_bubble.texture
       TEXTURES['planet_blue_carved'] = resource.planet_blue_carved.texture
       TEXTURES['planet_green_carved'] = resource.planet_green_carved.texture
       TEXTURES['planet_pink_bubble'] = resource.planet_pink_bubble.texture
       TEXTURES['planet_purple_carved'] = resource.planet_purple_carved.texture
+      TEXTURES["planet_purple_portal"] = resource.planet_purple_portal.texture
       TEXTURES['planet_red_swirl'] = resource.planet_red_swirl.texture
       TEXTURES['planet_mystery'] = resource.planet_mystery.texture
+      TEXTURES['planet_yellow_carved'] = resource.planet_yellow_carved.texture
+      TEXTURES['planet_purple_craters'] = resource.planet_purple_craters.texture
+      TEXTURES['planet_blue_vine'] = resource.planet_blue_vine.texture
+      TEXTURES['planet_blue_craters'] = resource.planet_blue_craters.texture
+      TEXTURES['planet_earth_blue'] = resource.planet_earth_blue.texture
 
 
       // Plants
@@ -221,7 +253,14 @@ export const init = (app, setup) => {
       TEXTURES['gem_blue'] = resource.gem_blue.texture
       TEXTURES['gem_yellow'] = resource.gem_yellow.texture
       TEXTURES['gem_red'] = resource.gem_red.texture
-      TEXTURES['seed_pink_spotted'] = resource.seed_pink_spotted.texture
+      TEXTURES['gem_purple'] = resource.gem_purple.texture
+      TEXTURES['seed_pink'] = resource.seed_pink.texture
+      TEXTURES['seed_yellow'] = resource.seed_yellow.texture
+      TEXTURES['seed_orange'] = resource.seed_orange.texture
+      TEXTURES['seed_purple'] = resource.seed_purple.texture
+      TEXTURES['seed_green'] = resource.seed_green.texture
+      TEXTURES['seed_blue'] = resource.seed_blue.texture
+      TEXTURES['seed_red'] = resource.seed_red.texture
 
       // Ships
       TEXTURES['ship_opal'] = resource.ship_opal.texture
@@ -251,7 +290,7 @@ export const init = (app, setup) => {
       TEXTURES['lava_orange'] = resource.lava_orange.texture
       TEXTURES['lava_yellow'] = resource.lava_yellow.texture
       TEXTURES['lava_red'] = resource.lava_red.texture
-
+      TEXTURES['lava_purple'] = resource.lava_purple.texture
       TEXTURES['plant_icon'] = resource.plant_icon.texture
 
       // Constants 
@@ -396,6 +435,12 @@ export const init = (app, setup) => {
   let radialProgressBar = new PIXI.Graphics();
   let gaugeRadial;
   let beanDrops = []
+  let showers = []
+  let scoreBackground;
+
+  let draggingContainer;
+
+
 
   let endOfGameModal;
 
@@ -438,7 +483,7 @@ export const init = (app, setup) => {
   let leaveCaveTimeline = new Timeline({ paused: true });
   let endOfGameTimeline = new Timeline({ paused: true });
   let radialProgressBarTimeline = new Timeline({ paused: true, onComplete: onRadialProgressComplete });
-
+  let showersTimeline = new Timeline({ paused: true });
 
   // #endregion
 
@@ -453,7 +498,6 @@ export const init = (app, setup) => {
   function calculateScore() {
     const { timer, focusTime } = scoreObject
     const levelScore = 10 + Math.round(Math.pow(2, 11 / (1 + (timer - focusTime) / 1000)) / 30)
-
     return levelScore
   }
 
@@ -498,11 +542,11 @@ export const init = (app, setup) => {
     currentLevelLength = puzzlesForCurrentLevel.length;
     currentPuzzle = puzzlesForCurrentLevel[puzzleIndex % currentLevelLength];
     currentPuzzle.counter = currentLevel.counter
-    
+
     boltBar.texture = generateBarTexture(DICT_COLORS_TO_ASSETS[currentLevel.color].vial)
     iconCollectable.texture = TEXTURES[currentLevel.icon]
     iconCollectable.y = -iconCollectable.height
-    
+
     pool.loadPuzzle(currentPuzzle)
 
   }
@@ -603,6 +647,10 @@ export const init = (app, setup) => {
       let levelScore = calculateScore()
       scoreObject.puzzleScore = levelScore
       scoreObject.totalScore += levelScore
+      scoreText.text = scoreObject.totalScore
+
+
+      Tween.to(scoreText, { value: scoreObject.totalScore, ease: Sine.easeInOut, onUpdate: () => { scoreText.text = Math.round(scoreText.value) } })
 
       SESSIONS[planetIndex].points += levelScore
       if (currentLevel.type != "cave") {
@@ -733,10 +781,9 @@ export const init = (app, setup) => {
     return { adjustedWidth, adjustedHeight }
   }
 
-  function endGame() {
+  function endGame(complete) {
     layer(applicationStates.end)
-
-
+    // Layering 
     pool.cards.forEach((c, i) => {
       c.interactive = false
     })
@@ -752,22 +799,39 @@ export const init = (app, setup) => {
       // Tear down space level
     }
 
-    app.stage.addChild(scoreText)
-    scoreText.y = POINT_CAROUSEL_Y - 2 * SIZE_CAROUSEL_HEIGHT
-
-
     // Prepare Planet Carousel.
     planetCarousel.forEach((p, i) => {
       p.y = POINT_CAROUSEL_Y
       p.x = setup.width + MIN_DIM / 2 * i
       p.alpha = 0
-      app.stage.addChild(p)
+    })
+
+    app.stage.addChild(draggingContainer)
+
+    scoreObject.levelScore = 0
+
+    scoreText.y = 2 * MENU_MARGIN_VERTICAL
+    scoreText.x = setup.width / 2
+    scoreText.scale.x = 0
+    scoreText.scale.y = 0
+    app.stage.addChild(scoreText)
+
+    planetCarousel.forEach((p, i) => {
+      if (p.data.attempts == 0) {
+        p.planet.texture = TEXTURES.planet_mystery
+      }
+      p.draw(SESSIONS[i])
+      draggingContainer.addChild(p)
     })
 
     // Rebuild Timeline. 
     endOfGameTimeline.clear()
-    buildEndOfGameTimeline()
+    buildEndOfGameTimeline(complete)
     endOfGameTimeline.restart()
+
+    stars.forEach((s, i) => {
+      Tween.fromTo(s, { alpha: 0 }, { alpha: 1, duration: 2 * Math.random(), yoyo: true, repeat: 10 })
+    })
   }
 
   class PlanetSummary extends PIXI.Container {
@@ -797,7 +861,7 @@ export const init = (app, setup) => {
       this.PLASMA_AREA = this.PLASMA_WIDTH * this.PLASMA_HEIGHT
       console.log(this.data.color)
       this.ICON_TEXTURE = DICT_COLORS_TO_ASSETS[this.data.color].vial
-      console.log("this.ICON_TEXTURE",this.ICON_TEXTURE)
+      console.log("this.ICON_TEXTURE", this.ICON_TEXTURE)
       this.SEED_TEXTURE = DICT_COLORS_TO_ASSETS[this.data.color].seed
 
       this.MARGIN = this.backGround.width / 10
@@ -812,7 +876,7 @@ export const init = (app, setup) => {
       this.foliageIcons = []
 
       for (let i = 0; i < 10; i++) {
-        console.log("COLOR_DICT",this.data.color)
+        console.log("COLOR_DICT", this.data.color)
         let p = new PIXI.Sprite(DICT_COLORS_TO_ASSETS[this.data.color].vial)
         p.anchor.y = 1
         this.plasmaIcons.push(p)
@@ -888,7 +952,7 @@ export const init = (app, setup) => {
 
       let plantsAndSeeds = this.data.plants + this.data.seeds
       let seedRowWidth = (plantsAndSeeds) * this.PLASMA_WIDTH * 1.2
-      console.log("seedRowWidth",seedRowWidth,plantsAndSeeds)
+      console.log("seedRowWidth", seedRowWidth, plantsAndSeeds)
 
       for (let i = 0; i < plantsAndSeeds; i++) {
 
@@ -901,7 +965,7 @@ export const init = (app, setup) => {
           p.texture = this.SEED_TEXTURE
           p.width = this.PLASMA_WIDTH
           p.scale.x = -p.scale.x
-          p.height = TEXTURES.seed_pink_spotted.height / TEXTURES.seed_pink_spotted.width * this.PLASMA_WIDTH
+          p.height = TEXTURES.seed_pink.height / TEXTURES.seed_pink.width * this.PLASMA_WIDTH
         } else {
           p.texture = TEXTURES.plant_icon
           p.width = this.PLASMA_WIDTH
@@ -909,7 +973,7 @@ export const init = (app, setup) => {
         }
 
         p.x = this.backGround.width / 2 - seedRowWidth / 2 + this.PLASMA_WIDTH * i * 1.2
-        p.y = this.backGround.height - 1.2*this.MARGIN
+        p.y = this.backGround.height - 1.2 * this.MARGIN
         this.addChild(p)
       }
 
@@ -920,19 +984,23 @@ export const init = (app, setup) => {
   }
 
   class Blast extends PIXI.Container {
-    constructor() {
+    constructor(texture1, texture2, options) {
       super();
+      this.timeConstant = 0.035
+      const defaultOptions = { dt: 50, g: 1, v: 8, spread: 1 }
       this.t = 0
       this.particles = []
-      this.dt = 50
+      this.texture1 = texture1
+      this.texture2 = texture2
+      this.options = options ? options : defaultOptions
     }
 
     h(t, dy) {
-      return 2 * t * t - (20 + dy * 10) * t
+      return this.options.g * t * t - ((2 + dy) * this.options.v) * t
     }
 
     w(t, dx) {
-      return t / this.dt * dx * setup.width / 2
+      return t / this.options.dt * dx * setup.width / 2 * this.options.spread
     }
 
     cancel() {
@@ -945,13 +1013,12 @@ export const init = (app, setup) => {
         p.x = this.w(this.t, p.vector.dx)
         p.rotation = this.t / (Math.PI * 2) * p.vector.dx
       })
-
     }
 
     onComplete() {
       this.t = 0
       this.particles.forEach((p, i) => {
-        p.vector = { dx: 1 - 2 * Math.random(), dy: Math.random() }
+        p.vector = { dx: (1 - 2 * Math.random()), dy: Math.random() }
       })
     }
 
@@ -968,10 +1035,10 @@ export const init = (app, setup) => {
 
     init() {
 
-      this.tween = Tween.to(this, { duration: 1.75, ease: Linear.easeNone, t: this.dt, onComplete: this.onComplete.bind(this), onUpdate: this.onUpdate.bind(this) })
+      let _t = this.timeConstant * this.options.dt
 
       for (let i = 0; i < 10; i++) {
-        let t = i % 3 == 0 ? TEXTURES.particle_rock_1 : TEXTURES.particle_rock_2
+        let t = i % 3 == 0 ? this.texture1 : this.texture2
         let s = new PIXI.Sprite(t);
         s.anchor.set(0.5)
         s.width = MIN_DIM / 30 + Math.random() * MIN_DIM / 80;
@@ -982,6 +1049,8 @@ export const init = (app, setup) => {
         this.particles.push(s)
         this.addChild(s);
       }
+
+      this.tween = Tween.to(this, { paused: true, duration: _t, ease: Linear.easeNone, t: this.options.dt, onComplete: this.onComplete.bind(this), onUpdate: this.onUpdate.bind(this) })
 
       app.stage.addChild(this);
     }
@@ -1044,7 +1113,10 @@ export const init = (app, setup) => {
         b.x = 0
         b.y = 0
         b.alpha = 1
+        b.scale.x = b.originalScaleX
+        b.scale.y = b.originalScaleY
         b.texture = COUNTER_TEXTURE;
+        b.rotation = 0
         b.width = this.unit;
         b.height = this.unit;
       });
@@ -1103,12 +1175,15 @@ export const init = (app, setup) => {
 
         // Switch to Array Type Here 
         let array = getRandomArray(this.mesh[0], this.mesh[1], value);
+        console.log("c urrentPuzzle",currentPuzzle)
 
-        if (this.level.customMesh) {
+        if (currentPuzzle.customMesh) {
 
+          console.log("curent puzzle",currentPuzzle)
           // Get array from number
-          let meshVal = this.level.customMesh.value
+          let meshVal = currentPuzzle.customMesh.value
           array = NUMBER_SHAPES[meshVal](0.5)
+          console.log("custom array",array) 
 
           // Get dimensions of array
           const hw = getWidthAndHeightOfNumberShape(array, 0.5)
@@ -1127,6 +1202,10 @@ export const init = (app, setup) => {
 
         array.forEach((c, i) => {
           let sprite = this.balls[i];
+          sprite.width = this.unit;
+          sprite.height = this.unit;
+          sprite.originalScaleY = sprite.scale.y
+          sprite.originalScaleX = sprite.scale.x
           sprite.texture = COUNTER_TEXTURE;
           if (currentLevel.shuffle == "triangle") {
             i % 2 == 0 ? sprite.rotation = Math.PI / 2 : sprite.rotation = -Math.PI / 2
@@ -1134,12 +1213,36 @@ export const init = (app, setup) => {
             sprite.rotation = Math.random() * Math.PI * 2
           } else if (currentLevel.shuffle == "half") {
             i % 3 == 0 ? sprite.rotation = Math.PI : sprite.rotation = 0
+          } else if (currentLevel.shuffle == "circles_quarter_red") {
+            let scy = i % 2 == 0 ? Math.PI / 2 : 0
+            sprite.rotation = scy
+          } else if (currentLevel.shuffle == "rotate_90") {
+            let scy = i % 2 == 0 ? Math.PI / 2 : 0
+            sprite.rotation = scy
+          } else if (currentLevel.shuffle == "scaley") {
+            let s = i % 2 == 0 ? 1 : -1
+            sprite.scale.y = s * sprite.originalScaleY
+          } else if (currentLevel.shuffle == "scalex") {
+            let s = i % 2 == 0 ? 1 : -1
+            sprite.scale.x = s * sprite.originalScaleX
+          } else if (currentLevel.shuffle == "rotate_all") {
+            let r = i%4
+            if (r == 0) { 
+              sprite.rotation = Math.PI / 2
+            } else if (r == 1) {
+              sprite.rotation = Math.PI
+            } else if (r == 2) {
+              sprite.rotation = 3*Math.PI / 2
+            } else if (r == 3) {
+              sprite.rotation = 0
+            }
+          } else if (currentLevel.shuffle == "360") {
+            sprite.rotation = Math.random() * Math.PI * 2
           }
           else {
             sprite.rotation = 0
           }
-          sprite.width = this.unit;
-          sprite.height = this.unit;
+
           sprite.x = c[0] * this.unit + offsetX + this.unit / 2;
           sprite.y = c[1] * this.unit + offsetY + this.unit / 2;
           this.addChild(sprite);
@@ -1348,7 +1451,6 @@ export const init = (app, setup) => {
 
   function resetBlasts() {
     blasts.forEach(b => {
-      app.stage.addChild(b)
       b.refresh()
     })
   }
@@ -1374,21 +1476,23 @@ export const init = (app, setup) => {
       iconCollectable.texture = TEXTURES[currentLevel.icon]
       collectable.texture = TEXTURES[currentLevel.collectable]
 
-
       // Planet Carousel / Cards
       planetCarousel.forEach(p => {
         app.stage.removeChild(p)
-        swapTexture(p, p.originalTexture)
+        swapTexture(p.planet, p.originalTexture)
       })
 
       shipOpal.x = shipOpal.originalFrame.x
       shipOpal.y = shipOpal.originalFrame.y
       shipOpal.alpha = 1
-      scoreText.alpha = 0
+
+      scoreText.x = scoreText.originalFrame.x
+      scoreText.y = scoreText.originalFrame.y
+      scoreText.text = "0"
+      scoreText.alpha = 1
 
 
       // progressCircles
-
       radialProgressBar.progressAngle = 0
       drawRadialProgress()
       drawProgressCircles()
@@ -1473,11 +1577,13 @@ export const init = (app, setup) => {
   }
 
   function incrementLives(by) {
-    lives = lives + by < 0 ? 0 : Math.min(lives + by,TOTAL_LIVES)
+    lives = lives + by < 0 ? 0 : Math.min(lives + by, TOTAL_LIVES)
     let { width, height } = iconLives.originalFrame
     Tween.to(livesBar, { duration: 0.5, width: BOLT_BAR_WIDTH * lives / TOTAL_LIVES, ease: "bounce" })
     Tween.fromTo(iconLives, { width: 0.75 * width, height: 1.15 * height }, { duration: 2, width: width, height: height, ease: "elastic" })
   }
+
+  // GOTO_TIMELINE Functions
 
   function caveSetup() {
     generateNumberShapeTextures(currentLevel.counter)
@@ -1520,10 +1626,7 @@ export const init = (app, setup) => {
     currentPlanet.y = setup.height + currentPlanet.height / 6
     currentPlanet.alpha = 1
 
-
-
     backGround.texture = TEXTURES.background_opal
-
 
     // Layer the elements
     layer(applicationStates.space)
@@ -1543,10 +1646,16 @@ export const init = (app, setup) => {
     app.stage.addChild(startButton);
   }
 
-  // GOTO_TIMELINE Functions
+  /// GOTO_TIMELINE Building Functions Definitions
 
+  function buildShowersTimeline() {
+    showersTimeline.clear()
+    showers.forEach((s, i) => {
+      showersTimeline.to(stars[i], { alpha: 0, duration: 0 })
+      showersTimeline.to(s, { alpha: i + 1, duration: 0.05, onComplete: s.explode.bind(s) })
+    })
+  }
 
-  /// Goin
   function buildRadialProgressBarTimeline() {
 
     radialProgressBarTimeline.clear()
@@ -1607,7 +1716,7 @@ export const init = (app, setup) => {
         })
         */
       } else {
-        
+
         radialProgressBarTimeline.to(iconCollectable, { width: adjustedWidth, height: adjustedHeight, duration: 0.1 })
         radialProgressBarTimeline.to(iconCollectable, { duration: 1, ease: "back.in(0.7)", x: shipOpal.x, y: shipOpal.y }, "<")
         radialProgressBarTimeline.to(shipOpal, { width: shipOpal.originalFrame.width * 0.9, height: shipOpal.originalFrame.height * 1.1, duration: 0.1, ease: Linear.easeNone })
@@ -1615,6 +1724,34 @@ export const init = (app, setup) => {
       }
 
     }
+  }
+
+  function buildEndOfGameTimeline(completed) {
+
+
+    const onUpdate = () => {
+      let tweenVal = scoreText.value / scoreObject.totalScore
+      scoreText.text = Math.round(scoreText.value)
+      scoreText.scale.x = tweenVal * tweenVal
+      scoreText.scale.y = tweenVal * tweenVal
+      scoreText.alpha = tweenVal * tweenVal
+    }
+    let toString = "-=" + (setup.width / 2 + MIN_DIM / 2 * (planetIndex) + SIZE_CAROUSEL_HEIGHT / 2)
+
+
+    if (completed) {
+      buildShowersTimeline()
+      showersTimeline.play()
+      endOfGameTimeline.to([iconLives, iconCollectable, startButton, boltBar, boltGauge, livesBar, livesGauge, white, radialProgressBar, gaugeRadial], { duration: 1, alpha: 0 })
+    } else {
+      endOfGameTimeline.to([currentPlanet, iconLives, iconCollectable, startButton, boltBar, boltGauge, livesBar, livesGauge, white, radialProgressBar, gaugeRadial], { duration: 1, alpha: 0 })
+    }
+
+    endOfGameTimeline.to(shipOpal, { duration: 1, y: POINT_CAROUSEL_Y + 2.3 * SIZE_CAROUSEL_HEIGHT, x: setup.width / 2, ease: Sine.easeInOut })
+    endOfGameTimeline.to(planetCarousel, { alpha: 1, duration: 0.5, ease: Sine.easeInOut }, "<")
+    endOfGameTimeline.to(scoreText, { value: scoreObject.totalScore, duration: 5, ease: Sine.easeInOut, onUpdate: onUpdate }, "<")
+    endOfGameTimeline.to(planetCarousel, { duration: levelIndex, x: toString }, "<")
+    endOfGameTimeline.call(endOfGameTimelineComplete)
   }
 
 
@@ -1625,7 +1762,7 @@ export const init = (app, setup) => {
     leaveCaveTimeline.to(white, { duration: 1, alpha: 1 })
     leaveCaveTimeline.call(caveTearDown)
     leaveCaveTimeline.to(white, { duration: 1.5, alpha: 0 })
-    leaveCaveTimeline.to(shipOpal, { duration: 0, height: 1, width: 1, y: setup.height + shipOpal.height },"<")
+    leaveCaveTimeline.to(shipOpal, { duration: 0, height: 1, width: 1, y: setup.height + shipOpal.height }, "<")
     leaveCaveTimeline.to(shipOpal, { duration: 1, width: shipOpal.originalFrame.width, height: shipOpal.originalFrame.height, y: setup.height / 2 - shipOpal.height / 2, x: MENU_MARGIN })
     leaveCaveTimeline.to(shipOpal, { ease: Expo.easeInOut, duration: 2, x: setup.width / 2, onComplete: launch }, "<")
   }
@@ -1633,45 +1770,16 @@ export const init = (app, setup) => {
 
   function onArrivedAtNextPlanet() {
     SESSIONS[planetIndex].attempts += 1
-    Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 1 })
-    Tween.to(iconCollectable, { duration: 0.5, ease: "elastic", rotation: ICON_ROTATION, y: iconCollectable.originalFrameVial.y, x: iconCollectable.originalFrameVial.x, width: iconCollectable.originalFrameVial.width, height: iconCollectable.originalFrameVial.height, alpha: 1 })
-    drawProgressCircles()
-    dealCards(pool)
-  }
-
-
-
-
-  function buildEndOfGameTimeline() {
-
-    scoreObject.levelScore = 0
-
-    planetCarousel.forEach((p, i) => {
-      console.log("p.data.attempts",p.data.attempts)
-      if (p.data.attempts == 0) {
-        p.planet.texture = TEXTURES.planet_mystery
-      }
-      p.draw(SESSIONS[i])
-      app.stage.addChild(p)
-      p.y = SIZE_CAROUSEL_HEIGHT*1.5
-    })
-
-    const onUpdate = () => {
-      let tweenVal = scoreText.value / scoreObject.totalScore
-      scoreText.text = Math.round(scoreText.value)
-      scoreText.scale.x = tweenVal * tweenVal
-      scoreText.scale.y = tweenVal * tweenVal
-      scoreText.alpha = tweenVal * tweenVal
+    if (currentLevel.type == "final") {
+      endGame(true)
+    } else {
+      Tween.to(GROUPS.gauges, { duration: 0.5, alpha: 1 })
+      Tween.to(iconCollectable, { duration: 0.5, ease: "elastic", rotation: ICON_ROTATION, y: iconCollectable.originalFrameVial.y, x: iconCollectable.originalFrameVial.x, width: iconCollectable.originalFrameVial.width, height: iconCollectable.originalFrameVial.height, alpha: 1 })
+      drawProgressCircles()
+      dealCards(pool)
     }
-    let toString = "-=" + (setup.width / 2 + MIN_DIM / 2 * (planetIndex)+SIZE_CAROUSEL_HEIGHT/2)
-
-    endOfGameTimeline.to([currentPlanet, iconLives, iconCollectable, startButton, boltBar, boltGauge, livesBar, livesGauge, white, radialProgressBar, gaugeRadial], { duration: 1, alpha: 0 })
-    endOfGameTimeline.to(shipOpal, { duration: 1, y: POINT_CAROUSEL_Y + SIZE_CAROUSEL_HEIGHT * 1.2, x: setup.width / 2, ease: Sine.easeInOut })
-    endOfGameTimeline.to(planetCarousel, { alpha: 1, duration: 0.5, ease: Sine.easeInOut }, "<")
-    endOfGameTimeline.to(scoreText, { value: scoreObject.totalScore, duration: 5, ease: Sine.easeInOut, onUpdate: onUpdate }, "<")
-    endOfGameTimeline.to(planetCarousel, { duration: levelIndex, x: toString }, "<")
-    endOfGameTimeline.call(endOfGameTimelineComplete)
   }
+
 
   function updateStars() {
     stars.forEach((s, i) => {
@@ -1765,7 +1873,7 @@ export const init = (app, setup) => {
   }
 
   function drawRadialProgress(reset) {
-    let color = currentLevel.type == "cave" ? "0x00c91e" : DICT_COLORS_TO_ASSETS[currentLevel.color].color
+    let color = DICT_COLORS_TO_ASSETS[currentLevel.color].color
     let start = 0
     let end = reset ? 0 : radialProgressBar.progressAngle
     radialProgressBar.clear();
@@ -1777,6 +1885,9 @@ export const init = (app, setup) => {
 
   function onArrivedAtCave() {
     reveal(applicationStates.cave)
+    blasts.forEach(b => {
+      b.alpha = 0
+    })
     drawRadialProgress(true)
     drawProgressCircles()
     dealCards(pool)
@@ -1867,93 +1978,47 @@ export const init = (app, setup) => {
       blue: {
         vial: TEXTURES.bolt_blue,
         plant: TEXTURES.plant_icon,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_blue,
         color: "0x63dbff",
       },
       pink: {
         vial: TEXTURES.bolt_pink,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_pink,
         plant: TEXTURES.plant_icon,
         color: "0xff52e2",
       },
       orange: {
         vial: TEXTURES.bolt_orange,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_orange,
         plant: TEXTURES.plant_icon,
         color: "0xff860d",
       },
       red: {
         vial: TEXTURES.bolt_red,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_red,
         plant: TEXTURES.plant_icon,
         color: "0xf0003c",
       },
       yellow: {
         vial: TEXTURES.bolt_yellow,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_yellow,
         plant: TEXTURES.plant_icon,
         color: "0xfced0f",
       },
       purple: {
         vial: TEXTURES.bolt_purple,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_purple,
         plant: TEXTURES.plant_icon,
-        color: "0xb407f2",
+        lava: TEXTURES.lava_purple,
+        color: "0xd17dff",
       },
       green: {
         vial: TEXTURES.bolt_green,
-        seed: TEXTURES.seed_pink_spotted,
+        seed: TEXTURES.seed_green,
         plant: TEXTURES.plant_icon,
         color: "0x00c91e",
       },
     }
-
-
-    // WOuld be great to get rid of this. 
-    DICT_COUNTERS_TO_PROPS = {
-      default: {
-        texture: TEXTURES.planet_green_swirl,
-        value: 1,
-      },
-      circle_green: {
-        texture: TEXTURES.counter_circle_green,
-        value: 1,
-      },
-      square_pink: {
-        texture: TEXTURES.counter_square_pink,
-        value: 1,
-      },
-      stick_purple: {
-        texture: TEXTURES.counter_stick_purple,
-        value: 1,
-      },
-      diamond_blue: {
-        texture: TEXTURES.counter_diamond_blue,
-        value: 1,
-      },
-      oval_orange: {
-        texture: TEXTURES.counter_oval_orange,
-        value: 1,
-      },
-      stick_red: {
-        texture: TEXTURES.counter_stick_red,
-        value: 1,
-      },
-      triangle_yellow: {
-        texture: TEXTURES.counter_triangle_yellow,
-        value: 1,
-      },
-      half_circle_purple: {
-        texture: TEXTURES.counter_half_circle_purple,
-        value: 1,
-      },
-      sine_green: {
-        texture: TEXTURES.counter_sine_green,
-        value: 1,
-      }
-    };
-
-
 
     // Online called on game restart. 
     initializeGameData()
@@ -1961,7 +2026,7 @@ export const init = (app, setup) => {
     LEVELS.forEach((l, i) => {
       if (l.type != "cave") {
         let pID = "planet_" + l.planet
-        console.log("pID", pID)
+
         let d = {
           plants: 0,
           seeds: 0,
@@ -1971,22 +2036,32 @@ export const init = (app, setup) => {
           planetID: pID,
           attempts: 0,
         }
+        console.log("d", l.type)
         SESSIONS.push(d)
       }
     })
 
     TOTAL_PLANETS = SESSIONS.length
 
-    scoreText = new PIXI.Text("0", {
+    scoreText = new PIXI.Text("1", {
       fill: "#19d5ff",
       fontFamily: "Silkscreen",
-      fontSize: CARD_WIDTH / 2.5,
+      fontSize: 0.8 * MENU_MARGIN_VERTICAL,
     });
-    scoreText.x = setup.width / 2
-    scoreText.y = setup.height / 4
+    scoreText.x = setup.width - 7 * scoreText.style.fontSize / 2
+    scoreText.y = setup.height - MENU_MARGIN_VERTICAL
     scoreText.anchor.set(0.5);
     scoreText.value = 0
-    scoreText.alpha = 0
+    scoreText.alpha = 1
+    scoreText.originalFrame = { x: scoreText.x, y: scoreText.y, width: scoreText.width, height: scoreText.height }
+    let r = generateRect(scoreText.style.fontSize * 6, MENU_MARGIN_VERTICAL)
+    scoreBackground = new PIXI.Sprite(r)
+    scoreBackground.x = scoreText.x
+    scoreBackground.y = scoreText.y
+    scoreBackground.anchor.set(0.5)
+    app.stage.addChild(scoreText)
+    app.stage.addChild(scoreBackground)
+    scoreText.text = "0"
 
 
 
@@ -2227,8 +2302,8 @@ export const init = (app, setup) => {
 
 
     for (let i = 0; i < 2; i++) {
-      let b = new PIXI.Sprite(TEXTURES.seed_pink_spotted)
-      b.aspectRatio = TEXTURES.seed_pink_spotted.width / TEXTURES.seed_pink_spotted.height
+      let b = new PIXI.Sprite(TEXTURES.seed_pink)
+      b.aspectRatio = TEXTURES.seed_pink.width / TEXTURES.seed_pink.height
       b.width = radialProgressBar.width / 2
       b.height = b.width / b.aspectRatio
       beanDrops.push(b)
@@ -2243,13 +2318,14 @@ export const init = (app, setup) => {
     // Create UI Controllers 
 
     for (let i = 0; i < 25; i++) {
-      let b = new Blast();
+      let b = new Blast(TEXTURES.particle_rock_1, TEXTURES.particle_rock_2);
       b.init();
       b.x = setup.width / 8 + 100 * i * Math.random()
       b.y = setup.height / 8 + 50 * i * Math.random()
       b.alpha = 0
       blasts.push(b)
     }
+
 
     // Create Progress Circles
     for (let i = 0; i < 12; i++) {
@@ -2270,6 +2346,24 @@ export const init = (app, setup) => {
     state.starPosition.span = setup.height
     updateStars()
 
+
+    let stl = new Timeline({ paused: true })
+
+    showers = stars.map((s, i) => {
+      const options = { dt: 200, g: 4, v: 100, spread: 25 }
+      let shower = new Blast(TEXTURES.small_star, TEXTURES.small_star, options)
+      shower.init()
+      shower.x = s.x
+      shower.y = s.y
+      shower.width = s.width
+      shower.height = s.height
+      //app.stage.addChild(shower)
+      return shower
+    })
+
+
+
+
     pool = new CardPool(currentPuzzle);
     pool.loadPuzzle(currentPuzzle);
 
@@ -2277,21 +2371,25 @@ export const init = (app, setup) => {
     buildGoToCaveTimeline()
     buildLeaveCaveTimeline()
     updateLayoutParams()
+    buildShowersTimeline()
 
 
 
     LAYERS = {
-      cave: [backGround, topLeftCaveBackground, collectable, ...blasts, gaugeRadial, radialProgressBar, iconCollectable, lava, bottomLeftCaveBackground, shipOpal, topRightCaveBackground, bottomRightCaveBackground, livesGauge, livesBar, iconLives],
-      space: [backGround, ...stars, currentPlanet, ...blasts, livesGauge, livesBar, collectable, iconLives, shipOpal, startButton, gaugeRadial, radialProgressBar, iconCollectable],
-      start: [backGround, ...stars, startButton, shipOpal],
-      end: [backGround, ...stars, ...planetCarousel, startButton, shipOpal, scoreText],
+      cave: [backGround, topLeftCaveBackground, collectable, ...blasts, gaugeRadial, radialProgressBar, iconCollectable, lava, bottomLeftCaveBackground, shipOpal, topRightCaveBackground, bottomRightCaveBackground, livesGauge, livesBar, iconLives, scoreBackground, scoreText],
+      space: [backGround, ...stars, currentPlanet, ...blasts, livesGauge, livesBar, collectable, iconLives, shipOpal, startButton, gaugeRadial, radialProgressBar, iconCollectable, scoreBackground, scoreText],
+      start: [backGround, ...stars, ...showers, startButton, shipOpal],
+      end: [backGround, ...stars, ...showers, ...planetCarousel, startButton, currentPlanet, shipOpal, scoreText],
     }
 
-    GROUPS = { caveElements: [lava, topLeftCaveBackground, bottomLeftCaveBackground, topRightCaveBackground, bottomRightCaveBackground], gauges: [boltGauge, livesGauge, boltBar, livesBar, iconLives, gaugeRadial, radialProgressBar, iconCollectable, ...progressCircles, progressCircleBackGround] }
+    GROUPS = { caveElements: [lava, topLeftCaveBackground, bottomLeftCaveBackground, topRightCaveBackground, bottomRightCaveBackground], gauges: [boltGauge, livesGauge, boltBar, livesBar, iconLives, gaugeRadial, radialProgressBar, iconCollectable, ...progressCircles, progressCircleBackGround, scoreBackground, scoreText] }
 
     layer(applicationStates.start)
 
     generateRect(SIZE_CAROUSEL_HEIGHT, SIZE_CAROUSEL_HEIGHT * 1.5, 10, "rectangle_black_alpha")
+
+    draggingContainer = new DraggableContainer()
+    draggingContainer.lockY = true
 
 
     // Define UI Elements 
@@ -2301,8 +2399,13 @@ export const init = (app, setup) => {
       p.y = setup.height / 2.5 - p.height / 2
       //app.stage.addChild(p)
       planetCarousel.push(p)
+      p.alpha = 1
+      draggingContainer.addChild(p)
     })
 
+
+
+    //app.stage.addChild(draggingContainer)
 
   }
 

@@ -837,6 +837,80 @@ export class FeedBlocks extends PIXI.Container {
 
 }
 
+export class DraggableContainer extends PIXI.Container {
+  constructor(texture){
+    super()
+    this.dragged = false
+    this.touching = false
+    this.interactive = true
+    this.lockX = false 
+    this.lockY = false
+    //this.texture = texture
+    this.on('pointerdown',this.pointerDown)
+    this.on('pointermove',this.pointerMove)
+    this.on('pointerup',this.pointerUp)
+    this.on('pointerupoutside',this.pointerUp)
+  }
+
+  wiggle(){
+    const originalx = this.x
+    const onComplete = ()=>{
+      Tween.to(this,{duration: 1,x: originalx,ease: "elastic"})   
+    }
+
+    const rand = getRandomInt(10)
+    let to = 0
+    if (rand%2==0){
+      to = this.x + this.width/2
+    } else {
+      to = this.x - this.width/2
+    }
+
+    Tween.to(this,{duration: 0.25,x: to,onComplete: onComplete})
+  
+  }
+
+  pointerDown(event){
+    console.log("Draggable Pointer Down")
+    this.parent.addChild(this)
+    this.touching = true
+    this.dragged = false
+    this.originalX = this.x 
+    this.originalY = this.y
+    this.deltaTouch = {
+      x: this.x - event.data.global.x,
+      y: this.y - event.data.global.y
+    }
+  }
+
+  
+  pointerMove(event){
+    if (this.touching){
+      if (!this.lockX){
+        this.x = event.data.global.x + this.deltaTouch.x
+      } 
+      if (!this.lockY){
+        this.y = event.data.global.y + this.deltaTouch.y
+      }
+      this.dragged = true
+    }
+  }
+
+  pointerUp(event){
+    /*
+    if (this.x < 0 || this.y < 0 || this.x > this.parent.apparentWidth || this.y > this.parent.apparentHeight){
+      this.x = this.originalX
+      this.y = this.originalY
+    } 
+      */
+    this.touching = false
+  }
+  
+  pointerUpOutside(event){
+    this.touching = false
+  }
+}
+
 export class Draggable extends PIXI.Sprite {
   constructor(texture){
     super()
