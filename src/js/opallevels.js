@@ -4309,6 +4309,8 @@ const CAVE_FOUR = {
 
 const FOURTH_STAGE = [PLANET_FOUR, CAVE_FOUR]
 
+const P5_PUZZLES = generatePuzzles([2,3,3,3,4,4,4,5,5,5],[5,5],[21,23],1,[0.5,0.6,0.6,0.7,0.7,0.7,0.8,0.8,0.8,0.85],"Planet four")
+
 const PLANET_FIVE = {
   name: "Blue Crater Planet",
   planet: planets.blue_craters,
@@ -4316,11 +4318,11 @@ const PLANET_FIVE = {
   color: "blue",
   counter: counters.corners_swoop_blue,
   collectable: collectables.gem_blue,
-  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[5,5],[21,23],1,[0.5,0.6,0.6,0.7,0.7,0.7,0.8,0.8,0.8,0.85],"Planet four"),
+  puzzles: P5_PUZZLES.slice(SHIFT, SPACE_LEVELS_SIZE),
   shuffle: "rotate_all",
 };
 
-const C5_PUZZLES = generatePuzzles([2,2,2,2,2,2],[3,3],[7,9],1,[0.5,0.7,0.9])
+const C5_PUZZLES = generatePuzzles([2,2,2,2,2,2],[3,3],[7,9],1,[0.5,0.7,0.9,0.5,0.7,0.9])
 
 const CAVE_FIVE = {
   name: "Red Swirl Planet",
