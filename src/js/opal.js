@@ -11,7 +11,7 @@ import {
 import { Timeline, Tween, Linear, Circ, Sine, Expo, Elastic } from "gsap/gsap-core";
 import {
   counters,
-  opalLevels as LEVELS,
+  getStagesFromType,
   assessmentCardCustomCoordinates,
 } from "./opallevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBER_SHAPES } from "./numbershapes";
@@ -27,7 +27,10 @@ const initLevel = {
   mesh: [2, 2],
 };
 
+
 export const init = (app, setup) => {
+
+  const LEVELS = getStagesFromType(setup.activityname)
 
   // #region Convenience Objects Declarations
   let SESSIONS = []
@@ -302,7 +305,7 @@ export const init = (app, setup) => {
     })
 
 
-  const TOTAL_LIVES = 5
+  const TOTAL_LIVES = 8
 
 
   // GOTO_VARIABLES Declerations
@@ -1875,7 +1878,7 @@ export const init = (app, setup) => {
   }
 
   function drawRadialProgress(reset) {
-    let color = DICT_COLORS_TO_ASSETS[currentLevel.color].color
+    let color = currentLevel.type == "cave" ? "0x06b835" : DICT_COLORS_TO_ASSETS[currentLevel.color].color
     let start = 0
     let end = reset ? 0 : radialProgressBar.progressAngle
     radialProgressBar.clear();

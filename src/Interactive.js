@@ -1,4 +1,5 @@
-import React, {useEffect } from "react";
+import React, {useEffect} from "react";
+import { useParams} from "react-router-dom";
 import * as PIXI from "pixi.js"
 
 
@@ -15,6 +16,7 @@ PIXI.settings.scaleMode = PIXI.SCALE_MODES.NEAREST
 
 export default function Interactive(props) {
   let elementRef;
+  const {activityname} = useParams()
 
   useEffect(() => {
 
@@ -22,6 +24,7 @@ export default function Interactive(props) {
       height: elementRef.clientHeight,
       width: elementRef.clientWidth,
       level: props.level,
+      activityname: activityname,
       ...props.setup,
     };
 
