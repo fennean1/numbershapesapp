@@ -5560,7 +5560,7 @@ export const PLANET_THREE = {
   icon: resource_icons.bolt_orange,
   counter: counters.oval_orange,
   collectable: collectables.gem_orange,
-  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[4,4],[8,12],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.7,0.7,0.75,0.75]),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[4,4],[10,13],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.7,0.7,0.75,0.75]),
 };
 
 const C3_PUZZLES = generatePuzzles([2,2,2],"FIVE",[4,5])
@@ -5848,22 +5848,24 @@ const mostRecentLevels = [...NINTH_STAGE,...EIGHTH_STAGE,...FINAL_STAGE]
 
 const testLevel  = TEST_STAGE
 
-const demoLevels = [...FIFTH_STAGE,...FINAL_STAGE]
+const demoLevels = [...THIRD_STAGE,...FINAL_STAGE]
 
 function createRandomizedStages(stages) {
   let newStages = []
   let finalStage = stages.pop()
+  let halves = stages.pop()
+  let quarters = stages.pop()
   shuffleArray(stages)
   stages.forEach(s=>{
     newStages.push(...s)
   })
-  newStages.push(...finalStage)
+  newStages.push(...quarters,...halves,...finalStage)
   return newStages
 }
 
 const shuffledLevels = createRandomizedStages(STAGES)
 
-let levels = officialLevels
+let levels = shuffledLevels
 
 if (testing == "cycles") {
   levels = cycleLevels
@@ -5887,5 +5889,5 @@ if (testing == "cycles") {
 // #endregion
 
 
-export const opalLevels = shuffledLevels
+export const opalLevels = levels
 
