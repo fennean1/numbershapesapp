@@ -1,4 +1,4 @@
-import { getRandomInt } from "./api";
+import { getRandomInt, shuffleArray } from "./api";
 
 
 export const planets = {
@@ -5829,11 +5829,17 @@ export const CAVE_TEST = {
   puzzles: LCP_FOUR_FRAME.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
   shuffle: "scalex",
 };
+
+
+
 const TEST_STAGE = [PLANET_TEST, CAVE_TEST]
 
 const cycleLevels = [
   ...SEVENTH_STAGE,...FINAL_STAGE
 ]
+
+const STAGES = [FIRST_STAGE, SECOND_STAGE, THIRD_STAGE, FOURTH_STAGE, FIFTH_STAGE,SIXTH_STAGE,SEVENTH_STAGE,EIGHTH_STAGE,NINTH_STAGE,FINAL_STAGE]
+
 const officialLevels = [...FIRST_STAGE, ...SECOND_STAGE, ...THIRD_STAGE, ...FOURTH_STAGE, ...FIFTH_STAGE,...SIXTH_STAGE,...SEVENTH_STAGE,...EIGHTH_STAGE,...NINTH_STAGE,...FINAL_STAGE]
 
 const reversedLevels = [...NINTH_STAGE,...EIGHTH_STAGE,...SEVENTH_STAGE,...SIXTH_STAGE, ...FIFTH_STAGE, ...FOURTH_STAGE, ...THIRD_STAGE, ...SECOND_STAGE, ...FIRST_STAGE,...FINAL_STAGE]
@@ -5843,6 +5849,19 @@ const mostRecentLevels = [...NINTH_STAGE,...EIGHTH_STAGE,...FINAL_STAGE]
 const testLevel  = TEST_STAGE
 
 const demoLevels = [...FIFTH_STAGE,...FINAL_STAGE]
+
+function createRandomizedStages(stages) {
+  let newStages = []
+  let finalStage = stages.pop()
+  shuffleArray(stages)
+  stages.forEach(s=>{
+    newStages.push(...s)
+  })
+  newStages.push(...finalStage)
+  return newStages
+}
+
+const shuffledLevels = createRandomizedStages(STAGES)
 
 let levels = officialLevels
 
@@ -5868,5 +5887,5 @@ if (testing == "cycles") {
 // #endregion
 
 
-export const opalLevels = levels
+export const opalLevels = shuffledLevels
 
