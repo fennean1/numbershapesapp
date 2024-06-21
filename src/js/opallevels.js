@@ -47,6 +47,7 @@ export const counters = {
   pink: "pink",
   black: "black",
   corners_purple: "corners_purple",
+  swoop_crooked_red: "swoop_crooked_red",
   swoop_blue: "swoop_blue",
   lightblue: "lightblue",
   square_pink: "square_pink",
@@ -108,13 +109,30 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 
-function generatePuzzles(grids,mesh,range,ratio){
+function generatePuzzles(grids,mesh,range,ratio,difficulty,name){
   let p = []
   const defaultMesh = [1,1]
+
+
   grids.forEach((g,i)=>{
     
+
     let max = randomIntFromInterval(range[0],range[1])
-    let min = Math.floor(max*ratio)
+    let r = ratio
+    
+    if (difficulty){
+      r = difficulty[i]
+    }
+
+    let min = Math.floor(max*r)
+
+    if (name){
+      console.log("name",name)
+      console.log("min",min)
+      console.log("max",max)
+      console.log("r",r)
+    }
+
 
     let oneorzero = Math.round(Math.random()*100)%2
     let _value = 0
@@ -122,13 +140,15 @@ function generatePuzzles(grids,mesh,range,ratio){
 
     // Edge Cases
 
+    /*
     if (max == range[0]){
       min = range[0]
-      max = Math.ceil(min/ratio)
+      max = Math.ceil(min/r)
       if (max > range[1]){
         max = range[1]
       }
     }
+      */
 
     if (!ratio){
       max = range[1]
@@ -141,12 +161,17 @@ function generatePuzzles(grids,mesh,range,ratio){
     } 
 
     // Randomize the min / max relationship. 
+
+    if (name){
+      console.log("min",min)
+      console.log("max",max)
+    }
     if (oneorzero == 0){
       _value = max 
-      _delta = min-max
+      _delta = -Math.abs(min-max)
     } else {
       _value = min
-      _delta = max-min
+      _delta = Math.abs(max-min)
     }
 
     let newP = {  
@@ -166,6 +191,11 @@ function generatePuzzles(grids,mesh,range,ratio){
     p.push(newP)
 
     })
+
+    if (difficulty && name){
+      console.log(p,name,"p")
+    }
+
 
     return p
 }
@@ -2967,10 +2997,8 @@ function reverseMesh(puzzles) {
   let newPuzzles = []
   puzzles.forEach((p,i)=>{
     let newP = Object.assign({},p)
-    console.log("old mesh",p.mesh)
     let newMesh = newP.mesh.slice().reverse()
     newP.mesh = newMesh
-    console.log("new mesh",p.mesh)
     newPuzzles.push(newP)
   })
   return newPuzzles
@@ -5481,9 +5509,11 @@ export const PLANET_ONE = {
   icon: resource_icons.bolt_pink,
   counter: counters.square_pink,
   collectable: collectables.gem_pink,
-  puzzles: Saami.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[5,5],[18,22],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.7,0.7,0.75,0.75]),
+
 };
 
+// Saved here for later:   puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[3,3],[6,8],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.7,0.7,0.75,0.75]),
 
 // GOTO_TEST planets
 export const CAVE_ONE = {
@@ -5530,7 +5560,7 @@ export const PLANET_THREE = {
   icon: resource_icons.bolt_orange,
   counter: counters.oval_orange,
   collectable: collectables.gem_orange,
-  puzzles: Doubles.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[4,4],[8,12],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.7,0.7,0.75,0.75]),
 };
 
 const C3_PUZZLES = generatePuzzles([2,2,2],"FIVE",[4,5])
@@ -5557,7 +5587,7 @@ export const PLANET_FOUR = {
   icon: resource_icons.bolt_yellow,
   counter: counters.triangle_yellow,
   collectable: collectables.gem_yellow,
-  puzzles: LEVEL_DENSE_SQUARES.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[4,4],[14,15],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.7,0.7,0.7,0.7]),
   shuffle: "triangle",
 };
 
@@ -5582,7 +5612,8 @@ export const PLANET_FIVE = {
   color: "blue",
   counter: counters.corners_swoop_blue,
   collectable: collectables.gem_blue,
-  puzzles: LP_LENGTH_LARGE.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[5,5],[21,23],1,[0.5,0.6,0.6,0.7,0.7,0.7,0.8,0.8,0.8,0.85],"Planet four"),
+  shuffle: "rotate_all",
 };
 
 
@@ -5594,7 +5625,7 @@ export const CAVE_FIVE = {
   counter: counters.corners_swoop_blue,
   type: levelTypes.cave,
   collectable: collectables.seed_blue,
-  puzzles: generatePuzzles([2,2,2],[3,3],[7,8])
+  puzzles: generatePuzzles([2,2,2],[3,3],[7,9],1,[0.5,0.7,0.9])
 };
 
 const FIFTH_STAGE = [PLANET_FIVE, CAVE_FIVE]
@@ -5610,7 +5641,7 @@ export const PLANET_SIX  = {
   counter: counters.corners_purple,
   collectable: collectables.gem_purple,
   type: levelTypes.planet,
-  puzzles: LEVEL_DENSE_SQUARES.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[5,5],[20,22],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.65,0.65,0.7,0.7],"Planet four"),
   shuffle: "rotate_90",
 }
 
@@ -5622,7 +5653,7 @@ export const CAVE_SIX = {
   counter: counters.corners_purple,
   type: levelTypes.cave,
   collectable: collectables.seed_purple,
-  puzzles: LCP_SIX_FRAME_VERTICAL.puzzles.slice(SHIFT, CAVE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,2,2],[1,3],[2,3]),
   shuffle: "triangle",
 }
 
@@ -5642,7 +5673,7 @@ export const PLANET_SEVEN = {
   counter: counters.swoop_orange,
   collectable: collectables.gem_orange,
   type: levelTypes.planet,
-  puzzles: P7_PUZZLES.slice(SHIFT,SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[3,3],[6,8],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.65,0.65,0.7,0.7],"Planet seven"),
   shuffle: "scaley",
 };
 
@@ -5657,7 +5688,7 @@ export const CAVE_SEVEN = {
   counter: counters.swoop_orange,
   type: levelTypes.cave,
   collectable: collectables.seed_orange,
-  puzzles: C7_PUZZLES.slice(SHIFT, CAVE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,2,2],[2,2],[3,4]),
   shuffle: "scaley",
 };
 
@@ -5674,7 +5705,7 @@ export const PLANET_EIGHT = {
   color: "red",
   counter: counters.circles_quarter_red,
   collectable: collectables.gem_red,
-  puzzles: P8_PUZZLES.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[4,4],[13,15],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.65,0.65,0.7,0.7],"Planet seven"),
   shuffle: "scaley",
 };
 
@@ -5703,7 +5734,7 @@ export const PLANET_NINE = {
   color: "purple",
   counter: counters.circle_half_purple,
   collectable: collectables.gem_purple,
-  puzzles: P9_PUZZLES.slice(SHIFT, 2),
+  puzzles: generatePuzzles([2,3,3,3,4,4,4,5,5,5],[3,4],[8,10],1,[0.5,0.5,0.6,0.6,0.65,0.65,0.65,0.65,0.7,0.7],"Planet seven"),
   shuffle: "scalex",
 };
 
@@ -5811,7 +5842,7 @@ const mostRecentLevels = [...NINTH_STAGE,...EIGHTH_STAGE,...FINAL_STAGE]
 
 const testLevel  = TEST_STAGE
 
-const demoLevels = [...THIRD_STAGE,...FINAL_STAGE]
+const demoLevels = [...FIFTH_STAGE,...FINAL_STAGE]
 
 let levels = officialLevels
 

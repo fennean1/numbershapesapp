@@ -118,6 +118,7 @@ export const init = (app, setup) => {
     .add("circle_white", "https://res.cloudinary.com/numbershapes/image/upload/v1717772496/circle_white_zqyw9u_zocrdy.svg", optionsSmallAsset)
     .add('particle_rock_1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715625602/Opal/particle_rock_1_haiujp.svg', optionsSmallAsset)
     .add('particle_rock_2', 'https://res.cloudinary.com/numbershapes/image/upload/v1715697608/Opal/particle_rock_2_ma2hcc.svg', optionsSmallAsset)
+    .add('counter_swoop_crooked_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1718158726/Opal/swooper2_byw3tx.png', optionsLargeAsset)
     .add('planet_pink_fire', 'https://res.cloudinary.com/numbershapes/image/upload/v1714743947/Opal/planet_pink_fire_hgttly.svg', optionsExtraLargeAsset)
     .add('planet_blue_vine', 'https://res.cloudinary.com/numbershapes/image/upload/v1718118647/Opal/planet_crazed_blue_nb2nsu.svg', optionsExtraLargeAsset)
     .add('plant_icon', "https://res.cloudinary.com/numbershapes/image/upload/v1717436178/full_plant_xevl1c.png", optionsMediumAsset)
@@ -151,7 +152,7 @@ export const init = (app, setup) => {
     .add('counter_square_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1715281973/Opal/counter_square_pink_sjlfk0.png', optionsLargeAsset)
     .add('counter_circles_quarter_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1718816493/circles_quarter_red_2_z2qkgf.png', optionsLargeAsset)
     .add('counter_diamond_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1715784606/Opal/counter_blue_diamond_m7dtxu_norw6w.png', optionsLargeAsset)
-    .add('counter_corners_swoop_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1718296735/Opal/corner_swoop_blue_uws5f5.png', optionsLargeAsset)
+    .add('counter_corners_swoop_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1718941904/Opal/Counter_Crooked_Blue_oqdcue.png', optionsLargeAsset)
     .add('counter_circle_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1715610982/Opal/counter_circle_green_hxk2wz.png', optionsLargeAsset)
     .add('counter_sine_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1717774976/counter_sine_green_xq7vgh.png', optionsLargeAsset)
     .add('counter_circle_quarter_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1718819167/circle_quarter_yellow_ucjte4.png', optionsLargeAsset)
@@ -208,6 +209,7 @@ export const init = (app, setup) => {
       TEXTURES['counter_corners_swoop_blue'] = resource.counter_corners_swoop_blue.texture
       TEXTURES['counter_test'] = resource.counter_test.texture
       TEXTURES['counter_circle_quarter_yellow'] = resource.counter_circle_quarter_yellow.texture
+      TEXTURES['counter_swoop_crooked_red'] = resource.counter_swoop_crooked_red.texture
       TEXTURES["counter_swoop_orange"] = resource.counter_swoop_orange.texture
 
       // Background 
@@ -859,9 +861,9 @@ export const init = (app, setup) => {
       this.PLASMA_WIDTH = this.backGround.width / 10
       this.PLASMA_HEIGHT = this.PLASMA_WIDTH / ASPECT_RATIO_PLASMA
       this.PLASMA_AREA = this.PLASMA_WIDTH * this.PLASMA_HEIGHT
-      console.log(this.data.color)
+      //console.log(this.data.color)
       this.ICON_TEXTURE = DICT_COLORS_TO_ASSETS[this.data.color].vial
-      console.log("this.ICON_TEXTURE", this.ICON_TEXTURE)
+      //console.log("this.ICON_TEXTURE", this.ICON_TEXTURE)
       this.SEED_TEXTURE = DICT_COLORS_TO_ASSETS[this.data.color].seed
 
       this.MARGIN = this.backGround.width / 10
@@ -876,7 +878,7 @@ export const init = (app, setup) => {
       this.foliageIcons = []
 
       for (let i = 0; i < 10; i++) {
-        console.log("COLOR_DICT", this.data.color)
+        //console.log("COLOR_DICT", this.data.color)
         let p = new PIXI.Sprite(DICT_COLORS_TO_ASSETS[this.data.color].vial)
         p.anchor.y = 1
         this.plasmaIcons.push(p)
@@ -1175,15 +1177,15 @@ export const init = (app, setup) => {
 
         // Switch to Array Type Here 
         let array = getRandomArray(this.mesh[0], this.mesh[1], value);
-        console.log("c urrentPuzzle",currentPuzzle)
+
 
         if (currentPuzzle.customMesh) {
 
-          console.log("curent puzzle",currentPuzzle)
+
           // Get array from number
           let meshVal = currentPuzzle.customMesh.value
           array = NUMBER_SHAPES[meshVal](0.5)
-          console.log("custom array",array) 
+
 
           // Get dimensions of array
           const hw = getWidthAndHeightOfNumberShape(array, 0.5)
@@ -2036,7 +2038,6 @@ export const init = (app, setup) => {
           planetID: pID,
           attempts: 0,
         }
-        console.log("d", l.type)
         SESSIONS.push(d)
       }
     })
