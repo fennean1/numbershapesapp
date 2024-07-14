@@ -4,6 +4,7 @@ import MatchGame from "./Interactives/MatchGame.js";
 import Subitizer from "./Interactives/Subitizer";
 import Multiplication from "./Interactives/Multiplication";
 import Crush from "./Interactives/Crush";
+import Opal from "./Interactives/Opal"
 
 
 export default function InteractiveSelect(props) {
@@ -18,8 +19,11 @@ export default function InteractiveSelect(props) {
         {props.type == INTERACTIVE_TYPES.MULTIPLICATION && (
           <Multiplication {...props} />
         )}
-                {props.type == INTERACTIVE_TYPES.SAAMI && (
+        {props.type == INTERACTIVE_TYPES.SAAMI && (
           <Crush {...props} />
+        )}
+        {props.type == INTERACTIVE_TYPES.OPAL && (
+          <Opal {...props} />
         )}
     </div>
   );

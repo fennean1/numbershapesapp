@@ -174,6 +174,114 @@ export const saami_number_talks = {
 };
 
 
+
+export const opal = {
+  KEY: "YZ11",
+  ID: "opal",
+  HEADER: {
+    TITLE: "Opal",
+    SHORT_TEXT: "Early Counting Game",
+  },
+  CARD_IMAGE: "https://res.cloudinary.com/numbershapes/image/upload/v1720896102/Opal/OpalPreview_itun76.gif",
+  EXEMPLAR_TALK: [
+    {
+      actor: ACTORS.TEACHER,
+      text: "Do you want to play a fun math game?",
+    },
+    {
+      actor: ACTORS.STUDENT,
+      text: "That's a Math game?!",
+    },
+  ],
+  INTRO: {
+    TEXT: "Opal is a fast paced numbers game where students use the estimation and counting skills to save the planets. There are hundreds of puzzles but your task is always the same: find which one doesn't belong.",
+  },
+  SLIDES: [
+    {
+      sample_talk: [
+        {
+          actor: ACTORS.TEACHER,
+          text: "Can you tell which one is different?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "I see it!",
+        },
+        {
+          actor: ACTORS.TEACHER,
+          text: "How do you know?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "I don't know, I can just see it!",
+        },
+        
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1720896452/Opal/Talk_ol9q5a.png",
+    },
+    {
+      sample_talk: [
+        {
+          actor: ACTORS.TEACHER,
+          text: "How are the caves different?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "I have to count each one!",
+        },
+        {
+          actor: ACTORS.TEACHER,
+          text: "What are you counting in this cave?",
+        },
+        {
+          actor: ACTORS.STUDENT,
+          text: "I think I have to count the halves.",
+        },
+      ],
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1720896704/Opal/halv_es_ttizwo.png",
+    },
+  ],
+  INTERACTIVE: {
+    TYPE: CONST.INTERACTIVE_TYPES.OPAL,
+    SETUP: CONST.SETUPS.OPAL,
+  }, // sent to "Interactive Selector"
+  QUICK_START: {
+    STEPS: [
+      {
+        meta: "something",
+        description: "Find the Card that's different from the rest.",
+      },
+      {
+        meta: "something",
+        description: "Beat the Game!",
+      },
+      {
+        meta: "something",
+        description: "Challenge Your Friends!",
+      },
+    ],
+    META: "something",
+  },
+  LINKS: [
+    {
+      type: LINK_TYPES.GAME,
+      text: "Pre-K",
+      url: "../interactives/opal/safari",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Grades K-1",
+      url: "../interactives/opal/voyage",
+    },
+    {
+      type: LINK_TYPES.GAME,
+      text: "Official Game",
+      url: "../interactives/opal/opal",
+    },
+  ],
+  INFO: { GRADE: "FirstGrade" },
+};
+
 export const saami = {
   KEY: "CB12",
   ID: "saami",

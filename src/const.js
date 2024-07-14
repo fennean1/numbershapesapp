@@ -52,7 +52,6 @@ export const SETUPS = {
   card_matching_henry: {type: "HENRY_MATCHING"},
   saami: {type: "GAME_MODE"},
   opal: {type: "THIS_IS_OPAL"}
-
 }
 
 export const TAGS = {

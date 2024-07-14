@@ -9,5 +9,5 @@ export default function Chat(props) {
     <ChatBubble  key = {i} role={d.actor} text={d.text} />
   ));
 
-  return (<List >{conversation}</List>)
+  return (<List>{conversation}</List>)
 }

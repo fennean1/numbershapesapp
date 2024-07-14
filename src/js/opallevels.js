@@ -4185,8 +4185,8 @@ if (testing == "cycles") {
   SPACE_LEVELS_SIZE = 5
   CAVE_LEVELS_SIZE = 3
 } else if (testing == "opal") {
-  SPACE_LEVELS_SIZE = 7
-  CAVE_LEVELS_SIZE = 4
+  SPACE_LEVELS_SIZE = 10
+  CAVE_LEVELS_SIZE = 6
 } else if (testing == "voyage") {
   SPACE_LEVELS_SIZE = 7
   CAVE_LEVELS_SIZE = 4
