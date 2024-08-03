@@ -34,7 +34,6 @@ export const init = (app, setup) => {
 
   // #region Convenience Objects Declarations
   let SESSIONS = []
-  let NUMERALS = [];
   let LAYERS = {}
   let GROUPS = {}
   let DICT_COLORS_TO_ASSETS = {}
@@ -712,9 +711,6 @@ export const init = (app, setup) => {
 
     } else {
 
-      // TODO: Add back numeral support inside caves. 
-      app.stage.addChild(e.target.numeral);
-
       // Cave Behavior
       if (currentLevel.type == "cave") {
 
@@ -821,16 +817,22 @@ export const init = (app, setup) => {
     scoreText.scale.y = 0
     app.stage.addChild(scoreText)
 
+
+    // START HERE:
     planetCarousel.forEach((p, i) => {
-      if (p.data.attempts == 0) {
+      if (i<= planetIndex){
+        p.planet.texture = p.originalTexture
+      } else {
         p.planet.texture = TEXTURES.planet_mystery
       }
+
       p.draw(SESSIONS[i])
       draggingContainer.addChild(p)
     })
 
     // Rebuild Timeline. 
     endOfGameTimeline.clear()
+    // Why should I be passing complete here?
     buildEndOfGameTimeline(complete)
     endOfGameTimeline.restart()
 
@@ -1372,6 +1374,72 @@ export const init = (app, setup) => {
   }
 
   function initializeGameData() {
+        // Define dynamically generated assets here.
+        SESSIONS = []
+        DICT_COLORS_TO_ASSETS = {
+          blue: {
+            vial: TEXTURES.bolt_blue,
+            plant: TEXTURES.plant_icon,
+            seed: TEXTURES.seed_blue,
+            color: "0x63dbff",
+          },
+          pink: {
+            vial: TEXTURES.bolt_pink,
+            seed: TEXTURES.seed_pink,
+            plant: TEXTURES.plant_icon,
+            color: "0xff52e2",
+          },
+          orange: {
+            vial: TEXTURES.bolt_orange,
+            seed: TEXTURES.seed_orange,
+            plant: TEXTURES.plant_icon,
+            color: "0xff860d",
+          },
+          red: {
+            vial: TEXTURES.bolt_red,
+            seed: TEXTURES.seed_red,
+            plant: TEXTURES.plant_icon,
+            color: "0xf0003c",
+          },
+          yellow: {
+            vial: TEXTURES.bolt_yellow,
+            seed: TEXTURES.seed_yellow,
+            plant: TEXTURES.plant_icon,
+            color: "0xfced0f",
+          },
+          purple: {
+            vial: TEXTURES.bolt_purple,
+            seed: TEXTURES.seed_purple,
+            plant: TEXTURES.plant_icon,
+            lava: TEXTURES.lava_purple,
+            color: "0xd17dff",
+          },
+          green: {
+            vial: TEXTURES.bolt_green,
+            seed: TEXTURES.seed_green,
+            plant: TEXTURES.plant_icon,
+            color: "0x00c91e",
+          },
+        }
+
+    LEVELS.forEach((l, i) => {
+      if (l.type != "cave") {
+        let pID = "planet_" + l.planet
+
+        let d = {
+          plants: 0,
+          seeds: 0,
+          plasma: 0,
+          color: l.color,
+          score: 0,
+          planetID: pID,
+          attempts: 0,
+        }
+        SESSIONS.push(d)
+      }
+    })
+
+    TOTAL_PLANETS = SESSIONS.length
 
     // Levels
     levelIndex = 0
@@ -1464,11 +1532,15 @@ export const init = (app, setup) => {
   function startGame() {
     initializeGameData()
 
-    // TODO: Revisit how to ensure that the entire game state is reset. Whe is the level index?
+    // This is called only when the game is being restarted. Should rename this probably. 
     if (state.gameOver) {
 
       // Reset Game State
       state.gameOver = false
+
+
+      // Will be added later. 
+      app.stage.removeChild(draggingContainer)
 
       // RESET UI 
 
@@ -1482,9 +1554,9 @@ export const init = (app, setup) => {
       collectable.texture = TEXTURES[currentLevel.collectable]
 
       // Planet Carousel / Cards
-      planetCarousel.forEach(p => {
-        app.stage.removeChild(p)
-        swapTexture(p.planet, p.originalTexture)
+      planetCarousel.forEach((p,i) => {
+        swapTexture(p.planet, TEXTURES.planet_mystery)
+        p.data = SESSIONS[i]
       })
 
       shipOpal.x = shipOpal.originalFrame.x
@@ -1501,6 +1573,7 @@ export const init = (app, setup) => {
       radialProgressBar.progressAngle = 0
       drawRadialProgress()
       drawProgressCircles()
+      incrementLives(0)
       pool.loadPuzzle(currentPuzzle)
     }
 
@@ -1525,23 +1598,11 @@ export const init = (app, setup) => {
 
     scoreObject.focusTime = scoreObject.timer // There's got to be a better name / place for this. 
 
-    // Blue numerals behind the cards that show the value. 
-    NUMERALS.forEach((n) => {
-      n.x = -CARD_WIDTH;
-      n.alpha = 0;
-      app.stage.removeChild(n);
-    });
-
 
     pool.cards.forEach((c, i) => {
       if (c.inPlay == true) {
         let _x = originX + delta * c.i;
         let _y = originY + delta * c.j;
-        let n = NUMERALS[i];
-
-        n.x = _x + CARD_WIDTH / 2;
-        n.y = _y + CARD_WIDTH / 2;
-
 
         // GOTO_COLLECTABLE Setting 
         if (c.isOffCard == true) {
@@ -1553,9 +1614,6 @@ export const init = (app, setup) => {
           collectable.height = collectable.originalSize.height
         }
 
-        n.text = c.value;
-
-        c.numeral = n;
 
         app.stage.addChild(c);
         Tween.to(c, {
@@ -1965,7 +2023,7 @@ export const init = (app, setup) => {
   }
 
   function generateBarTexture(override) {
-    let color = BAR_COLORS[currentLevel.icon]
+    let color = DICT_COLORS_TO_ASSETS[currentLevel.color].color
     if (override) {
       color = override
     }
@@ -1978,80 +2036,16 @@ export const init = (app, setup) => {
 
   function load() {
 
-    // Define dynamically generated assets here.
-    DICT_COLORS_TO_ASSETS = {
-      blue: {
-        vial: TEXTURES.bolt_blue,
-        plant: TEXTURES.plant_icon,
-        seed: TEXTURES.seed_blue,
-        color: "0x63dbff",
-      },
-      pink: {
-        vial: TEXTURES.bolt_pink,
-        seed: TEXTURES.seed_pink,
-        plant: TEXTURES.plant_icon,
-        color: "0xff52e2",
-      },
-      orange: {
-        vial: TEXTURES.bolt_orange,
-        seed: TEXTURES.seed_orange,
-        plant: TEXTURES.plant_icon,
-        color: "0xff860d",
-      },
-      red: {
-        vial: TEXTURES.bolt_red,
-        seed: TEXTURES.seed_red,
-        plant: TEXTURES.plant_icon,
-        color: "0xf0003c",
-      },
-      yellow: {
-        vial: TEXTURES.bolt_yellow,
-        seed: TEXTURES.seed_yellow,
-        plant: TEXTURES.plant_icon,
-        color: "0xfced0f",
-      },
-      purple: {
-        vial: TEXTURES.bolt_purple,
-        seed: TEXTURES.seed_purple,
-        plant: TEXTURES.plant_icon,
-        lava: TEXTURES.lava_purple,
-        color: "0xd17dff",
-      },
-      green: {
-        vial: TEXTURES.bolt_green,
-        seed: TEXTURES.seed_green,
-        plant: TEXTURES.plant_icon,
-        color: "0x00c91e",
-      },
-    }
 
-    // Online called on game restart. 
     initializeGameData()
 
-    LEVELS.forEach((l, i) => {
-      if (l.type != "cave") {
-        let pID = "planet_" + l.planet
-
-        let d = {
-          plants: 0,
-          seeds: 0,
-          plasma: 0,
-          color: l.color,
-          score: 0,
-          planetID: pID,
-          attempts: 0,
-        }
-        SESSIONS.push(d)
-      }
-    })
-
-    TOTAL_PLANETS = SESSIONS.length
-
+    // GOTO: Initialize Game UI:
     scoreText = new PIXI.Text("1", {
       fill: "#19d5ff",
       fontFamily: "Silkscreen",
       fontSize: 0.8 * MENU_MARGIN_VERTICAL,
     });
+
     scoreText.x = setup.width - 7 * scoreText.style.fontSize / 2
     scoreText.y = setup.height - MENU_MARGIN_VERTICAL
     scoreText.anchor.set(0.5);
@@ -2059,6 +2053,7 @@ export const init = (app, setup) => {
     scoreText.alpha = 1
     scoreText.originalFrame = { x: scoreText.x, y: scoreText.y, width: scoreText.width, height: scoreText.height }
     let r = generateRect(scoreText.style.fontSize * 6, MENU_MARGIN_VERTICAL)
+
     scoreBackground = new PIXI.Sprite(r)
     scoreBackground.x = scoreText.x
     scoreBackground.y = scoreText.y
@@ -2067,8 +2062,6 @@ export const init = (app, setup) => {
     app.stage.addChild(scoreBackground)
     scoreText.text = "0"
 
-
-
     endOfGameModal = new PIXI.Container();
     endOfGameModal.x = setup.width / 2;
     endOfGameModal.y = setup.height / 2;
@@ -2076,14 +2069,11 @@ export const init = (app, setup) => {
     endOfGameModal.height = setup.height / 2;
     endOfGameModal.alpha = 0;
 
-
-    // GOTO: Initialize Assets Here
     backGround = new PIXI.Sprite(TEXTURES.background_opal);
     backGround.x = 0;
     backGround.y = 0;
     backGround.width = setup.width;
     backGround.height = setup.height;
-
 
     topLeftCaveBackground = new PIXI.Sprite(TEXTURES.stalagmite);
     topLeftCaveBackground.aspectRatio = TEXTURES.stalagmite.width / TEXTURES.stalagmite.height
@@ -2135,14 +2125,12 @@ export const init = (app, setup) => {
     white.interactive = false
     white.alpha = 0
 
-
     collectable = new PIXI.Sprite(state.collectableTexture);
     collectable.width = MIN_DIM / 10
     collectable.height = MIN_DIM / 10
     collectable.anchor.set(0.5)
     collectable.originalSize = { width: collectable.width, height: collectable.height }
     collectable.alpha = 0
-
 
     startButton = new PIXI.Sprite(TEXTURES.button_go);
     startButton.anchor.set(0.5);
@@ -2153,8 +2141,6 @@ export const init = (app, setup) => {
     startButton.height = TEXTURES.button_go.height / TEXTURES.button_go.width * startButton.width
     startButton.originalFrame = { x: startButton.x, y: startButton.y, width: startButton.width, height: startButton.height }
     startButton.on("pointerdown", () => startGame(false));
-
-
 
     shipOpal = new PIXI.Sprite(TEXTURES.ship_opal);
     shipOpal.aspectRatio = TEXTURES.ship_opal.width / TEXTURES.ship_opal.height
@@ -2186,7 +2172,6 @@ export const init = (app, setup) => {
     gaugeRadial.x = MENU_MARGIN_HORIZONTAL
     gaugeRadial.y = MENU_MARGIN_VERTICAL
     gaugeRadial.alpha = 0
-
 
     livesGauge = new PIXI.Sprite(TEXTURES.gauge_crystal_l1);
     livesGauge.anchor.x = 1
@@ -2244,7 +2229,6 @@ export const init = (app, setup) => {
     radialProgressBar.rotation = -Math.PI / 2
     radialProgressBar.progressAngle = 0
 
-
     // GOTO_LAYER Initial Layers
     app.stage.addChild(scoreText)
     app.stage.addChild(endOfGameModal);
@@ -2272,23 +2256,6 @@ export const init = (app, setup) => {
       app.stage.addChild(sp)
     })
     */
-
-
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
-        let t = new PIXI.Text("5", {
-          fill: "#333333",
-          fontWeight: "bold",
-          fontFamily: "Quicksand",
-          fontSize: CARD_WIDTH / 2.5,
-        });
-        t.x = originX + delta * i + CARD_WIDTH / 2;
-        t.y = originY + delta * j + CARD_WIDTH / 2;
-        t.anchor.set(0.5);
-        NUMERALS.push(t);
-        //app.stage.addChild(t)
-      }
-    }
 
     currentPlanet = new PIXI.Sprite(TEXTURES.planet_pink_fire)
     currentPlanet.aspectRatio = TEXTURES.planet_pink_fire.width / TEXTURES.planet_pink_fire.height
@@ -2401,15 +2368,11 @@ export const init = (app, setup) => {
       let p = new PlanetSummary(s)
       p.x = 0
       p.y = setup.height / 2.5 - p.height / 2
-      //app.stage.addChild(p)
       planetCarousel.push(p)
       p.alpha = 1
       draggingContainer.addChild(p)
     })
 
-
-
-    //app.stage.addChild(draggingContainer)
 
   }
 

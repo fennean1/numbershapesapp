@@ -43,7 +43,7 @@ export const STEP_TYPES = {
 // MAPS URL TO SETUP DATA!!!
 export const SETUPS = {
   multiplication_groups: {},
-  hidden_eggs: {type: 6},
+  hidden_eggs: {type: 6}, // Long ago I had these coded as dfifferent "types" for different games.
   subtraction_spheres: {type: 3},
   card_matching: {type: "MEDIUM_MATCHING"},
   card_matching_advanced: {type: "ADVANCED_MATCHING"},

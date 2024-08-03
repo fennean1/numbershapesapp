@@ -4183,7 +4183,7 @@ if (testing == "cycles") {
   CAVE_LEVELS_SIZE = 4
 } else if (testing == "safari") {
   SPACE_LEVELS_SIZE = 5
-  CAVE_LEVELS_SIZE = 3
+  CAVE_LEVELS_SIZE = 4
 } else if (testing == "opal") {
   SPACE_LEVELS_SIZE = 10
   CAVE_LEVELS_SIZE = 6
@@ -4572,5 +4572,5 @@ if (testing == "cycles") {
 }
 
 
-export const opalLevels = getStagesFromType("kinder")
+export const opalLevels = getStagesFromType("cycles")
 

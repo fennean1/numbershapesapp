@@ -174,7 +174,6 @@ export const saami_number_talks = {
 };
 
 
-
 export const opal = {
   KEY: "YZ11",
   ID: "opal",
