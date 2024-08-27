@@ -126,13 +126,6 @@ function generatePuzzles(grids,mesh,range,ratio,difficulty,name){
 
     let min = Math.floor(max*r)
 
-    if (name){
-      console.log("name",name)
-      console.log("min",min)
-      console.log("max",max)
-      console.log("r",r)
-    }
-
 
     let oneorzero = Math.round(Math.random()*100)%2
     let _value = 0
@@ -162,10 +155,6 @@ function generatePuzzles(grids,mesh,range,ratio,difficulty,name){
 
     // Randomize the min / max relationship. 
 
-    if (name){
-      console.log("min",min)
-      console.log("max",max)
-    }
     if (oneorzero == 0){
       _value = max 
       _delta = -Math.abs(min-max)
@@ -191,11 +180,6 @@ function generatePuzzles(grids,mesh,range,ratio,difficulty,name){
     p.push(newP)
 
     })
-
-    if (difficulty && name){
-      console.log(p,name,"p")
-    }
-
 
     return p
 }
@@ -4391,7 +4375,7 @@ const C7_PUZZLES = generatePuzzles([2,2,2,2,2,2],[2,2],[3,4])
 const CAVE_SEVEN = {
   name: "Orange Fire",
   planet: planets.orange_fire,
-  color: "green",
+  color: "orange",
   icon: resource_icons.plant_icon,
   color: "orange",
   counter: counters.swoop_orange,

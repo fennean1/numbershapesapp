@@ -14,14 +14,6 @@ const SECTIONS = [
   "About",
 ];
 
-/*
-Additional Info:
-  - Tags
-  - Strategies
-  - Standards
-  - Practices
-*/
-
 export const saami_number_talks = {
   KEY: "CB12",
   ID: "saami_number_talks",
@@ -172,7 +164,6 @@ export const saami_number_talks = {
   ],
   INFO: { GRADE: "FirstGrade" },
 };
-
 
 export const opal = {
   KEY: "YZ11",
@@ -369,7 +360,6 @@ export const saami = {
   ],
   INFO: { GRADE: "FirstGrade" },
 };
-
 
 export const hidden_eggs = {
   KEY: "AB13",

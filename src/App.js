@@ -7,6 +7,7 @@ import Multiplication from './Interactives/Multiplication';
 import MatchGame from "./Interactives/MatchGame"
 import Crush from "./Interactives/Crush"
 import Opal from "./Interactives/Opal"
+import Sandbox from "./Interactives/Sandbox"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 import InteractiveSVG from "./InteractiveSVG"
@@ -64,6 +65,11 @@ function ScrollToTop() {
 
 const Main = () => (
   <Routes>
+    <Route
+      exact
+      path="interactives/sandbox"
+      element={<Sandbox fullScreen={true} />}
+    />
     <Route
       exact
       path="interactives/fractionlist"

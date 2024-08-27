@@ -8,7 +8,7 @@ import {
   getNRandomElementsFromArray,
   DraggableContainer,
 } from "./api.js";
-import { Timeline, Tween, Linear, Circ, Sine, Expo, Elastic } from "gsap/gsap-core";
+import { Timeline, Tween, Linear, Sine, Expo, Elastic } from "gsap/gsap-core";
 import {
   counters,
   getStagesFromType,
@@ -38,8 +38,6 @@ export const init = (app, setup) => {
   let GROUPS = {}
   let DICT_COLORS_TO_ASSETS = {}
   const TEXTURES = {}
-  const BAR_COLORS = { bolt_blue: "0x63dbff", bolt_green: "0x00c91e", plant_icon: "0x00c91e", bolt_yellow: "0xfced0f", bolt_pink: "0xff52e2", bolt_red: "0xf0003c", bolt_orange: "0xff860d" }
-
 
   // #endregion
 
@@ -108,15 +106,22 @@ export const init = (app, setup) => {
   const optionsSmallAsset = { metadata: { resourceOptions: { width: setup.width / 8 } } }
   const optionsExtraSmallAsset = { metadata: { resourceOptions: { width: setup.width / 16 } } }
 
-  PIXI.Loader.shared
-    .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsExtraLargeAsset)
-    .add('counter_test', "https://res.cloudinary.com/numbershapes/image/upload/v1718200733/Opal/swooper3_dbjzzm.png", optionsLargeAsset)
-    .add('counter_corners_purple', "https://res.cloudinary.com/numbershapes/image/upload/v1718033225/Opal/corners_purple_ap00so.png", optionsLargeAsset)
-    .add('gauge_radial', "https://res.cloudinary.com/numbershapes/image/upload/v1717188538/Opal/radial_gauge2_up4uap.png", optionsLargeAsset)
-    .add("plant_full", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_full_jxoqya.png", optionsLargeAsset)
-    .add("plant_one", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_one_mq9vzi.png", optionsLargeAsset)
-    .add("plant_two", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_two_jdjyfw.png", optionsLargeAsset)
-    .add("plant_empty", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_none_wduy6k.png", optionsLargeAsset)
+  const LOADER = PIXI.Loader.shared
+
+  LOADER.onError.add((e => {
+    console.log("error", e)
+    window.alert("Oops! Something went wrong. Please Reload the page.")
+  }))
+
+
+  LOADER
+    .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsMediumAsset)
+    .add('counter_corners_purple', "https://res.cloudinary.com/numbershapes/image/upload/v1718033225/Opal/corners_purple_ap00so.png", optionsSmallAsset)
+    .add('gauge_radial', "https://res.cloudinary.com/numbershapes/image/upload/v1717188538/Opal/radial_gauge2_up4uap.png", optionsSmallAsset)
+    .add("plant_full", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_full_jxoqya.png", optionsSmallAsset)
+    .add("plant_one", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_one_mq9vzi.png", optionsSmallAsset)
+    .add("plant_two", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_two_jdjyfw.png", optionsSmallAsset)
+    .add("plant_empty", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_none_wduy6k.png", optionsSmallAsset)
     .add("circle_white", "https://res.cloudinary.com/numbershapes/image/upload/v1717772496/circle_white_zqyw9u_zocrdy.svg", optionsSmallAsset)
     .add('particle_rock_1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715625602/Opal/particle_rock_1_haiujp.svg', optionsSmallAsset)
     .add('particle_rock_2', 'https://res.cloudinary.com/numbershapes/image/upload/v1715697608/Opal/particle_rock_2_ma2hcc.svg', optionsSmallAsset)
@@ -124,7 +129,6 @@ export const init = (app, setup) => {
     .add('planet_pink_fire', 'https://res.cloudinary.com/numbershapes/image/upload/v1714743947/Opal/planet_pink_fire_hgttly.svg', optionsExtraLargeAsset)
     .add('planet_blue_vine', 'https://res.cloudinary.com/numbershapes/image/upload/v1718118647/Opal/planet_crazed_blue_nb2nsu.svg', optionsExtraLargeAsset)
     .add('plant_icon', "https://res.cloudinary.com/numbershapes/image/upload/v1717436178/full_plant_xevl1c.png", optionsMediumAsset)
-    .add('planet_green_bubble', 'https://res.cloudinary.com/numbershapes/image/upload/v1715781752/Opal/planet_green_bubble_b7hyac.svg', optionsExtraLargeAsset)
     .add('planet_green_swirl', 'https://res.cloudinary.com/numbershapes/image/upload/v1714524825/Opal/planet_green_swirl_q8ovc1.svg', optionsLargeAsset)
     .add('planet_orange_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715705216/Opal/planet_orange_rocks_s90iu2.svg', optionsLargeAsset)
     .add('planet_earth_blue', 'https://res.cloudinary.com/numbershapes/image/upload/v1718295124/Opal/planet_earth_blue_bnxkwk.svg', optionsExtraLargeAsset)
@@ -134,7 +138,6 @@ export const init = (app, setup) => {
     .add('planet_purple_craters', 'https://res.cloudinary.com/numbershapes/image/upload/v1718132769/Opal/planet_craters_purple_vhjsc0.svg', optionsExtraLargeAsset)
     .add('planet_blue_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1715788056/Opal/planet_blue_carved_lnul0v.svg', optionsLargeAsset)
     .add('planet_purple_carved', 'https://res.cloudinary.com/numbershapes/image/upload/v1716322683/Opal/planet_purple_carved_gqbh9p.svg', optionsLargeAsset)
-    .add('planet_pink_comet', "https://res.cloudinary.com/numbershapes/image/upload/v1714760192/planet_pink_comet_2_ja0pr0.svg", optionsExtraLargeAsset)
     .add('planet_green_carved', "https://res.cloudinary.com/numbershapes/image/upload/v1715793449/Opal/planet_green_carved_tmmnnd.svg", optionsLargeAsset)
     .add('planet_pink_bubble', "https://res.cloudinary.com/numbershapes/image/upload/v1716322686/Opal/planet_pink_bubbles_j0xmtt.svg", optionsLargeAsset)
     .add('planet_blue_craters', "https://res.cloudinary.com/numbershapes/image/upload/v1718296788/Opal/planet_craters_blue_sdesbw.svg", optionsLargeAsset)
@@ -190,8 +193,9 @@ export const init = (app, setup) => {
     .add("seed_red", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_red_yognmc.svg", optionsLargeAsset)
     .add('white', 'https://res.cloudinary.com/numbershapes/image/upload/v1717771357/Opal/black_ms4izq.svg', optionsLargeAsset)
     .add('stalagmite', 'https://res.cloudinary.com/numbershapes/image/upload/v1715356279/Opal/stalagmite_one_hyroie.svg', optionsLargeAsset)
-    .add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset).load((loader, resource) => {
-
+    //.add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset)
+    
+    LOADER.load((loader, resource) => {
       // Rocks
       TEXTURES['tile_rock'] = resource.tile_rock.texture
       TEXTURES['particle_rock_1'] = resource.particle_rock_1.texture
@@ -209,7 +213,6 @@ export const init = (app, setup) => {
       TEXTURES['counter_corners_purple'] = resource.counter_corners_purple.texture
       TEXTURES['counter_circles_quarter_red'] = resource.counter_circles_quarter_red.texture
       TEXTURES['counter_corners_swoop_blue'] = resource.counter_corners_swoop_blue.texture
-      TEXTURES['counter_test'] = resource.counter_test.texture
       TEXTURES['counter_circle_quarter_yellow'] = resource.counter_circle_quarter_yellow.texture
       TEXTURES['counter_swoop_crooked_red'] = resource.counter_swoop_crooked_red.texture
       TEXTURES["counter_swoop_orange"] = resource.counter_swoop_orange.texture
@@ -220,12 +223,10 @@ export const init = (app, setup) => {
       TEXTURES['background_cave'] = resource.background_cave.texture
 
       // Planets
-      TEXTURES['planet_pink_comet'] = resource.planet_pink_comet.texture
       TEXTURES['planet_green_swirl'] = resource.planet_green_swirl.texture
       TEXTURES['planet_pink_fire'] = resource.planet_pink_fire.texture
       TEXTURES['planet_orange_carved'] = resource.planet_orange_carved.texture
       TEXTURES['planet_orange_fire'] = resource.planet_orange_fire.texture
-      TEXTURES['planet_green_bubble'] = resource.planet_green_bubble.texture
       TEXTURES['planet_blue_carved'] = resource.planet_blue_carved.texture
       TEXTURES['planet_green_carved'] = resource.planet_green_carved.texture
       TEXTURES['planet_pink_bubble'] = resource.planet_pink_bubble.texture
@@ -239,7 +240,6 @@ export const init = (app, setup) => {
       TEXTURES['planet_blue_craters'] = resource.planet_blue_craters.texture
       TEXTURES['planet_earth_blue'] = resource.planet_earth_blue.texture
 
-
       // Plants
       TEXTURES['plant_full'] = resource.plant_full.texture
       TEXTURES['plant_one'] = resource.plant_one.texture
@@ -251,7 +251,7 @@ export const init = (app, setup) => {
       TEXTURES['button_restart'] = resource.button_restart.texture
 
       // Collectables
-      TEXTURES['gem_green'] = resource.gem_green.texture
+      //TEXTURES['gem_green'] = resource.gem_green.texture
       TEXTURES['gem_pink'] = resource.gem_pink.texture
       TEXTURES['gem_orange'] = resource.gem_orange.texture
       TEXTURES['gem_blue'] = resource.gem_blue.texture
@@ -283,7 +283,6 @@ export const init = (app, setup) => {
       // Circles
       TEXTURES['circle_white'] = resource.circle_white.texture
 
-
       // MISC
       TEXTURES['gauge_crystal_l1'] = resource.gauge_crystal_l1.texture
       TEXTURES['gauge_radial'] = resource.gauge_radial.texture
@@ -297,8 +296,7 @@ export const init = (app, setup) => {
       TEXTURES['lava_purple'] = resource.lava_purple.texture
       TEXTURES['plant_icon'] = resource.plant_icon.texture
 
-      // Constants 
-
+      // Computing constants that depend on the aspect ratio of the textures.
       ASPECT_RATIO_PLASMA = TEXTURES.bolt_blue.width / TEXTURES.bolt_blue.height
 
     })
@@ -332,7 +330,6 @@ export const init = (app, setup) => {
     focusTime: 0,
   }
 
-
   let applicationStates = {
     cave: 'cave',
     space: 'space',
@@ -340,7 +337,6 @@ export const init = (app, setup) => {
     flying: 'flying',
     end: 'end',
   }
-
 
   let state = {
     gameOver: false,
@@ -959,11 +955,9 @@ export const init = (app, setup) => {
 
       let plantsAndSeeds = this.data.plants + this.data.seeds
       let seedRowWidth = (plantsAndSeeds) * this.PLASMA_WIDTH * 1.2
-      console.log("seedRowWidth", seedRowWidth, plantsAndSeeds)
 
       for (let i = 0; i < plantsAndSeeds; i++) {
 
-        console.log("are we doing this")
         let p = this.foliageIcons[i]
         p.width = this.PLASMA_WIDTH
         p.height = this.PLASMA_HEIGHT
@@ -1157,7 +1151,7 @@ export const init = (app, setup) => {
 
           if (types[i] == 1) {
             let ac = ABSTRACT_CARDS[c];
-            ac.style.fill = BAR_COLORS[currentLevel.icon]
+            ac.style.fill = 0x63dbff
             ac.updateText();
             t = ac.texture;
           } else {
@@ -2034,6 +2028,47 @@ export const init = (app, setup) => {
     return app.renderer.generateTexture(barGraphics)
   }
 
+  async function preload() {
+    let texture = await new PIXI.Texture.from("https://res.cloudinary.com/numbershapes/image/upload/v1715867929/Opal/background_opal_vbwf4o_vvggfz.svg", optionsLargeAsset) 
+    let backGround = new PIXI.Sprite(texture);
+    backGround.width = setup.width    
+    backGround.height = setup.height
+    app.stage.addChild(backGround)
+
+    let rect = new PIXI.Graphics()
+    app.stage.addChild(rect)
+
+    let loadingText = new PIXI.Text("Loading...", {
+      fill: "#19d5ff",
+      fontFamily: "Silkscreen",
+      fontSize: 0.8 * MENU_MARGIN_VERTICAL,
+    })
+    loadingText.x = setup.width / 2
+    loadingText.y = setup.height / 2
+    loadingText.anchor.set(0.5)
+    app.stage.addChild(loadingText)
+
+    LOADER.onProgress.add((e => {
+      loadingText.text = "Loading... " + Math.round(e.progress) + "%"
+      rect.x = setup.width/2 - rect.width/2
+      rect.y = loadingText.y + rect.height;
+      rect.clear() 
+      rect.beginFill(0x19d5ff)
+      rect.drawRoundedRect(0, 0, e.progress/100 * setup.width, 30, 15)
+      rect.endFill()
+    }))
+ 
+    LOADER.onComplete.add(()=>{
+      app.stage.removeChild(backGround)
+      app.stage.removeChild(rect)
+      app.stage.removeChild(loadingText)
+      backGround.destroy() 
+      rect.destroy()
+      loadingText.destroy()
+      console.log("tearing down progress")
+    })
+  }
+
   function load() {
 
 
@@ -2376,10 +2411,7 @@ export const init = (app, setup) => {
 
   }
 
-  function wait() {
-    setTimeout(load, 2000)
-  }
 
+  preload()
   PIXI.Loader.shared.onComplete.add(load)
-
 };

@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import { useParams} from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import * as PIXI from "pixi.js"
 
 
@@ -10,13 +10,12 @@ const app = new PIXI.Application(0, 0, {
 });
 app.renderer.backgroundColor = 0xffffff;
 app.renderer.resolution = window.devicePixelRatio;
-console.log("window.devicePixelRatio",window.devicePixelRatio)  
 app.renderer.autoDensity = true;
 PIXI.settings.scaleMode = PIXI.SCALE_MODES.NEAREST
 
 export default function Interactive(props) {
   let elementRef;
-  const {activityname} = useParams()
+  const { activityname } = useParams()
 
   useEffect(() => {
 
@@ -28,25 +27,23 @@ export default function Interactive(props) {
       ...props.setup,
     };
 
-
     app.renderer.resize(
       elementRef.clientWidth,
       elementRef.clientHeight
     );
 
     elementRef.appendChild(app.view)
+    props.script.init(app, setup)
 
-    props.script.init(app,setup)
+    return () => { console.log("unmounting") }
+  }, []);
 
-    
-  return ()=>{console.log("unmounting")}},[]);
-  
-  const fullScreenStyle = {height: window.innerHeight,width: "100vw"}
-  const defaultStyle = {height: "100%",width: "100%"}
+  const fullScreenStyle = { height: window.innerHeight, width: "100vw" }
+  const defaultStyle = { height: "100%", width: "100%" }
   const screenStyle = props.fullScreen ? fullScreenStyle : defaultStyle
 
   return (
-    <div style = {screenStyle}
+    <div style={screenStyle}
       ref={(me) => {
         elementRef = me;
       }}

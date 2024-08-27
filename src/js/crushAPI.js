@@ -55,7 +55,6 @@ import {
   assessmentProgression,
 } from "./crushlevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBERSHAPES } from "./numbershapes";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 let NUMERALS = [];
 
@@ -97,9 +96,6 @@ export const init = (app, setup) => {
   let progression = assessmentProgression(null,customLevel && customLevel.type)
 
   let levels = saamiPuzzles;
-
-  console.log("custom level",customLevel)
-  
   let mainLevelsMod = levels.length;
   let assessmentMod = progression.length
   
