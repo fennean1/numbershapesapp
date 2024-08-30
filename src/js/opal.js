@@ -315,6 +315,8 @@ export const init = (app, setup) => {
 
   // Objects
   let pool;
+  let offCard;
+
 
   // GOTO_STATE Levels/Planets & Puzzles
   let currentLevel = LEVELS[levelIndex]
@@ -484,6 +486,7 @@ export const init = (app, setup) => {
   let endOfGameTimeline = new Timeline({ paused: true });
   let radialProgressBarTimeline = new Timeline({ paused: true, onComplete: onRadialProgressComplete });
   let showersTimeline = new Timeline({ paused: true });
+  let hintTimeline = new Timeline({ paused: true, repeat: 3 });
 
   // #endregion
 
@@ -633,6 +636,8 @@ export const init = (app, setup) => {
     if (e.target.isOffCard == true) {
 
       animateCircles(puzzleIndex + 1)
+      // Clear hint timeline when card is clicked.
+      hintTimeline.clear()
 
       // If there are 7 puzzles and I'm on index 6 then I'm done with the level.
       if (puzzleIndex + 1 == currentLevel.puzzles.length) {
@@ -1281,6 +1286,8 @@ export const init = (app, setup) => {
 
     loadPuzzle(level) {
 
+      console.log("LOADING PUZZLE")
+
       if (!level.counter) {
         level.counter = DEFAULT_COUNTER;
       }
@@ -1330,6 +1337,7 @@ export const init = (app, setup) => {
               potentialValue = potentialValue + level.delta;
             }
             c.isOffCard = true;
+            offCard = c
           }
           c.draw(level, level.mesh, potentialValue, acc);
 
@@ -1622,6 +1630,13 @@ export const init = (app, setup) => {
         app.stage.removeChild(c);
       }
     });
+
+    if (levelIndex < 2) {
+      // Give extra pause in caves where levelIndex has been set to 1
+      let pause = 2 + 2*(puzzleIndex + levelIndex)
+      buildHintTimeline(pause)
+      hintTimeline.restart()
+    }
   }
 
 
@@ -1704,6 +1719,14 @@ export const init = (app, setup) => {
   }
 
   /// GOTO_TIMELINE Building Functions Definitions
+
+  function buildHintTimeline(pause) {
+    let p = `+=${pause}`
+    console.
+    hintTimeline.clear()
+    hintTimeline.to(offCard, {x: "+=20", duration: 0.5, ease: Linear.easeNone},p)
+    hintTimeline.to(offCard, {x:  "-=20", duration: 2, ease: "elastic"})
+  }
 
   function buildShowersTimeline() {
     showersTimeline.clear()
