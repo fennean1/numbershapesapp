@@ -784,6 +784,7 @@ export const init = (app, setup) => {
   }
 
   function endGame(complete) {
+    logScore()
     layer(applicationStates.end)
     // Layering 
     pool.cards.forEach((c, i) => {
@@ -1722,7 +1723,6 @@ export const init = (app, setup) => {
 
   function buildHintTimeline(pause) {
     let p = `+=${pause}`
-    console.
     hintTimeline.clear()
     hintTimeline.to(offCard, {x: "+=20", duration: 0.5, ease: Linear.easeNone},p)
     hintTimeline.to(offCard, {x:  "-=20", duration: 2, ease: "elastic"})
@@ -1832,6 +1832,28 @@ export const init = (app, setup) => {
     endOfGameTimeline.to(scoreText, { value: scoreObject.totalScore, duration: 5, ease: Sine.easeInOut, onUpdate: onUpdate }, "<")
     endOfGameTimeline.to(planetCarousel, { duration: levelIndex, x: toString }, "<")
     endOfGameTimeline.call(endOfGameTimelineComplete)
+  }
+
+  function logScore() {
+    let req = new XMLHttpRequest();
+
+    req.onreadystatechange = () => {
+      if (req.readyState == XMLHttpRequest.DONE) {
+        console.log(req.responseText);
+      }
+    };
+
+    const myJson = {
+      score: scoreObject.totalScore,
+    }
+
+    console.log(process.env,"bin id")
+
+    req.open("POST", "https://api.jsonbin.io/v3/b", true);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader("X-Master-Key", process.env.REACT_APP_BIN_ID );
+    req.setRequestHeader("X-Collection-Id", "66cf061eacd3cb34a87ab0e5");
+    req.send(JSON.stringify(myJson));
   }
 
 
