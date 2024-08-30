@@ -19,6 +19,29 @@ export default function Interactive(props) {
 
   useEffect(() => {
 
+    let req = new XMLHttpRequest();
+
+    req.onreadystatechange = () => {
+      if (req.readyState == XMLHttpRequest.DONE) {
+        console.log(req.responseText);
+      }
+    };
+
+    const myJson = {
+      sample: "Hello World",
+      data: "env file test"
+    }
+
+
+
+    console.log(process.env,"bin id")
+
+    req.open("POST", "https://api.jsonbin.io/v3/b", true);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader("X-Master-Key", process.env.REACT_APP_BIN_ID );
+    req.setRequestHeader("X-Collection-Id", "66cf061eacd3cb34a87ab0e5");
+    req.send(JSON.stringify(myJson));
+
     const setup = {
       height: elementRef.clientHeight,
       width: elementRef.clientWidth,
