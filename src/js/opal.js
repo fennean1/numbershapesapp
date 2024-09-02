@@ -28,6 +28,7 @@ const initLevel = {
 };
 
 
+
 export const init = (app, setup) => {
 
   const LEVELS = getStagesFromType(setup.activityname)
@@ -1437,6 +1438,7 @@ export const init = (app, setup) => {
           score: 0,
           planetID: pID,
           attempts: 0,
+          points: 0,
         }
         SESSIONS.push(d)
       }
@@ -1834,6 +1836,7 @@ export const init = (app, setup) => {
     endOfGameTimeline.call(endOfGameTimelineComplete)
   }
 
+
   function logScore() {
     let req = new XMLHttpRequest();
 
@@ -1845,13 +1848,13 @@ export const init = (app, setup) => {
 
     const myJson = {
       score: scoreObject.totalScore,
+      finalPlanet: planetIndex,
+      SESSIONS,
     }
-
-    console.log(process.env,"bin id")
 
     req.open("POST", "https://api.jsonbin.io/v3/b", true);
     req.setRequestHeader("Content-Type", "application/json");
-    req.setRequestHeader("X-Master-Key", process.env.REACT_APP_BIN_ID );
+    req.setRequestHeader("X-Master-Key", process.env.REACT_APP_BIN_ID);
     req.setRequestHeader("X-Collection-Id", "66cf061eacd3cb34a87ab0e5");
     req.send(JSON.stringify(myJson));
   }
@@ -2115,7 +2118,6 @@ export const init = (app, setup) => {
   }
 
   function load() {
-
 
     initializeGameData()
 
