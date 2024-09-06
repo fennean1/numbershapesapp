@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LandingPage from './LandingPage';
 import ActivityPage from './ActivityPage';
@@ -12,8 +13,18 @@ import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 import InteractiveSVG from "./InteractiveSVG"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Feedback  from "./Feedback";
+
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196f3',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
   typography: {
     allVariants: {
       fontFamily: 'Quicksand',
@@ -111,9 +122,20 @@ const Main = () => (
 )
 
 const App = () => {
+  const style = {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
+  };
+  const [open, setOpen] = React.useState(false);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+        <Feedback location = {window.location} />
         <ScrollToTop />
         <Main />
       </BrowserRouter>
