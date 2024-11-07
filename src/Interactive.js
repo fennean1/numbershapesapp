@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Dialog } from "@mui/material";
 import * as PIXI from "pixi.js"
+import TextField from '@mui/material/TextField';
+
 
 
 PIXI.settings.RESOLUTION = window.devicePixelRatio;
@@ -16,8 +19,15 @@ PIXI.settings.scaleMode = PIXI.SCALE_MODES.NEAREST
 export default function Interactive(props) {
   let elementRef;
   const { activityname } = useParams()
+  const [open, setOpen] = React.useState(false);
+
+  const openHighScoreModal = () => {
+    console.log("open high score modal")
+    setOpen(true)
+  }
 
   useEffect(() => {
+
 
     const setup = {
       height: elementRef.clientHeight,
@@ -25,6 +35,7 @@ export default function Interactive(props) {
       level: props.level,
       activityname: activityname,
       ...props.setup,
+      openHighScoreModal: openHighScoreModal,
     };
 
     app.renderer.resize(
@@ -43,10 +54,20 @@ export default function Interactive(props) {
   const screenStyle = props.fullScreen ? fullScreenStyle : defaultStyle
 
   return (
-    <div style={screenStyle}
-      ref={(me) => {
-        elementRef = me;
-      }}
-    />
+    <div><Dialog open={open} onClose={() => setOpen(!open)}>  
+    <p>new high score</p>      
+    <TextField 
+      id="standard-multiline-flexible"
+      label=""
+      placeholder="Are you enjoying numbershapes? Please let us know!"
+      multiline
+    
+    /></Dialog>
+      <div style={screenStyle}
+        ref={(me) => {
+          elementRef = me;
+        }}
+      />
+    </div>
   );
 }

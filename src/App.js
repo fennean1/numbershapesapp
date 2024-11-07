@@ -6,15 +6,18 @@ import ActivityPage from './ActivityPage';
 import Subitizer from './Interactives/Subitizer';
 import Multiplication from './Interactives/Multiplication';
 import MatchGame from "./Interactives/MatchGame"
-import Crush from "./Interactives/Crush"
-import Opal from "./Interactives/Opal"
+import Crush from "./Interactives/Crush";
+import Farm from "./Interactives/Farm";
+
 import Sandbox from "./Interactives/Sandbox"
 import FractionList from "./Interactives/FractionList"
 import { useEffect } from "react";
 import InteractiveSVG from "./InteractiveSVG"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Feedback  from "./Feedback";
-
+import Feedback from "./Feedback";
+const Opal = React.lazy(
+  () => import("./Interactives/Opal")
+)
 
 const theme = createTheme({
   palette: {
@@ -83,6 +86,11 @@ const Main = () => (
     />
     <Route
       exact
+      path="interactives/farm"
+      element={<Farm fullScreen={true} />}
+    />
+    <Route
+      exact
       path="interactives/fractionlist"
       element={<FractionList fullScreen={true} />}
     />
@@ -99,7 +107,8 @@ const Main = () => (
     <Route
       exact
       path="interactives/opal/:activityname"
-      element={<Opal fullScreen={true} />}
+      element={<React.Suspense fallback={<div>Loading...</div>}>
+        <Opal fullScreen={true}/></React.Suspense>}
     />
     <Route
       exact
@@ -135,7 +144,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Feedback location = {window.location} />
+        <Feedback location={window.location} />
         <ScrollToTop />
         <Main />
       </BrowserRouter>

@@ -28,7 +28,6 @@ const initLevel = {
 };
 
 
-
 export const init = (app, setup) => {
 
   const LEVELS = getStagesFromType(setup.activityname)
@@ -484,7 +483,7 @@ export const init = (app, setup) => {
   let flyToNextPlanetTimeline = new Timeline({ paused: true });
   let gotoCaveTimeline = new Timeline({ paused: true });
   let leaveCaveTimeline = new Timeline({ paused: true });
-  let endOfGameTimeline = new Timeline({ paused: true });
+  let endOfGameTimeline = new Timeline({ paused: true ,onComplete: onEndOfGameComplete});
   let radialProgressBarTimeline = new Timeline({ paused: true, onComplete: onRadialProgressComplete });
   let showersTimeline = new Timeline({ paused: true });
   let hintTimeline = new Timeline({ paused: true, repeat: 3 });
@@ -581,6 +580,10 @@ export const init = (app, setup) => {
       app.stage.addChild(star)
       stars.push(star)
     }
+  }
+
+  function onEndOfGameComplete() {
+    setup.openHighScoreModal()
   }
 
   function onRadialProgressComplete() {
@@ -1719,6 +1722,8 @@ export const init = (app, setup) => {
     startButton.height = TEXTURES.button_go.height / TEXTURES.button_go.width * startButton.width
     Tween.to(startButton, { alpha: 1 })
     app.stage.addChild(startButton);
+
+    setup.openHighScoreModal()
   }
 
   /// GOTO_TIMELINE Building Functions Definitions
@@ -1828,6 +1833,8 @@ export const init = (app, setup) => {
     } else {
       endOfGameTimeline.to([currentPlanet, iconLives, iconCollectable, startButton, boltBar, boltGauge, livesBar, livesGauge, white, radialProgressBar, gaugeRadial], { duration: 1, alpha: 0 })
     }
+
+    let duration = 1+Math.sqrt(planetIndex);
 
     endOfGameTimeline.to(shipOpal, { duration: 1, y: POINT_CAROUSEL_Y + 2.3 * SIZE_CAROUSEL_HEIGHT, x: setup.width / 2, ease: Sine.easeInOut })
     endOfGameTimeline.to(planetCarousel, { alpha: 1, duration: 0.5, ease: Sine.easeInOut }, "<")
@@ -2119,6 +2126,7 @@ export const init = (app, setup) => {
 
   function load() {
 
+    setup.openHighScoreModal()
     initializeGameData()
 
     // GOTO: Initialize Game UI:
@@ -2127,6 +2135,7 @@ export const init = (app, setup) => {
       fontFamily: "Silkscreen",
       fontSize: 0.8 * MENU_MARGIN_VERTICAL,
     });
+
 
     scoreText.x = setup.width - 7 * scoreText.style.fontSize / 2
     scoreText.y = setup.height - MENU_MARGIN_VERTICAL
