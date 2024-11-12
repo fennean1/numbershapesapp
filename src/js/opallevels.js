@@ -144,6 +144,7 @@ function generatePuzzles(grids,mesh,range,ratio,difficulty,name){
       */
 
     if (!ratio){
+      console.log("does this ever happen?",ratio)
       max = range[1]
       min = range[0]
     }
@@ -4306,7 +4307,7 @@ const PLANET_FIVE = {
   shuffle: "rotate_all",
 };
 
-const C5_PUZZLES = generatePuzzles([2,2,2,2,2,2],[3,3],[7,9],1,[0.5,0.7,0.9,0.5,0.7,0.9])
+const C5_PUZZLES = generatePuzzles([2,2,2,2,2,2],[3,3],[7,9],1,[0.5,0.5,0.6,0.7,0.8,0.9])
 
 const CAVE_FIVE = {
   name: "Red Swirl Planet",
@@ -4347,7 +4348,7 @@ const CAVE_SIX = {
   type: levelTypes.cave,
   collectable: collectables.seed_purple,
   puzzles: C6_PUZZLES.slice(SHIFT, CAVE_LEVELS_SIZE),
-  shuffle: "triangle",
+  //shuffle: "triangle",
 }
 
 
@@ -4545,7 +4546,9 @@ if (testing == "cycles") {
 } else if (testing == "democave") {
   levels = demoLevels
 } else if (testing == "test") {
-  levels = demoLevels
+  levels = demoLevels;
+} else if (testing == "level6") {
+  return [...SIXTH_STAGE]
 }
 
 
