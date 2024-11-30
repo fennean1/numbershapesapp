@@ -54,20 +54,10 @@ export default function Interactive(props) {
   const screenStyle = props.fullScreen ? fullScreenStyle : defaultStyle
 
   return (
-    <div><Dialog open={open} onClose={() => setOpen(!open)}>  
-    <p>new high score</p>      
-    <TextField 
-      id="standard-multiline-flexible"
-      label=""
-      placeholder="Are you enjoying numbershapes? Please let us know!"
-      multiline
-    
-    /></Dialog>
       <div style={screenStyle}
         ref={(me) => {
           elementRef = me;
         }}
       />
-    </div>
   );
 }
