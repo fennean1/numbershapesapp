@@ -4306,7 +4306,10 @@ const PLANET_FIVE = {
   shuffle: "rotate_all",
 };
 
-const C5_PUZZLES = generatePuzzles([2,2,2,2,2,2],[3,3],[7,9],1,[0.5,0.7,0.9,0.5,0.7,0.9])
+const C5_PUZZLES_A = generatePuzzles([2,2,2],"SEVEN",[6,7])
+const C5_PUZZLES_B = generatePuzzles([2,2,2],"SEVEN",[5,6])
+const C5_PUZZLES = [...C5_PUZZLES_A,...C5_PUZZLES_B]
+
 
 const CAVE_FIVE = {
   name: "Red Swirl Planet",
@@ -4317,6 +4320,7 @@ const CAVE_FIVE = {
   type: levelTypes.cave,
   collectable: collectables.seed_blue,
   puzzles: C5_PUZZLES.slice(SHIFT, CAVE_LEVELS_SIZE),
+  shuffle: "scaley",
 };
 
 const FIFTH_STAGE = [PLANET_FIVE, CAVE_FIVE]
@@ -4370,7 +4374,9 @@ const PLANET_SEVEN = {
   shuffle: "scaley",
 };
 
-const C7_PUZZLES = generatePuzzles([2,2,2,2,2,2],[2,2],[3,4])
+const c7_puzzles_1 = generatePuzzles([2,2,2],[1,3],[2,3])
+const c7_puzzles_2 = generatePuzzles([2,2,2],[2,2],[3,4])
+const C7_PUZZLES = [...c7_puzzles_1,...c7_puzzles_2]
 
 const CAVE_SEVEN = {
   name: "Orange Fire",
@@ -4546,9 +4552,14 @@ if (testing == "cycles") {
   levels = demoLevels
 } else if (testing == "test") {
   levels = demoLevels
+} else if (testing == "level7") {
+  levels =  [...SEVENTH_STAGE]
+} else if (testing == "level5") {
+  levels = [...FIFTH_STAGE]
+} else if (testing == "level10") {
+  levels = [...TENTH_STAGE]
 }
-
-
+ 
 // #endregion
 
   return levels

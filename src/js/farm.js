@@ -92,8 +92,8 @@ export const init = (app, setup) => {
     let zoom = 40;
     let scaleX = app.stage.scale.x
     let scaleY = app.stage.scale.y
-    tl.to(app.stage.pivot,{x: _x,y: _y,duration: 0.5,ease: Elastic.easeOut.config(0.8, 0.5)})
-    tl.to(app.stage.scale,{x: zoom*scaleX,y: zoom*scaleY,duration: 4,ease: Expo.easeInOut})
+    tl.to(acre.pivot,{x: _x,y: _y,duration: 0.5,ease: Elastic.easeOut.config(0.8, 0.5)})
+    tl.to(acre.scale,{x: zoom*scaleX,y: zoom*scaleY,duration: 4,ease: Expo.easeInOut})
     tl.play()
    })
 
@@ -153,8 +153,8 @@ export const init = (app, setup) => {
     acre.x = setup.width/2
     acre.y = setup.height/2
  
-    app.stage.pivot.x = setup.width/2
-    app.stage.pivot.y = setup.height/2
+    //app.stage.pivot.x = setup.width/2
+    //app.stage.pivot.y = setup.height/2
 
   
     
