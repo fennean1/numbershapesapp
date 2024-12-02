@@ -17,6 +17,7 @@ import {
   getNRandomElementsFromArray,
   SimpleDraggable
 } from "./api.js";
+import { Power } from "@mui/icons-material";
 
 
 
@@ -86,16 +87,18 @@ export const init = (app, setup) => {
     app.stage.interactive = true
     acre.interactive = true
    app.stage.on('pointerdown',(e)=>{
-    let _x =  e.data.global.x - app.stage.x
-    let _y =  e.data.global.y - app.stage.y
+    let _x =  e.data.global.x
+    let _y =  e.data.global.y
 
     let zoom = 40;
     let scaleX = app.stage.scale.x
     let scaleY = app.stage.scale.y
-    tl.to(acre.pivot,{x: _x,y: _y,duration: 0.5,ease: Elastic.easeOut.config(0.8, 0.5)})
-    tl.to(acre.scale,{x: zoom*scaleX,y: zoom*scaleY,duration: 4,ease: Expo.easeInOut})
+    console.log(app.stage.pivot,"app.stage.pivot")
+    tl.to(app.stage,{x: setup.width/2,y: setup.height/2,duration: 1.5,ease:  Linear.easeNone})
+    tl.to(app.stage.pivot,{x: _x,y: _y,duration: 1.5,ease: Linear.easeNone},"<")
+    tl.to(app.stage.scale,{x: zoom*scaleX,y: zoom*scaleY,duration: 4,ease: Expo.easeInOut},"<")
     tl.play()
-   })
+   }) 
 
 
 
