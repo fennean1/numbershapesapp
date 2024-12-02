@@ -4351,7 +4351,7 @@ const CAVE_SIX = {
   type: levelTypes.cave,
   collectable: collectables.seed_purple,
   puzzles: C6_PUZZLES.slice(SHIFT, CAVE_LEVELS_SIZE),
-  shuffle: "triangle",
+  shuffle: "scalex",
 }
 
 
@@ -4558,6 +4558,8 @@ if (testing == "cycles") {
   levels = [...FIFTH_STAGE]
 } else if (testing == "level10") {
   levels = [...TENTH_STAGE]
+} else if (testing == "level6") {
+  levels = [...SIXTH_STAGE]
 }
  
 // #endregion
