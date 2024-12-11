@@ -139,7 +139,6 @@ const App = () => {
     left: 'auto',
     position: 'fixed',
   };
-  const [open, setOpen] = React.useState(false);
 
   return (
     <ThemeProvider theme={theme}>

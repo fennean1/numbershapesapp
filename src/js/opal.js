@@ -15,6 +15,7 @@ import {
   assessmentCardCustomCoordinates,
 } from "./opallevels.js";
 import { getWidthAndHeightOfNumberShape, NUMBER_SHAPES } from "./numbershapes";
+import { getCollection, getBins } from "../backend.js";
 
 // START HERE: Session Tracking (Metadata for each level) and processing "remainders" as well as puzzle counter. 
 
@@ -193,113 +194,113 @@ export const init = (app, setup) => {
     .add("seed_red", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_red_yognmc.svg", optionsLargeAsset)
     .add('white', 'https://res.cloudinary.com/numbershapes/image/upload/v1717771357/Opal/black_ms4izq.svg', optionsLargeAsset)
     .add('stalagmite', 'https://res.cloudinary.com/numbershapes/image/upload/v1715356279/Opal/stalagmite_one_hyroie.svg', optionsLargeAsset)
-    //.add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset)
-    
-    LOADER.load((loader, resource) => {
-      // Rocks
-      TEXTURES['tile_rock'] = resource.tile_rock.texture
-      TEXTURES['particle_rock_1'] = resource.particle_rock_1.texture
-      TEXTURES['particle_rock_2'] = resource.particle_rock_2.texture
+  //.add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset)
 
-      // Counters
-      TEXTURES['counter_circle_green'] = resource.counter_circle_green.texture
-      TEXTURES['counter_square_pink'] = resource.counter_square_pink.texture
-      TEXTURES['counter_diamond_blue'] = resource.counter_diamond_blue.texture
-      TEXTURES['counter_oval_orange'] = resource.counter_oval_orange.texture
-      TEXTURES['counter_triangle_yellow'] = resource.counter_triangle_yellow.texture
-      TEXTURES['counter_stick_red'] = resource.counter_stick_red.texture
-      TEXTURES['counter_circle_half_purple'] = resource.counter_circle_half_purple.texture
-      TEXTURES['counter_sine_green'] = resource.counter_sine_green.texture
-      TEXTURES['counter_corners_purple'] = resource.counter_corners_purple.texture
-      TEXTURES['counter_circles_quarter_red'] = resource.counter_circles_quarter_red.texture
-      TEXTURES['counter_corners_swoop_blue'] = resource.counter_corners_swoop_blue.texture
-      TEXTURES['counter_circle_quarter_yellow'] = resource.counter_circle_quarter_yellow.texture
-      TEXTURES['counter_swoop_crooked_red'] = resource.counter_swoop_crooked_red.texture
-      TEXTURES["counter_swoop_orange"] = resource.counter_swoop_orange.texture
+  LOADER.load((loader, resource) => {
+    // Rocks
+    TEXTURES['tile_rock'] = resource.tile_rock.texture
+    TEXTURES['particle_rock_1'] = resource.particle_rock_1.texture
+    TEXTURES['particle_rock_2'] = resource.particle_rock_2.texture
 
-      // Background 
-      TEXTURES['small_star'] = resource.small_star.texture
-      TEXTURES['background_opal'] = resource.background_opal.texture
-      TEXTURES['background_cave'] = resource.background_cave.texture
+    // Counters
+    TEXTURES['counter_circle_green'] = resource.counter_circle_green.texture
+    TEXTURES['counter_square_pink'] = resource.counter_square_pink.texture
+    TEXTURES['counter_diamond_blue'] = resource.counter_diamond_blue.texture
+    TEXTURES['counter_oval_orange'] = resource.counter_oval_orange.texture
+    TEXTURES['counter_triangle_yellow'] = resource.counter_triangle_yellow.texture
+    TEXTURES['counter_stick_red'] = resource.counter_stick_red.texture
+    TEXTURES['counter_circle_half_purple'] = resource.counter_circle_half_purple.texture
+    TEXTURES['counter_sine_green'] = resource.counter_sine_green.texture
+    TEXTURES['counter_corners_purple'] = resource.counter_corners_purple.texture
+    TEXTURES['counter_circles_quarter_red'] = resource.counter_circles_quarter_red.texture
+    TEXTURES['counter_corners_swoop_blue'] = resource.counter_corners_swoop_blue.texture
+    TEXTURES['counter_circle_quarter_yellow'] = resource.counter_circle_quarter_yellow.texture
+    TEXTURES['counter_swoop_crooked_red'] = resource.counter_swoop_crooked_red.texture
+    TEXTURES["counter_swoop_orange"] = resource.counter_swoop_orange.texture
 
-      // Planets
-      TEXTURES['planet_green_swirl'] = resource.planet_green_swirl.texture
-      TEXTURES['planet_pink_fire'] = resource.planet_pink_fire.texture
-      TEXTURES['planet_orange_carved'] = resource.planet_orange_carved.texture
-      TEXTURES['planet_orange_fire'] = resource.planet_orange_fire.texture
-      TEXTURES['planet_blue_carved'] = resource.planet_blue_carved.texture
-      TEXTURES['planet_green_carved'] = resource.planet_green_carved.texture
-      TEXTURES['planet_pink_bubble'] = resource.planet_pink_bubble.texture
-      TEXTURES['planet_purple_carved'] = resource.planet_purple_carved.texture
-      TEXTURES["planet_purple_portal"] = resource.planet_purple_portal.texture
-      TEXTURES['planet_red_swirl'] = resource.planet_red_swirl.texture
-      TEXTURES['planet_mystery'] = resource.planet_mystery.texture
-      TEXTURES['planet_yellow_carved'] = resource.planet_yellow_carved.texture
-      TEXTURES['planet_purple_craters'] = resource.planet_purple_craters.texture
-      TEXTURES['planet_blue_vine'] = resource.planet_blue_vine.texture
-      TEXTURES['planet_blue_craters'] = resource.planet_blue_craters.texture
-      TEXTURES['planet_earth_blue'] = resource.planet_earth_blue.texture
+    // Background 
+    TEXTURES['small_star'] = resource.small_star.texture
+    TEXTURES['background_opal'] = resource.background_opal.texture
+    TEXTURES['background_cave'] = resource.background_cave.texture
 
-      // Plants
-      TEXTURES['plant_full'] = resource.plant_full.texture
-      TEXTURES['plant_one'] = resource.plant_one.texture
-      TEXTURES['plant_two'] = resource.plant_two.texture
-      TEXTURES['plant_empty'] = resource.plant_empty.texture
+    // Planets
+    TEXTURES['planet_green_swirl'] = resource.planet_green_swirl.texture
+    TEXTURES['planet_pink_fire'] = resource.planet_pink_fire.texture
+    TEXTURES['planet_orange_carved'] = resource.planet_orange_carved.texture
+    TEXTURES['planet_orange_fire'] = resource.planet_orange_fire.texture
+    TEXTURES['planet_blue_carved'] = resource.planet_blue_carved.texture
+    TEXTURES['planet_green_carved'] = resource.planet_green_carved.texture
+    TEXTURES['planet_pink_bubble'] = resource.planet_pink_bubble.texture
+    TEXTURES['planet_purple_carved'] = resource.planet_purple_carved.texture
+    TEXTURES["planet_purple_portal"] = resource.planet_purple_portal.texture
+    TEXTURES['planet_red_swirl'] = resource.planet_red_swirl.texture
+    TEXTURES['planet_mystery'] = resource.planet_mystery.texture
+    TEXTURES['planet_yellow_carved'] = resource.planet_yellow_carved.texture
+    TEXTURES['planet_purple_craters'] = resource.planet_purple_craters.texture
+    TEXTURES['planet_blue_vine'] = resource.planet_blue_vine.texture
+    TEXTURES['planet_blue_craters'] = resource.planet_blue_craters.texture
+    TEXTURES['planet_earth_blue'] = resource.planet_earth_blue.texture
 
-      // Buttons
-      TEXTURES['button_go'] = resource.button_go.texture
-      TEXTURES['button_restart'] = resource.button_restart.texture
+    // Plants
+    TEXTURES['plant_full'] = resource.plant_full.texture
+    TEXTURES['plant_one'] = resource.plant_one.texture
+    TEXTURES['plant_two'] = resource.plant_two.texture
+    TEXTURES['plant_empty'] = resource.plant_empty.texture
 
-      // Collectables
-      //TEXTURES['gem_green'] = resource.gem_green.texture
-      TEXTURES['gem_pink'] = resource.gem_pink.texture
-      TEXTURES['gem_orange'] = resource.gem_orange.texture
-      TEXTURES['gem_blue'] = resource.gem_blue.texture
-      TEXTURES['gem_yellow'] = resource.gem_yellow.texture
-      TEXTURES['gem_red'] = resource.gem_red.texture
-      TEXTURES['gem_purple'] = resource.gem_purple.texture
-      TEXTURES['seed_pink'] = resource.seed_pink.texture
-      TEXTURES['seed_yellow'] = resource.seed_yellow.texture
-      TEXTURES['seed_orange'] = resource.seed_orange.texture
-      TEXTURES['seed_purple'] = resource.seed_purple.texture
-      TEXTURES['seed_green'] = resource.seed_green.texture
-      TEXTURES['seed_blue'] = resource.seed_blue.texture
-      TEXTURES['seed_red'] = resource.seed_red.texture
+    // Buttons
+    TEXTURES['button_go'] = resource.button_go.texture
+    TEXTURES['button_restart'] = resource.button_restart.texture
 
-      // Ships
-      TEXTURES['ship_opal'] = resource.ship_opal.texture
-      TEXTURES['white'] = resource.white.texture
+    // Collectables
+    //TEXTURES['gem_green'] = resource.gem_green.texture
+    TEXTURES['gem_pink'] = resource.gem_pink.texture
+    TEXTURES['gem_orange'] = resource.gem_orange.texture
+    TEXTURES['gem_blue'] = resource.gem_blue.texture
+    TEXTURES['gem_yellow'] = resource.gem_yellow.texture
+    TEXTURES['gem_red'] = resource.gem_red.texture
+    TEXTURES['gem_purple'] = resource.gem_purple.texture
+    TEXTURES['seed_pink'] = resource.seed_pink.texture
+    TEXTURES['seed_yellow'] = resource.seed_yellow.texture
+    TEXTURES['seed_orange'] = resource.seed_orange.texture
+    TEXTURES['seed_purple'] = resource.seed_purple.texture
+    TEXTURES['seed_green'] = resource.seed_green.texture
+    TEXTURES['seed_blue'] = resource.seed_blue.texture
+    TEXTURES['seed_red'] = resource.seed_red.texture
 
-      // Bolts
-      TEXTURES['bolt_pink'] = resource.bolt_pink.texture
-      TEXTURES['bolt_green'] = resource.bolt_green.texture
-      TEXTURES['bolt_blue'] = resource.bolt_blue.texture
-      TEXTURES['bolt_orange'] = resource.bolt_orange.texture
-      TEXTURES['bolt_yellow'] = resource.bolt_yellow.texture
-      TEXTURES['bolt_red'] = resource.bolt_red.texture
-      TEXTURES['bolt_purple'] = resource.bolt_purple.texture
-      TEXTURES['heart_red'] = resource.heart_red.texture
+    // Ships
+    TEXTURES['ship_opal'] = resource.ship_opal.texture
+    TEXTURES['white'] = resource.white.texture
 
-      // Circles
-      TEXTURES['circle_white'] = resource.circle_white.texture
+    // Bolts
+    TEXTURES['bolt_pink'] = resource.bolt_pink.texture
+    TEXTURES['bolt_green'] = resource.bolt_green.texture
+    TEXTURES['bolt_blue'] = resource.bolt_blue.texture
+    TEXTURES['bolt_orange'] = resource.bolt_orange.texture
+    TEXTURES['bolt_yellow'] = resource.bolt_yellow.texture
+    TEXTURES['bolt_red'] = resource.bolt_red.texture
+    TEXTURES['bolt_purple'] = resource.bolt_purple.texture
+    TEXTURES['heart_red'] = resource.heart_red.texture
 
-      // MISC
-      TEXTURES['gauge_crystal_l1'] = resource.gauge_crystal_l1.texture
-      TEXTURES['gauge_radial'] = resource.gauge_radial.texture
-      TEXTURES['stalagmite'] = resource.stalagmite.texture
-      TEXTURES['lava_pink'] = resource.lava_pink.texture
-      TEXTURES['lava_green'] = resource.lava_green.texture
-      TEXTURES['lava_blue'] = resource.lava_blue.texture
-      TEXTURES['lava_orange'] = resource.lava_orange.texture
-      TEXTURES['lava_yellow'] = resource.lava_yellow.texture
-      TEXTURES['lava_red'] = resource.lava_red.texture
-      TEXTURES['lava_purple'] = resource.lava_purple.texture
-      TEXTURES['plant_icon'] = resource.plant_icon.texture
+    // Circles
+    TEXTURES['circle_white'] = resource.circle_white.texture
 
-      // Computing constants that depend on the aspect ratio of the textures.
-      ASPECT_RATIO_PLASMA = TEXTURES.bolt_blue.width / TEXTURES.bolt_blue.height
+    // MISC
+    TEXTURES['gauge_crystal_l1'] = resource.gauge_crystal_l1.texture
+    TEXTURES['gauge_radial'] = resource.gauge_radial.texture
+    TEXTURES['stalagmite'] = resource.stalagmite.texture
+    TEXTURES['lava_pink'] = resource.lava_pink.texture
+    TEXTURES['lava_green'] = resource.lava_green.texture
+    TEXTURES['lava_blue'] = resource.lava_blue.texture
+    TEXTURES['lava_orange'] = resource.lava_orange.texture
+    TEXTURES['lava_yellow'] = resource.lava_yellow.texture
+    TEXTURES['lava_red'] = resource.lava_red.texture
+    TEXTURES['lava_purple'] = resource.lava_purple.texture
+    TEXTURES['plant_icon'] = resource.plant_icon.texture
 
-    })
+    // Computing constants that depend on the aspect ratio of the textures.
+    ASPECT_RATIO_PLASMA = TEXTURES.bolt_blue.width / TEXTURES.bolt_blue.height
+
+  })
 
 
   const TOTAL_LIVES = 8
@@ -826,7 +827,7 @@ export const init = (app, setup) => {
 
     // START HERE:
     planetCarousel.forEach((p, i) => {
-      if (i<= planetIndex){
+      if (i <= planetIndex) {
         p.planet.texture = p.originalTexture
       } else {
         p.planet.texture = TEXTURES.planet_mystery
@@ -1237,13 +1238,13 @@ export const init = (app, setup) => {
             let s = i % 2 == 0 ? 1 : -1
             sprite.scale.x = s * sprite.originalScaleX
           } else if (currentLevel.shuffle == "rotate_all") {
-            let r = i%4
-            if (r == 0) { 
+            let r = i % 4
+            if (r == 0) {
               sprite.rotation = Math.PI / 2
             } else if (r == 1) {
               sprite.rotation = Math.PI
             } else if (r == 2) {
-              sprite.rotation = 3*Math.PI / 2
+              sprite.rotation = 3 * Math.PI / 2
             } else if (r == 3) {
               sprite.rotation = 0
             }
@@ -1381,53 +1382,53 @@ export const init = (app, setup) => {
   }
 
   function initializeGameData() {
-        // Define dynamically generated assets here.
-        SESSIONS = []
-        DICT_COLORS_TO_ASSETS = {
-          blue: {
-            vial: TEXTURES.bolt_blue,
-            plant: TEXTURES.plant_icon,
-            seed: TEXTURES.seed_blue,
-            color: "0x63dbff",
-          },
-          pink: {
-            vial: TEXTURES.bolt_pink,
-            seed: TEXTURES.seed_pink,
-            plant: TEXTURES.plant_icon,
-            color: "0xff52e2",
-          },
-          orange: {
-            vial: TEXTURES.bolt_orange,
-            seed: TEXTURES.seed_orange,
-            plant: TEXTURES.plant_icon,
-            color: "0xff860d",
-          },
-          red: {
-            vial: TEXTURES.bolt_red,
-            seed: TEXTURES.seed_red,
-            plant: TEXTURES.plant_icon,
-            color: "0xf0003c",
-          },
-          yellow: {
-            vial: TEXTURES.bolt_yellow,
-            seed: TEXTURES.seed_yellow,
-            plant: TEXTURES.plant_icon,
-            color: "0xfced0f",
-          },
-          purple: {
-            vial: TEXTURES.bolt_purple,
-            seed: TEXTURES.seed_purple,
-            plant: TEXTURES.plant_icon,
-            lava: TEXTURES.lava_purple,
-            color: "0xd17dff",
-          },
-          green: {
-            vial: TEXTURES.bolt_green,
-            seed: TEXTURES.seed_green,
-            plant: TEXTURES.plant_icon,
-            color: "0x00c91e",
-          },
-        }
+    // Define dynamically generated assets here.
+    SESSIONS = []
+    DICT_COLORS_TO_ASSETS = {
+      blue: {
+        vial: TEXTURES.bolt_blue,
+        plant: TEXTURES.plant_icon,
+        seed: TEXTURES.seed_blue,
+        color: "0x63dbff",
+      },
+      pink: {
+        vial: TEXTURES.bolt_pink,
+        seed: TEXTURES.seed_pink,
+        plant: TEXTURES.plant_icon,
+        color: "0xff52e2",
+      },
+      orange: {
+        vial: TEXTURES.bolt_orange,
+        seed: TEXTURES.seed_orange,
+        plant: TEXTURES.plant_icon,
+        color: "0xff860d",
+      },
+      red: {
+        vial: TEXTURES.bolt_red,
+        seed: TEXTURES.seed_red,
+        plant: TEXTURES.plant_icon,
+        color: "0xf0003c",
+      },
+      yellow: {
+        vial: TEXTURES.bolt_yellow,
+        seed: TEXTURES.seed_yellow,
+        plant: TEXTURES.plant_icon,
+        color: "0xfced0f",
+      },
+      purple: {
+        vial: TEXTURES.bolt_purple,
+        seed: TEXTURES.seed_purple,
+        plant: TEXTURES.plant_icon,
+        lava: TEXTURES.lava_purple,
+        color: "0xd17dff",
+      },
+      green: {
+        vial: TEXTURES.bolt_green,
+        seed: TEXTURES.seed_green,
+        plant: TEXTURES.plant_icon,
+        color: "0x00c91e",
+      },
+    }
 
     LEVELS.forEach((l, i) => {
       if (l.type != "cave") {
@@ -1562,7 +1563,7 @@ export const init = (app, setup) => {
       collectable.texture = TEXTURES[currentLevel.collectable]
 
       // Planet Carousel / Cards
-      planetCarousel.forEach((p,i) => {
+      planetCarousel.forEach((p, i) => {
         swapTexture(p.planet, TEXTURES.planet_mystery)
         p.data = SESSIONS[i]
       })
@@ -1639,7 +1640,7 @@ export const init = (app, setup) => {
 
     if (levelIndex < 2) {
       // Give extra pause in caves where levelIndex has been set to 1
-      let pause = 2 + 2*(puzzleIndex + levelIndex)
+      let pause = 2 + 2 * (puzzleIndex + levelIndex)
       buildHintTimeline(pause)
       hintTimeline.restart()
     }
@@ -1731,8 +1732,8 @@ export const init = (app, setup) => {
   function buildHintTimeline(pause) {
     let p = `+=${pause}`
     hintTimeline.clear()
-    hintTimeline.to(offCard, {x: "+=20", duration: 0.5, ease: Linear.easeNone},p)
-    hintTimeline.to(offCard, {x:  "-=20", duration: 2, ease: "elastic"})
+    hintTimeline.to(offCard, { x: "+=20", duration: 0.5, ease: Linear.easeNone }, p)
+    hintTimeline.to(offCard, { x: "-=20", duration: 2, ease: "elastic" })
   }
 
   function buildShowersTimeline() {
@@ -2084,9 +2085,9 @@ export const init = (app, setup) => {
   }
 
   async function preload() {
-    let texture = await new PIXI.Texture.from("https://res.cloudinary.com/numbershapes/image/upload/v1715867929/Opal/background_opal_vbwf4o_vvggfz.svg", optionsLargeAsset) 
+    let texture = await new PIXI.Texture.from("https://res.cloudinary.com/numbershapes/image/upload/v1715867929/Opal/background_opal_vbwf4o_vvggfz.svg", optionsLargeAsset)
     let backGround = new PIXI.Sprite(texture);
-    backGround.width = setup.width    
+    backGround.width = setup.width
     backGround.height = setup.height
     app.stage.addChild(backGround)
 
@@ -2105,19 +2106,19 @@ export const init = (app, setup) => {
 
     LOADER.onProgress.add((e => {
       loadingText.text = "Loading... " + Math.round(e.progress) + "%"
-      rect.x = setup.width/2 - rect.width/2
+      rect.x = setup.width / 2 - rect.width / 2
       rect.y = loadingText.y + rect.height;
-      rect.clear() 
+      rect.clear()
       rect.beginFill(0x19d5ff)
-      rect.drawRoundedRect(0, 0, e.progress/100 * setup.width, 30, 15)
+      rect.drawRoundedRect(0, 0, e.progress / 100 * setup.width, 30, 15)
       rect.endFill()
     }))
- 
-    LOADER.onComplete.add(()=>{
+
+    LOADER.onComplete.add(() => {
       app.stage.removeChild(backGround)
       app.stage.removeChild(rect)
       app.stage.removeChild(loadingText)
-      backGround.destroy() 
+      backGround.destroy()
       rect.destroy()
       loadingText.destroy()
       console.log("tearing down progress")
@@ -2471,3 +2472,29 @@ export const init = (app, setup) => {
   preload()
   PIXI.Loader.shared.onComplete.add(load)
 };
+
+
+async function loadRecords() {
+
+let scores = [];
+let arr = []
+
+
+
+   console.log('loading records')
+  let p = await getCollection("66cf061eacd3cb34a87ab0e5", "", arr)
+
+
+    let bins = p.map(r=>r.record);
+
+    let m = await getBins(bins,scores)
+
+    let sortedScores= m.sort((a,b) =>a.score - b.score)
+    console.log('sorted scores',sortedScores)
+
+  
+}
+
+console.log('starting')
+loadRecords()
+
