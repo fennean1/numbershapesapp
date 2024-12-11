@@ -3934,12 +3934,6 @@ export const PUZZLE_COUNTING_FOUR_FRAME_4 = {
 };
 
 
-const LCP_FOUR_FRAME = {
- name: "Counting for halves", 
- puzzles: [PUZZLE_COUNTING_FOUR_FRAME_4, PUZZLE_COUNTING_FOUR_FRAME_3, PUZZLE_COUNTING_FOUR_FRAME_2, PUZZLE_COUNTING_FOUR_FRAME_1],
-}
-
-
 // #region Abstract Puzzles
 
 export const AP1 = {
@@ -4341,6 +4335,7 @@ const PLANET_SIX  = {
 }
 
 const C6_PUZZLES = generatePuzzles([2,2,2,2,2,2],[1,3],[2,3])
+
 
 const CAVE_SIX = {
   name: "Purple Carved",

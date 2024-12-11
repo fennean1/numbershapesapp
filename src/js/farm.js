@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 // APIS
 // Problem que setup
 import { Timeline, Tween, Linear, Sine, Expo, Elastic } from "gsap/gsap-core";
-import Viewport from "pixi-viewport/src/viewport.js";
 import {
   counters,
   getStagesFromType,

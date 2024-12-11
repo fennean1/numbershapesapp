@@ -26,7 +26,7 @@ export async function getCollection(collection, id = "", acc = [],reso) {
     };
 
     req.open("GET", reqToOpen, true);
-    req.setRequestHeader("X-Master-Key", "$2b$10$bvi9UILE60dg8W3WvhHrVOlXsFrqnl2nxmCEVqbJdbG2Vi2nnCmrm");
+    req.setRequestHeader("X-Master-Key", process.env.REACT_APP_BIN_ID);
     req.send()
   }).then(res => {
     reso && reso(acc)
@@ -58,7 +58,7 @@ export async function getBins(bins, acc = [],reso) {
   
     let lookup = `https://api.jsonbin.io/v3/b/${id}/latest`;
     req.open("GET", lookup, true);
-    req.setRequestHeader("X-Master-Key", "$2b$10$bvi9UILE60dg8W3WvhHrVOlXsFrqnl2nxmCEVqbJdbG2Vi2nnCmrm");
+    req.setRequestHeader("X-Master-Key", "default");
     req.send();
   }).then(res => {
     reso && reso(acc)
