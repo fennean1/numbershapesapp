@@ -3082,7 +3082,7 @@ export const L6E = {
   counter: counters.red,
 };
 
-console.log("message")
+console.log("messag")
 
 export const Dragon = {
   name: "Dragon",
