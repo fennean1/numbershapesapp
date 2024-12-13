@@ -3082,6 +3082,8 @@ export const L6E = {
   counter: counters.red,
 };
 
+console.log("message")
+
 export const Dragon = {
   name: "Dragon",
   puzzles: [L6, L6A, L6B, L6C, L6D, L6E, L6C, L6D, L6, L6A, L6D, L6E],
