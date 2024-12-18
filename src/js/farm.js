@@ -46,7 +46,7 @@ export const init = (app, setup) => {
 
   LOADER.onError.add((e => {
     console.log("error", e)
-    window.alert("Oops! Something went wrong. Please Reload the page.")
+    window.alert("Oops! Somethin went wrong. Please Reload the page.")
   }))
 
 
