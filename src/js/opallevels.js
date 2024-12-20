@@ -4209,7 +4209,7 @@ const CAVE_ONE = {
 
 const FIRST_STAGE = [PLANET_ONE, CAVE_ONE]
 
-const P2_PUZZLES = generatePuzzles([2,3,4,4,5,5,5,5,5,5],[3,3],[8,8],1,[0.6,0.6,0.5,0.5,0.5,0.7,0.8,0.85,0.9,0.9])
+const P2_PUZZLES = generatePuzzles([2,3,4,4,5,5,5,5,5,5],[3,3],[8,8],1,[0.6,0.6,0.5,0.5,0.5,0.7,0.7,0.7,0.7,0.7])
 
 const PLANET_TWO = {
   name: "Planet Four",
