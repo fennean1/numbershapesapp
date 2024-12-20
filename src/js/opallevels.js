@@ -1,3 +1,4 @@
+import { shuffle } from "gsap";
 import { getRandomInt, shuffleArray } from "./api";
 
 
@@ -4206,6 +4207,7 @@ const CAVE_ONE = {
 
 const FIRST_STAGE = [PLANET_ONE, CAVE_ONE]
 
+const P2_PUZZLES = generatePuzzles([2,3,4,4,5,5,5,5,5,5],[3,3],[8,8],1,[0.6,0.6,0.5,0.5,0.5,0.7,0.8,0.85,0.9,0.9])
 
 const PLANET_TWO = {
   name: "Planet Four",
@@ -4214,7 +4216,9 @@ const PLANET_TWO = {
   icon: resource_icons.bolt_blue,
   counter: counters.diamond_blue,
   collectable: collectables.gem_blue,
-  puzzles: Dragon.puzzles.slice(SHIFT, SPACE_LEVELS_SIZE),
+  puzzles: P2_PUZZLES.slice(SHIFT, SPACE_LEVELS_SIZE),
+  shuffle: "rotate_all",
+
 };
 
 const CAVE_TWO = {
@@ -4555,6 +4559,8 @@ if (testing == "cycles") {
   levels = [...TENTH_STAGE]
 } else if (testing == "level6") {
   levels = [...SIXTH_STAGE]
+} else if (testing == "level2") {
+  levels = [...SECOND_STAGE]
 }
  
 // #endregion
