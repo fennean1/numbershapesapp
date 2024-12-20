@@ -268,6 +268,11 @@ export const opal = {
       text: "Official Game",
       url: "../interactives/opal/opal",
     },
+    {
+      type: LINK_TYPES.FILE,
+      text: "Sticker Sheet",
+      url: "https://res.cloudinary.com/numbershapes/image/upload/v1734714975/Opal_Worksheets_iwqyww.pdf",
+    },
   ],
   INFO: { GRADE: "FirstGrade" },
 };
