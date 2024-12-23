@@ -52,7 +52,7 @@ export const init = (app, setup) => {
   let CENTER_STAGE_Y = setup.height / 2
   let fS = Math.min(setup.width, setup.height) / 20
   const minDim = Math.min(setup.width, setup.height)
-  const COIN = new PIXI.Texture.from(Coin)
+
 
   // Vars
   let dx = minDim / 10
