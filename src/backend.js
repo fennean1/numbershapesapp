@@ -18,15 +18,14 @@ export async function getCollection(collection, id = "", acc = [],reso) {
           let p = resolve(acc)
           return p;
         } else {
-          console.log("getting collection")
           let p = getCollection(collection, arr[lastIndex].record, acc,resolve)
           return p;
         }
       }
     };
-
+    console.log("getting collection")
     req.open("GET", reqToOpen, true);
-    req.setRequestHeader("X-Master-Key", process.env.REACT_APP_BIN_ID);
+    req.setRequestHeader("X-Master-Key", "$2b$10$bvi9UILE60dg8W3WvhHrVOlXsFrqnl2nxmCEVqbJdbG2Vi2nnCmrm");
     req.send()
   }).then(res => {
     reso && reso(acc)
@@ -47,7 +46,7 @@ export async function getBins(bins, acc = [],reso) {
       if (bins.length > 0) {
         let record = JSON.parse(req.responseText).record;
         acc.push(record);
-        console.log("acc",acc)
+        
         getBins(bins, acc,resolve)
       } else if (bins.length == 0 || safety == 20) {
         resolve(acc)
@@ -56,9 +55,10 @@ export async function getBins(bins, acc = [],reso) {
   }
     let id = bins.shift()
   
+    console.log("geting bin");
     let lookup = `https://api.jsonbin.io/v3/b/${id}/latest`;
     req.open("GET", lookup, true);
-    req.setRequestHeader("X-Master-Key", "default");
+    req.setRequestHeader("X-Master-Key", "$2b$10$bvi9UILE60dg8W3WvhHrVOlXsFrqnl2nxmCEVqbJdbG2Vi2nnCmrm");
     req.send();
   }).then(res => {
     reso && reso(acc)

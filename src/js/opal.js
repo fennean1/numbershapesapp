@@ -2468,7 +2468,7 @@ export const init = (app, setup) => {
 
   }
 
-
+  console.log('sorted scores')
   preload()
   PIXI.Loader.shared.onComplete.add(load)
 };
@@ -2491,10 +2491,12 @@ let arr = []
 
     let sortedScores= m.sort((a,b) =>a.score - b.score)
     console.log('sorted scores',sortedScores)
+    let scoresOnly = sortedScores.map(r=>r.score)
+    console.log('scores only',scoresOnly)
 
   
 }
 
-//console.log('starting')
-//loadRecords()
+console.log('starting')
+loadRecords()
 

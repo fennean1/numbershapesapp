@@ -8,6 +8,7 @@ import Coin from "../assets/Coin.png";
 import whiteCircle from "../assets/WhiteCircle.png";
 import whiteTriangle from "../assets/WhiteTriangle.png";
 import whitePentagon from "../assets/WhitePentagon.png";
+import {Tween,Power4} from "gsap/gsap-core";
 
 import { Selector } from "./api.js";
 
@@ -245,34 +246,15 @@ export const init = (app, setup) => {
       let diagonals = this.shapes.map((s) => s.diagonal);
       // Max diagonal because the shapes could be made up of different shapes.
       let maxDiagonal = Math.max(...diagonals);
-
-      const {width,height} = this.shapes[0]
-
-      let D = maxDiagonal/A_PF.val
-
-      
       
       let cords = NUMBERSHAPES[this.numberOfShapes](maxDiagonal / A_PF.val);
       let dims = getWidthAndHeightOfCompositeNumberShape(cords, maxDiagonal,maxDiagonal);
 
       this.shapes.forEach((ctr, i) => {
-        window.createjs.Tween.get(ctr)
-          .to(
-            { x: cords[i].x, y: cords[i].y},
-            500,
-            window.createjs.Ease.getPowInOut(4)
-          )
-          .call(callback);
+        Tween.to(ctr,{x: cords[i].x, y: cords[i].y,duration: 1,ease: Power4.easeInOut,onComplete: callback})
       });
 
-      window.createjs.Tween.get(this).to(
-        {
-          x: setup.width / 2 - dims.width / 2,
-          y: setup.height / 2 - dims.height / 2,
-        },
-        500,
-        window.createjs.Ease.getPowInOut(4)
-      );
+      Tween.to(this,{x: setup.width / 2 - dims.width / 2,y: setup.height / 2 - dims.height / 2,duration: 1,ease: Power4.easeInOut})
     }
   }
 
@@ -353,11 +335,7 @@ export const init = (app, setup) => {
       let cords = NUMBERSHAPES[this.value](this.counterSize / 2);
       const offset = this.getOffset();
       this.counters.forEach((ctr, i) => {
-        window.createjs.Tween.get(ctr).to(
-          { x: cords[i].x + offset.x, y: cords[i].y + offset.y },
-          500,
-          window.createjs.Ease.getPowInOut(4)
-        );
+        Tween.to(ctr,{x: cords[i].x + offset.x, y: cords[i].y + offset.y,duration: 1,ease: Power4.easeInOut})
       });
     }
   }

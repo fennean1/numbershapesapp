@@ -23,12 +23,12 @@ import OrangeEgg from '../assets/OrangeEgg.png'
 import GreenEgg from '../assets/GreenEgg.png'
 import BlueEgg from '../assets/BlueEgg.png'
 import RedEgg from '../assets/RedEgg.png'
-import { Tween } from "gsap/gsap-core";
+import { Tween, Linear, Power4 } from "gsap/gsap-core";
 
 
 
 const SUBITIZER_TYPES = {
-  NORMAL: 1, 
+  NORMAL: 1,
   ADDITION: 2,
   SUBTRACTION: 3,
   ADDITION_THREE_DIGIT: 4,
@@ -42,647 +42,532 @@ const BALL_STATES = {
   RANDOM: 2,
 }
 
-const EGGS = [RedEgg,YellowEgg, PurpleEgg, GreenEgg, BlueEgg,OrangeEgg]
+const EGGS = [RedEgg, YellowEgg, PurpleEgg, GreenEgg, BlueEgg, OrangeEgg]
 
 
 export const init = (app, setup) => {
-  
-    // Const
-    let CENTER_STAGE_X = setup.width/2
-    let CENTER_STAGE_Y = setup.height/2
-    let fS = Math.min(setup.width,setup.height)/20
-    const minDim = Math.min(setup.width,setup.height)
-    const COIN = new PIXI.Texture.from(Coin)
-   
-    // Vars
-    let dx = minDim/10
-    let balls = []
-    let a = null 
-    let b = null 
-    let SubtractionImage = BlueRing
-    let CounterImage = BlueBall
-    let AdditionImage = OrangeBall
-    let equation = new PIXI.Text("",{fontFamily: 
-      "Chalkboard SE",fontSize: fS})
-    let showEquation = false
-    let kBalls = []
-    let potOfGoldIndex = 0
-    let oldBalls = []
+
+  // Const
+  let CENTER_STAGE_X = setup.width / 2
+  let CENTER_STAGE_Y = setup.height / 2
+  let fS = Math.min(setup.width, setup.height) / 20
+  const minDim = Math.min(setup.width, setup.height)
+  const COIN = new PIXI.Texture.from(Coin)
+
+  // Vars
+  let dx = minDim / 10
+  let balls = []
+  let a = null
+  let b = null
+  let SubtractionImage = BlueRing
+  let CounterImage = BlueBall
+  let AdditionImage = OrangeBall
+  let equation = new PIXI.Text("", {
+    fontFamily:
+      "Chalkboard SE", fontSize: fS
+  })
+  let showEquation = false
+  let kBalls = []
+  let potOfGoldIndex = 0
+  let oldBalls = []
 
 
-    
-    app.stage.backGround = 0xffffff
-    app.stage.alpha = 0
-    window.createjs.Tween.get(app.stage).to({
-        alpha: 1
-      },
-      1000,
-      window.createjs.Ease.getPowInOut(4)
-    );
 
-    // Setup
-    let backGround = new PIXI.Sprite.from(Clouds)
-    backGround.x = 0
-    backGround.y = 0 
-    backGround.width = setup.width
-    backGround.height = setup.height
-    app.stage.addChild(backGround)
+  app.stage.backGround = 0xffffff
+  app.stage.alpha = 0
 
-    let newShapeButton = new PIXI.Sprite.from(NewShapeButton)
-    newShapeButton.x = dx/4
-    newShapeButton.y = dx/4
-    newShapeButton.width = 5*dx/2 
-    newShapeButton.height = dx/2
-    newShapeButton.interactive = true
-    newShapeButton.buttonMode = true
-    newShapeButton.on('pointerdown',newShape)
-    app.stage.addChild(newShapeButton)
+  Tween.to(app.stage, { alpha: 1, duration: 1, ease: Linear.easeNone })
 
-    let questionButton = new PIXI.Sprite.from(QuestionMark)
-    questionButton.x = setup.width - 1.5*dx
-    questionButton.y = dx/3 + 2*dx/2
-    questionButton.width = dx
-    questionButton.height = dx
-    questionButton.buttonMode = true
-    questionButton.interactive = true
-    questionButton.on('pointerdown',()=> {app.help()})
-    //app.stage.addChild(questionButton)
+  // Setup
+  let backGround = new PIXI.Sprite.from(Clouds)
+  backGround.x = 0
+  backGround.y = 0
+  backGround.width = setup.width
+  backGround.height = setup.height
+  app.stage.addChild(backGround)
 
-    let moreAppsButton = new PIXI.Sprite.from(MoreAppsButton)
-    moreAppsButton.x = setup.width - 1.5*dx
-    moreAppsButton.y = dx/4
-    moreAppsButton.width = dx
-    moreAppsButton.height = dx
-    moreAppsButton.interactive = true
-    moreAppsButton.on('pointerdown',()=> {app.goToApps()})
-    //app.stage.addChild(moreAppsButton)
+  let newShapeButton = new PIXI.Sprite.from(NewShapeButton)
+  newShapeButton.x = dx / 4
+  newShapeButton.y = dx / 4
+  newShapeButton.width = 5 * dx / 2
+  newShapeButton.height = dx / 2
+  newShapeButton.interactive = true
+  newShapeButton.buttonMode = true
+  newShapeButton.on('pointerdown', newShape)
+  app.stage.addChild(newShapeButton)
 
-    let frameButton = new PIXI.Sprite.from(FrameButton)
-    frameButton.x = dx/4
-    frameButton.y = dx/3 + dx/2
-    frameButton.width = 2*dx/2
-    frameButton.height = 0.80*dx/2
-    frameButton.interactive = true
-    frameButton.buttonMode = true
-    frameButton.on('pointerdown',()=> {drawFrame()})
-    app.stage.addChild(frameButton)
+  let questionButton = new PIXI.Sprite.from(QuestionMark)
+  questionButton.x = setup.width - 1.5 * dx
+  questionButton.y = dx / 3 + 2 * dx / 2
+  questionButton.width = dx
+  questionButton.height = dx
+  questionButton.buttonMode = true
+  questionButton.interactive = true
+  questionButton.on('pointerdown', () => { app.help() })
+  //app.stage.addChild(questionButton)
 
-    let equationButton = new PIXI.Sprite.from(EquationButton)
-    equationButton.x = dx/4
-    equationButton.y = dx/3 + 3*dx/2
-    equationButton.width = 2*dx/2
-    equationButton.height = 0.80*dx/2
-    equationButton.interactive = true
-    equationButton.buttonMode = true
-    equationButton.on('pointerdown',()=>revealEquation(null))
-    app.stage.addChild(equationButton)
+  let moreAppsButton = new PIXI.Sprite.from(MoreAppsButton)
+  moreAppsButton.x = setup.width - 1.5 * dx
+  moreAppsButton.y = dx / 4
+  moreAppsButton.width = dx
+  moreAppsButton.height = dx
+  moreAppsButton.interactive = true
+  moreAppsButton.on('pointerdown', () => { app.goToApps() })
+  //app.stage.addChild(moreAppsButton)
 
-    let shuffleButton = new PIXI.Sprite.from(ShuffleButton)
-    shuffleButton.x = dx/4
-    shuffleButton.y = dx/3 + 4*dx/2
-    shuffleButton.width = 2*dx/2
-    shuffleButton.height = 0.80*dx/2
-    shuffleButton.interactive = true
-    shuffleButton.buttonMode = true
-    shuffleButton.on('pointerdown',shuffle)
-    app.stage.addChild(shuffleButton)
+  let frameButton = new PIXI.Sprite.from(FrameButton)
+  frameButton.x = dx / 4
+  frameButton.y = dx / 3 + dx / 2
+  frameButton.width = 2 * dx / 2
+  frameButton.height = 0.80 * dx / 2
+  frameButton.interactive = true
+  frameButton.buttonMode = true
+  frameButton.on('pointerdown', () => { drawFrame() })
+  app.stage.addChild(frameButton)
+
+  let equationButton = new PIXI.Sprite.from(EquationButton)
+  equationButton.x = dx / 4
+  equationButton.y = dx / 3 + 3 * dx / 2
+  equationButton.width = 2 * dx / 2
+  equationButton.height = 0.80 * dx / 2
+  equationButton.interactive = true
+  equationButton.buttonMode = true
+  equationButton.on('pointerdown', () => revealEquation(null))
+  app.stage.addChild(equationButton)
+
+  let shuffleButton = new PIXI.Sprite.from(ShuffleButton)
+  shuffleButton.x = dx / 4
+  shuffleButton.y = dx / 3 + 4 * dx / 2
+  shuffleButton.width = 2 * dx / 2
+  shuffleButton.height = 0.80 * dx / 2
+  shuffleButton.interactive = true
+  shuffleButton.buttonMode = true
+  shuffleButton.on('pointerdown', shuffle)
+  app.stage.addChild(shuffleButton)
 
 
-    
-    function revealEquation(state){
+
+  function revealEquation(state) {
 
 
-          showEquation = state != null ? state : !showEquation
-          let newAlpha = showEquation ? 1 : 0
-          console.log("new alpha",newAlpha)
+    showEquation = state != null ? state : !showEquation
+    let newAlpha = showEquation ? 1 : 0
+    console.log("new alpha", newAlpha)
 
-          Tween.to(equation,{alpha: newAlpha})
+    Tween.to(equation, { alpha: newAlpha })
+  }
+
+  let lineButton = new PIXI.Sprite.from(LineButton)
+  lineButton.x = dx / 4
+  lineButton.y = dx / 3 + 2 * dx / 2
+  lineButton.width = 2 * dx / 2
+  lineButton.height = 0.80 * dx / 2
+  lineButton.interactive = true
+  lineButton.on('pointerdown', () => { drawLine(balls) })
+  app.stage.addChild(lineButton)
+
+  var splat = new PIXI.Graphics();
+
+
+  // Helpers
+  function randBetween(a, b) {
+    return a + Math.floor(Math.random() * (b - a));
+  }
+  function destroy(objects) {
+    for (var i = objects.length - 1; i >= 0; i--) { app.stage.removeChild(objects[i]); };
+    for (var i = objects.length - 1; i >= 0; i--) { objects[i].destroy(); };
+  }
+
+  function makeEquation(seq) {
+
+
+    let s = seq.reduce((p, c) => p + " " + c)
+
+    equation.text = s
+
+    const l = equation.width
+    equation.x = setup.width / 2 - l / 2
+    equation.y = l / 2
+    app.stage.addChild(equation)
+
+    return equation
+
+  }
+
+  function getSubtractionBalls(pivot, delta) {
+    let a = pivot == null ? randBetween(4, 10) : pivot
+    console.log("a", a)
+    let b = delta == null ? randBetween(1, a) : randBetween(1, delta + 1)
+    let aBalls = []
+    let bBalls = []
+
+    equation = makeEquation([a, "-", b, "=", a - b])
+    equation.alpha = 0
+    revealEquation(false)
+
+    for (let i = 0; i < (a - b); i++) {
+      let aBall = new PIXI.Sprite.from(CounterImage)
+      aBalls.push(aBall)
     }
 
-    let lineButton = new PIXI.Sprite.from(LineButton)
-    lineButton.x = dx/4
-    lineButton.y = dx/3 + 2*dx/2
-    lineButton.width = 2*dx/2
-    lineButton.height = 0.80*dx/2
-    lineButton.interactive = true
-    lineButton.on('pointerdown',()=> {drawLine(balls)})
-    app.stage.addChild(lineButton)
-
-    var splat = new PIXI.Graphics();
- 
-
-    // Helpers
-    function randBetween(a,b){
-      return  a + Math.floor(Math.random() * (b-a));
-    }
-    function destroy(objects){
-      for (var i = objects.length - 1; i >= 0; i--) {	app.stage.removeChild(objects[i]);};
-      for (var i = objects.length - 1; i >= 0; i--) {	objects[i].destroy();};
+    for (let j = 0; j < b; j++) {
+      let bBall = new PIXI.Sprite.from(SubtractionImage)
+      bBalls.push(bBall)
     }
 
-    function makeEquation(seq) {
+    let allBalls = [...aBalls, ...bBalls]
 
-   
-      let s = seq.reduce((p,c)=>p+" "+c)
-
-      equation.text = s
-      
-      const l = equation.width 
-      equation.x = setup.width/2 - l/2
-      equation.y = l/2
-      app.stage.addChild(equation)
-
-      return equation
-
+    for (let b of allBalls) {
+      makeDraggable(b)
     }
+    return allBalls
+  }
 
-    function getSubtractionBalls(pivot,delta){
-      let a = pivot == null ? randBetween(4,10) : pivot
-      console.log("a",a)
-      let b = delta == null ? randBetween(1,a) : randBetween(1,delta+1)
-      let aBalls = []
-      let bBalls = []
-
-      equation = makeEquation([a,"-",b,"=",a-b])
-      equation.alpha = 0
-      revealEquation(false)
-
-      for (let i = 0;i<(a-b);i++){
-        let aBall = new PIXI.Sprite.from(CounterImage)
-        aBalls.push(aBall)
-      }
-
-      for (let j = 0;j<b;j++){
-        let bBall = new PIXI.Sprite.from(SubtractionImage)
-        bBalls.push(bBall)
-      }
-
-      let allBalls = [...aBalls,...bBalls]
-
-      for (let b of allBalls){
-        makeDraggable(b)
-      }
-      return allBalls
-    }
-
-    function drawLine(r){
-      let w = r.length * dx
-      let h = dx
-      r.forEach((b,i)=>{
-        window.createjs.Tween.get(b).to({
-          x: CENTER_STAGE_X - w/2 + i*dx,
-          y: CENTER_STAGE_Y
-        },
-        1000,
-        window.createjs.Ease.getPowInOut(4)
-      );
-      })
-      if (setup.type == SUBITIZER_TYPES.SPLAT){
-        console.log("Moving Splat")
-        moveSplat(BALL_STATES.LINE)
-      }
-    }
-
-    function shuffle(){
-      let randomCords = randomCoordinates.generateRandomCoordinates(balls.length)
-      let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
-      for (let i = 0;i<randomCords.length;i++){
-          let cord = randomCords[i]
-          window.createjs.Tween.get(balls[i]).to({
-                x: CENTER_STAGE_X + (cord[0]-heightAndWidthOfCords[0]/2)*dx - dx/2,
-                y: CENTER_STAGE_Y  + (cord[1]-heightAndWidthOfCords[1]/2)*dx - dx/2
-              },
-              1000,
-              window.createjs.Ease.getPowInOut(4)
-            ).call(()=>this.interactive = true);
-      }
-      if (setup.type == SUBITIZER_TYPES.SPLAT){
-        moveSplat(BALL_STATES.RANDOM,randomCords)
-      }
-    }
-
-    function moveSplat(ballState,cords){
-      switch (ballState) {
-      case BALL_STATES.FRAME:
-
-          let frameWidth = balls.length > 5 ? 5*dx : balls.length*dx
-          let kX = randBetween(0,5)
-          let kY = randBetween(-1,2)
-          let kW = randBetween(1,5)
-          let kH = randBetween(1,3)
-
-          window.createjs.Tween.get(splat).to({
-            x: CENTER_STAGE_X - frameWidth/2 + kX*dx,
-            y: CENTER_STAGE_Y - dx,
-            width: kW*dx,
-            height: 2*dx
-          },
-          1000,
-          window.createjs.Ease.getPowInOut(4)
-        );
-      break;
-      case BALL_STATES.RANDOM:
-              let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(cords)
-              let i = heightAndWidthOfCords[0]
-              let j = heightAndWidthOfCords[1]
-              let splatWidth = dx + randBetween(0,i+1)*dx
-              let splatHeight = dx + randBetween(0,j+1)*dx
-              let randX = randBetween(0,i-1)*dx
-              let randY= randBetween(0,j-1)*dx
-              let splatX = CENTER_STAGE_X-heightAndWidthOfCords[0]/2*dx - dx/2 + randX
-              let splatY = CENTER_STAGE_Y-heightAndWidthOfCords[1]/2*dx - dx/2 + randY
-
-          window.createjs.Tween.get(splat).to({
-            x: splatX,
-            y: splatY,
-            width: splatWidth,
-            height: splatHeight
-          },
-          1000,
-          window.createjs.Ease.getPowInOut(4)
-        );
-      break;
-      case BALL_STATES.LINE: 
-        let lineWidth = balls.length*dx
-        let iW = randBetween(1,balls.length)
-        let iH = randBetween(1,3)
-        let iX = randBetween(0,balls.length)
-    
-        window.createjs.Tween.get(splat).to({
-          x: CENTER_STAGE_X - lineWidth/2 + iX*dx,
-          y: CENTER_STAGE_Y,
-          height: dx,
-          width: iW*dx
-        },
-        1000,
-        window.createjs.Ease.getPowInOut(4)
-     );
-      break;
-      default: 
-          // do nothing
+  function drawLine(r) {
+    let w = r.length * dx
+    let h = dx
+    r.forEach((b, i) => {
+      Tween.to(b, { x: CENTER_STAGE_X - w / 2 + i * dx, y: CENTER_STAGE_Y, duration: 1, ease: Power4.easeInOut })
+    })
+    if (setup.type == SUBITIZER_TYPES.SPLAT) {
+      console.log("Moving Splat")
+      moveSplat(BALL_STATES.LINE)
     }
   }
 
-    function drawFrame(){
-      let w = balls.length > 5 ? 5*dx : balls.length*dx
-      balls.forEach((b,i)=>{
-        let j = (i - i%5)/5
-        window.createjs.Tween.get(b).to({
-          x: CENTER_STAGE_X - w/2 + i%5*dx,
-          y: CENTER_STAGE_Y - dx + j*dx
-        },
-        1000,
-        window.createjs.Ease.getPowInOut(4)
-      );
-      })
-      if (setup.type == SUBITIZER_TYPES.SPLAT){
-        moveSplat(BALL_STATES.FRAME)
-      }
+  function shuffle() {
+    let randomCords = randomCoordinates.generateRandomCoordinates(balls.length)
+    let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
+    for (let i = 0; i < randomCords.length; i++) {
+      let cord = randomCords[i]
+      Tween.to(balls[i], { x: CENTER_STAGE_X + (cord[0] - heightAndWidthOfCords[0] / 2) * dx - dx / 2, y: CENTER_STAGE_Y + (cord[1] - heightAndWidthOfCords[1] / 2) * dx - dx / 2, duration: 1, ease: Power4.easeInOut, onComplete: () => this.interactive = true });
     }
 
-    function getPivotBalls(pivot,delta){
-      let rand = randBetween(1,3)
-      let pivotBalls = rand == 2 ? getSubtractionBalls(pivot,delta): getAdditionBalls(pivot,delta)
-      return pivotBalls
+    if (setup.type == SUBITIZER_TYPES.SPLAT) {
+      moveSplat(BALL_STATES.RANDOM, randomCords)
     }
+  }
 
-    function makeDraggable(dragMe){
-      dragMe.interactive = true
-      dragMe.on('pointerdown',onDragStart)
-        .on('pointermove',onDragMove)
-        .on('pointerup',onDragEnd)
+  function moveSplat(ballState, cords) {
+    switch (ballState) {
+      case BALL_STATES.FRAME:
+
+        let frameWidth = balls.length > 5 ? 5 * dx : balls.length * dx
+        let kX = randBetween(0, 5)
+        let kY = randBetween(-1, 2)
+        let kW = randBetween(1, 5)
+        let kH = randBetween(1, 3)
+        Tween.to(splat, { x: CENTER_STAGE_X - frameWidth / 2 + kX * dx, y: CENTER_STAGE_Y - dx, width: kW * dx, height: 2 * dx, duration: 1, ease: Power4.easeInOut })
+        break;
+      case BALL_STATES.RANDOM:
+        let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(cords)
+        let i = heightAndWidthOfCords[0]
+        let j = heightAndWidthOfCords[1]
+        let splatWidth = dx + randBetween(0, i + 1) * dx
+        let splatHeight = dx + randBetween(0, j + 1) * dx
+        let randX = randBetween(0, i - 1) * dx
+        let randY = randBetween(0, j - 1) * dx
+        let splatX = CENTER_STAGE_X - heightAndWidthOfCords[0] / 2 * dx - dx / 2 + randX
+        let splatY = CENTER_STAGE_Y - heightAndWidthOfCords[1] / 2 * dx - dx / 2 + randY
+
+        Tween.to(splat, { x: splatX, y: splatY, width: splatWidth, height: splatHeight, duration: 1, ease: Power4.easeInOut })
+        break;
+      case BALL_STATES.LINE:
+        let lineWidth = balls.length * dx
+        let iW = randBetween(1, balls.length)
+        let iH = randBetween(1, 3)
+        let iX = randBetween(0, balls.length)
+        Tween.to(splat, { x: CENTER_STAGE_X - lineWidth / 2 + iX * dx, y: CENTER_STAGE_Y, height: dx, width: iW * dx, duration: 1, ease: Power4.easeInOut })
+        break;
+      default:
+      // do nothing
     }
+  }
 
-    function giveFeedBack(){
-      let newBalls = []
-      this.texture = COIN
-      let k = balls.indexOf(this)
-      newBalls.push(balls[k])
-      balls.splice(k,1)
-      for (let i = 0;i<potOfGoldIndex-1;i++){
-        let newBall = new PIXI.Sprite.from(Coin)
-        newBall.width = dx 
-        newBall.height = dx
-        newBall.x = this.x 
-        newBall.y = this.y
-        newBalls.push(newBall)
-        app.stage.addChild(newBall)
-      }
-      let newBallsWidth = newBalls.length*dx
-      newBalls.forEach((nb,i)=>{
-   
-        window.createjs.Tween.get(nb).to({x: window.innerWidth/2 - newBallsWidth/2+dx*i,y: window.innerHeight/3-dx}, 1000,
-          window.createjs.Ease.getPowInOut(4))
-      })
-      let ballsWidth = balls.length*dx
-      balls.forEach((b,i)=>{
-        window.createjs.Tween.get(b).to({x: window.innerWidth/2 - ballsWidth/2+dx*i,y: window.innerHeight/3+dx}, 1000,
-          window.createjs.Ease.getPowInOut(4))
-      })
-
-      balls.push(...newBalls)
-      
+  function drawFrame() {
+    let w = balls.length > 5 ? 5 * dx : balls.length * dx
+    balls.forEach((b, i) => {
+      let j = (i - i % 5) / 5
+      Tween.to(b, { x: CENTER_STAGE_X - w / 2 + i % 5 * dx, y: CENTER_STAGE_Y - dx + j * dx, duration: 1, ease: Power4.easeInOut })
+    })
+    if (setup.type == SUBITIZER_TYPES.SPLAT) {
+      moveSplat(BALL_STATES.FRAME)
     }
+  }
 
-    function getSubitizationBalls(pivot){
-      let rand = randBetween(0,EGGS.length)
+  function getPivotBalls(pivot, delta) {
+    let rand = randBetween(1, 3)
+    let pivotBalls = rand == 2 ? getSubtractionBalls(pivot, delta) : getAdditionBalls(pivot, delta)
+    return pivotBalls
+  }
+
+  function makeDraggable(dragMe) {
+    dragMe.interactive = true
+    dragMe.on('pointerdown', onDragStart)
+      .on('pointermove', onDragMove)
+      .on('pointerup', onDragEnd)
+  }
+
+
+  function getSubitizationBalls(pivot) {
+    let rand = randBetween(0, EGGS.length)
+    CounterImage = EGGS[rand]
+    let n = randBetween(4, 11)
+    let k = randBetween(2, n)
+    potOfGoldIndex = n - k
+    let aBalls = []
+
+    equation = makeEquation([n])
+
+
+    for (let b of aBalls) {
+      makeDraggable(b)
+    }
+    return aBalls
+  }
+
+  function getSplatBalls(pivot) {
+
+    let n = randBetween(4, 11)
+    let k = randBetween(2, n)
+    potOfGoldIndex = n - k
+    let aBalls = []
+
+    equation = makeEquation([n])
+
+    for (let i = 0; i < n; i++) {
+      let rand = randBetween(0, EGGS.length)
       CounterImage = EGGS[rand]
-      let n = randBetween(4,11)
-      let k = randBetween(2,n)
-      potOfGoldIndex = n-k
-      let aBalls = []
-
-      equation = makeEquation([n])
-
-      for (let i = 0;i<=k;i++){
-        let aBall = i == k ? new PIXI.Sprite.from(PotOfGold) : new PIXI.Sprite.from(Coin)
-        if (i==k && setup.type == SUBITIZER_TYPES.NORMAL){
-          aBall.on('pointerdown',giveFeedBack)
-        }
-        aBalls.push(aBall)
-      }
-
-      for (let b of aBalls){
-        makeDraggable(b)
-      }
-      return aBalls
+      let aBall = new PIXI.Sprite.from(CounterImage)
+      aBalls.push(aBall)
     }
 
-    function getSplatBalls(pivot){
-   
-      let n = randBetween(4,11)
-      let k = randBetween(2,n)
-      potOfGoldIndex = n-k
-      let aBalls = []
+    for (let b of aBalls) {
+      makeDraggable(b)
+    }
+    return aBalls
+  }
 
-      equation = makeEquation([n])
+  function shuffleArray(arr) {
+    let n = arr.length
+    let shuffledArray = []
+    for (let i = 0; i < n; i++) {
+      let k = randBetween(0, arr.length)
+      shuffledArray.push(arr[k])
+      arr.splice(k, 1)
+    }
+    return shuffledArray
+  }
 
-      for (let i = 0;i<n;i++){
-        let rand = randBetween(0,EGGS.length)
-        CounterImage = EGGS[rand]
-        let aBall = new PIXI.Sprite.from(CounterImage)
-        if (i==k && setup.type == SUBITIZER_TYPES.NORMAL){
-          aBall.on('pointerdown',giveFeedBack)
-        }
-        aBalls.push(aBall)
-      }
 
-      for (let b of aBalls){
-        makeDraggable(b)
-      }
-      return aBalls
+  function getThreeDigitBalls(pivot, delta) {
+    let a = pivot == null ? randBetween(1, 10) : pivot
+    let b = 10 - a
+    let c = randBetween(1, 6)
+
+    let aBalls = []
+    let bBalls = []
+    let cBalls = []
+    let imgs = shuffleArray([CounterImage, AdditionImage, PinkBall])
+
+    equation = makeEquation([a, "+", b, "+", c, "=", a + b + c])
+
+    for (let i = 0; i < a; i++) {
+      let aBall = new PIXI.Sprite.from(imgs[0])
+      aBalls.push(aBall)
     }
 
-   function shuffleArray(arr){
-     let n = arr.length
-     let shuffledArray = []
-      for (let i = 0;i<n;i++){
-        let k = randBetween(0,arr.length)
-        shuffledArray.push(arr[k])
-        arr.splice(k,1)
-      }
-      return shuffledArray
-   }
+    for (let j = 0; j < b; j++) {
+      let bBall = new PIXI.Sprite.from(imgs[1])
+      bBalls.push(bBall)
+    }
 
-
-    function getThreeDigitBalls(pivot,delta) {
-      let a = pivot == null ? randBetween(1,10) : pivot
-      let b = 10-a
-      let c = randBetween(1,6)
-  
-      let aBalls = []
-      let bBalls = []
-      let cBalls = []
-      let imgs = shuffleArray([CounterImage,AdditionImage,PinkBall])
-
-      equation = makeEquation([a,"+",b,"+",c,"=",a+b+c])
-
-      for (let i = 0;i< a;i++){
-        let aBall = new PIXI.Sprite.from(imgs[0])
-        aBalls.push(aBall)
-      }
-
-      for (let j = 0;j<b;j++){
-        let bBall = new PIXI.Sprite.from(imgs[1])
-        bBalls.push(bBall)
-      }
-
-      for (let k = 0;k<c;k++){
-        let cBall = new PIXI.Sprite.from(imgs[2])
-        cBalls.push(cBall)
-      }
-
-
-      let allBalls = [...aBalls,...bBalls,...cBalls]
-
-      for (let b of allBalls){
-        makeDraggable(b)
-      }
-      return allBalls
+    for (let k = 0; k < c; k++) {
+      let cBall = new PIXI.Sprite.from(imgs[2])
+      cBalls.push(cBall)
     }
 
 
-    function getAdditionBalls(pivot,delta) {
-      let a = pivot == null ? randBetween(1,8) : pivot
-      let b = 2 + randBetween(0,9-a)
-      b = delta == null ? b : randBetween(1,delta+1)
-      let aBalls = []
-      let bBalls = []
-  
+    let allBalls = [...aBalls, ...bBalls, ...cBalls]
 
-      equation = makeEquation([a,"+",b,"=",a+b])
+    for (let b of allBalls) {
+      makeDraggable(b)
+    }
+    return allBalls
+  }
 
-      for (let i = 0;i< a;i++){
-        let aBall = new PIXI.Sprite.from(CounterImage)
-        aBalls.push(aBall)
-      }
 
-      for (let j = 0;j<b;j++){
-        let bBall = new PIXI.Sprite.from(AdditionImage)
-        bBalls.push(bBall)
-      }
+  function getAdditionBalls(pivot, delta) {
+    let a = pivot == null ? randBetween(1, 8) : pivot
+    let b = 2 + randBetween(0, 9 - a)
+    b = delta == null ? b : randBetween(1, delta + 1)
+    let aBalls = []
+    let bBalls = []
 
-      let allBalls = [...aBalls,...bBalls]
 
-      for (let b of allBalls){
-        makeDraggable(b)
-      }
-      return allBalls
+    equation = makeEquation([a, "+", b, "=", a + b])
+
+    for (let i = 0; i < a; i++) {
+      let aBall = new PIXI.Sprite.from(CounterImage)
+      aBalls.push(aBall)
     }
 
-    // Type needs to come from setup.type
-    function initBallsFromType(type){
-   
+    for (let j = 0; j < b; j++) {
+      let bBall = new PIXI.Sprite.from(AdditionImage)
+      bBalls.push(bBall)
+    }
+
+    let allBalls = [...aBalls, ...bBalls]
+
+    for (let b of allBalls) {
+      makeDraggable(b)
+    }
+    return allBalls
+  }
+
+  // Type needs to come from setup.type
+  function initBallsFromType(type) {
+
     let PIVOT = SUBITIZER_TYPES.PIVOT == setup.type
     SubtractionImage = PIVOT ? PinkRing : BlueRing
     CounterImage = PIVOT ? PinkBall : BlueBall
     AdditionImage = PIVOT ? GreenBall : OrangeBall
-    console.log("THIS IS THE PIVOT",PIVOT)
-    switch (type){
-      case SUBITIZER_TYPES.NORMAL: 
-      return getSubitizationBalls()
+    console.log("THIS IS THE PIVOT", PIVOT)
+    switch (type) {
+      case SUBITIZER_TYPES.NORMAL:
+        return getSubitizationBalls()
         break;
       case SUBITIZER_TYPES.SUBTRACTION:
         return getSubtractionBalls()
         break;
       case SUBITIZER_TYPES.ADDITION:
-         return getAdditionBalls()
+        return getAdditionBalls()
         break;
       case SUBITIZER_TYPES.ADDITION_THREE_DIGIT:
         return getThreeDigitBalls()
         break;
       case SUBITIZER_TYPES.PIVOT:
-        return getPivotBalls(10,5)
-       break;
-      case SUBITIZER_TYPES.SPLAT: 
-       return getSplatBalls()
-       break;
-      default: 
-      console.log("balls")
+        return getPivotBalls(10, 5)
+        break;
+      case SUBITIZER_TYPES.SPLAT:
+        return getSplatBalls()
+        break;
+      default:
+        console.log("balls")
     }
-    }
+  }
 
 
-    function includeSplat(cords){
-      let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(cords)
-      let i = heightAndWidthOfCords[0]
-      let j = heightAndWidthOfCords[1]
-          app.stage.removeChild(splat)
-          splat.destroy(true)
-          splat = new PIXI.Graphics()
-          splat.beginFill(0x50d955);
-          splat.x = 0
-          splat.y = 0
-          let splatWidth = dx + randBetween(0,i+1)*dx
-          let splatHeight = dx + randBetween(0,j+1)*dx
-          let randX = randBetween(0,i-1)*dx
-          let randY= randBetween(0,j-1)*dx
-          let splatX = CENTER_STAGE_X-heightAndWidthOfCords[0]/2*dx - dx/2 + randX
-          let splatY = CENTER_STAGE_Y-heightAndWidthOfCords[1]/2*dx - dx/2 + randY
-          splat.drawRect(0,0,splatWidth,splatHeight)
-          window.createjs.Tween.get(splat).to({
-            x: splatX,
-            y: splatY
-          },
-          1000,
-          window.createjs.Ease.getPowInOut(4)
-        );
-          makeDraggable(splat)
-          splat.isSplat = true
-          splat.interactive = true
-          app.stage.addChild(splat)
-    }
+  function includeSplat(cords) {
+    let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(cords)
+    let i = heightAndWidthOfCords[0]
+    let j = heightAndWidthOfCords[1]
+    app.stage.removeChild(splat)
+    splat.destroy(true)
+    splat = new PIXI.Graphics()
+    splat.beginFill(0x50d955);
+    splat.x = 0
+    splat.y = 0
+    let splatWidth = dx + randBetween(0, i + 1) * dx
+    let splatHeight = dx + randBetween(0, j + 1) * dx
+    let randX = randBetween(0, i - 1) * dx
+    let randY = randBetween(0, j - 1) * dx
+    let splatX = CENTER_STAGE_X - heightAndWidthOfCords[0] / 2 * dx - dx / 2 + randX
+    let splatY = CENTER_STAGE_Y - heightAndWidthOfCords[1] / 2 * dx - dx / 2 + randY
+    splat.drawRect(0, 0, splatWidth, splatHeight)
+    Tween.to(splat,{x: splatX,y: splatY,duration: 1,ease: Power4.easeInOut})
+    makeDraggable(splat)
+    splat.isSplat = true
+    splat.interactive = true
+    app.stage.addChild(splat)
+  }
 
 
-    function init(){
-      destroy(balls)
+  function init() {
+    destroy(balls)
 
-      console.log("setup.typeeeeeeeee",setup.type)
-      let newBalls = initBallsFromType(setup.type)
-      
-      let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
-      let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
-    
-      for (let b of newBalls){
-          window.createjs.Tween.get(b).to({
-                x: -dx,
-                y: -dx
-              },
-              1000,
-              window.createjs.Ease.getPowInOut(4)
-            );
-            b.width = dx
-            b.height = dx
-            app.stage.addChild(b)
-      }
+    console.log("setup.typeeeeeeeee", setup.type)
+    let newBalls = initBallsFromType(setup.type)
 
-      if (setup.type == SUBITIZER_TYPES.SPLAT){
-          includeSplat(randomCords)
-      }
+    let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
+    let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
 
-      for (let i = 0;i<randomCords.length;i++){
-          let cord = randomCords[i]
-          window.createjs.Tween.get(newBalls[i]).to({
-                x: CENTER_STAGE_X + (cord[0]-heightAndWidthOfCords[0]/2)*dx - dx/2,
-                y: CENTER_STAGE_Y  + (cord[1]-heightAndWidthOfCords[1]/2)*dx - dx/2
-              },
-              1000,
-              window.createjs.Ease.getPowInOut(4)
-            )
-      }
-      balls = newBalls
+    for (let b of newBalls) {
+      //Tween.to(b,{x:-dx,y:-dx,duration: 1,ease: Power4.easeInOut})
+      b.width = dx
+      b.height = dx
+      app.stage.addChild(b)
     }
 
-    function newShape(){
-      if (setup.type == SUBITIZER_TYPES.SUBTRACTION){
-        revealEquation(false)
-      } else {
-        revealEquation(true)
-      }
-        this.interactive = false
-        destroy(balls)
+    if (setup.type == SUBITIZER_TYPES.SPLAT) {
+      includeSplat(randomCords)
+    }
 
-        let newBalls = initBallsFromType(setup.type)
-        
-        let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
-        let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
-      
-        for (let b of newBalls){
-            window.createjs.Tween.get(b).to({
-                  x: -dx,
-                  y: -dx
-                },
-                1000,
-                window.createjs.Ease.getPowInOut(4)
-              );
-              b.width = dx
-              b.height = dx
-              app.stage.addChild(b)
-        }
+    for (let i = 0; i < randomCords.length; i++) {
+      let cord = randomCords[i]
+      Tween.to(newBalls[i], { x: CENTER_STAGE_X + (cord[0] - heightAndWidthOfCords[0] / 2) * dx - dx / 2, y: CENTER_STAGE_Y + (cord[1] - heightAndWidthOfCords[1] / 2) * dx - dx / 2, duration: 1, ease: Power4.easeInOut })
+    }
+    balls = newBalls
+  }
 
-        if (setup.type == SUBITIZER_TYPES.SPLAT){
-            includeSplat(randomCords)
-        }
+  function newShape() {
+    if (setup.type == SUBITIZER_TYPES.SUBTRACTION) {
+      revealEquation(false)
+    } else {
+      revealEquation(true)
+    }
+    this.interactive = false
+    destroy(balls)
 
-        for (let i = 0;i<randomCords.length;i++){
-            let cord = randomCords[i]
-            window.createjs.Tween.get(newBalls[i]).to({
-                  x: CENTER_STAGE_X + (cord[0]-heightAndWidthOfCords[0]/2)*dx - dx/2,
-                  y: CENTER_STAGE_Y  + (cord[1]-heightAndWidthOfCords[1]/2)*dx - dx/2
-                },
-                1000,
-                window.createjs.Ease.getPowInOut(4)
-              ).call(()=>this.interactive = true);
-        }
-        balls = newBalls
-}
+    let newBalls = initBallsFromType(setup.type)
 
-    // Dragging functions   
-    function onDragStart(event) {
-        let touchedAtX = event.data.getLocalPosition(this.parent).x;
-        let touchedAtY = event.data.getLocalPosition(this.parent).y;
-        this.deltaTouch = [this.x - touchedAtX, this.y - touchedAtY];
-        app.stage.addChild(this);
-        this.data = event.data;
-        this.dragging = true;
+    let randomCords = randomCoordinates.generateRandomCoordinates(newBalls.length)
+    let heightAndWidthOfCords = randomCoordinates.getHeightAndWidthOfCords(randomCords)
 
-        if (this.isSplat){
-          let newAlpha = this.alpha == 1 ? 0.35 : 1
-          this.alpha = newAlpha
-        }
-      }
+    for (let b of newBalls) {
+      Tween.to(b, { x: -dx, y: -dx, duration: 1, ease: Power4.easeInOut })
+      b.width = dx
+      b.height = dx
+      app.stage.addChild(b)
+    }
 
-      function onDragEnd() {
-        this.data = null;
-        this.dragging = false;
-      }
+    if (setup.type == SUBITIZER_TYPES.SPLAT) {
+      includeSplat(randomCords)
+    }
 
-      function onDragMove() {
-        if (this.dragging) {
-          let pointerPosition = this.data.getLocalPosition(this.parent);
-          this.y = pointerPosition.y + this.deltaTouch[1];
-          this.x = pointerPosition.x + this.deltaTouch[0];
-        }
-      }
-      init()
+    for (let i = 0; i < randomCords.length; i++) {
+      let cord = randomCords[i]
+      Tween.to(newBalls[i], { x: CENTER_STAGE_X + (cord[0] - heightAndWidthOfCords[0] / 2) * dx - dx / 2, y: CENTER_STAGE_Y + (cord[1] - heightAndWidthOfCords[1] / 2) * dx - dx / 2, duration: 1, ease: Power4.easeInOut,onComplete: ()=>{this.interactive = true}}, "<")
+    }
+    balls = newBalls
+  }
+
+  // Dragging functions   
+  function onDragStart(event) {
+    let touchedAtX = event.data.getLocalPosition(this.parent).x;
+    let touchedAtY = event.data.getLocalPosition(this.parent).y;
+    this.deltaTouch = [this.x - touchedAtX, this.y - touchedAtY];
+    app.stage.addChild(this);
+    this.data = event.data;
+    this.dragging = true;
+
+    if (this.isSplat) {
+      let newAlpha = this.alpha == 1 ? 0.35 : 1
+      this.alpha = newAlpha
+    }
+  }
+
+  function onDragEnd() {
+    this.data = null;
+    this.dragging = false;
+  }
+
+  function onDragMove() {
+    if (this.dragging) {
+      let pointerPosition = this.data.getLocalPosition(this.parent);
+      this.y = pointerPosition.y + this.deltaTouch[1];
+      this.x = pointerPosition.x + this.deltaTouch[0];
+    }
+  }
+  init()
 }
