@@ -163,7 +163,6 @@ export const init = (app, setup) => {
     .add('counter_sine_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1717774976/counter_sine_green_xq7vgh.png', optionsLargeAsset)
     .add('counter_circle_quarter_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1718819167/circle_quarter_yellow_ucjte4.png', optionsLargeAsset)
     .add('counter_swoop_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1718825531/swoop_orange_qj77ol.png', optionsLargeAsset)
-    .add('counter_ring_orange', "https://res.cloudinary.com/numbershapes/image/upload/v1718121496/Opal/ring_orange_nmcfvb.png", optionsLargeAsset)
     .add('counter_circle_half_purple', 'https://res.cloudinary.com/numbershapes/image/upload/v1718823955/circle_half_purple_dxgwrt.png', optionsLargeAsset)
     .add('counter_triangle_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716324632/Opal/counte_yellow_triangle_wd0p9v.png', optionsLargeAsset)
     .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717790841/Opal/stick_red_srf97k.png', optionsLargeAsset)
@@ -2472,29 +2471,4 @@ export const init = (app, setup) => {
   preload()
   PIXI.Loader.shared.onComplete.add(load)
 };
-
-
-async function loadRecords() {
-
-let scores = [];
-let arr = []
-
-
-
-   console.log('loading records')
-  let p = await getCollection("66cf061eacd3cb34a87ab0e5", "", arr)
-
-
-    let bins = p.map(r=>r.record);
-
-    let m = await getBins(bins,scores)
-
-    let sortedScores= m.sort((a,b) =>a.score - b.score)
-    console.log('sorted scores',sortedScores)
-
-  
-}
-
-//console.log('starting')
-//loadRecords()
 
