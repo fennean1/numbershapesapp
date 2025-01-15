@@ -101,7 +101,7 @@ export const init = (app, setup) => {
 
   // HOT | GOTO_ASSET | Loading
 
-  const optionsExtraLargeAsset = { metadata: { resourceOptions: { width: setup.width * 2 } } }
+  const optionsExtraLargeAsset = { metadata: { resourceOptions: { width: setup.width } } }
   const optionsLargeAsset = { metadata: { resourceOptions: { width: setup.width } } }
   const optionsMediumAsset = { metadata: { resourceOptions: { width: setup.width / 2 } } }
   const optionsSmallAsset = { metadata: { resourceOptions: { width: setup.width / 8 } } }
