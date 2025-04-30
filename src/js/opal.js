@@ -116,14 +116,17 @@ export const init = (app, setup) => {
 
 
   LOADER
-    .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsMediumAsset)
+  .add('tile_rock', 'https://res.cloudinary.com/numbershapes/image/upload/v1717766942/Opal/rock_dark_2_tcmncq.png', optionsLargeAsset)
+  .add("circle_white", "https://res.cloudinary.com/numbershapes/image/upload/v1740082941/Asset_2_jisjsb.svg", optionsSmallAsset)
+ /*   
+  .add('ship_opal', "https://res.cloudinary.com/numbershapes/image/upload/v1714524232/Opal/ship_opal_kkmpji.png", optionsMediumAsset)
     .add('counter_corners_purple', "https://res.cloudinary.com/numbershapes/image/upload/v1718033225/Opal/corners_purple_ap00so.png", optionsSmallAsset)
     .add('gauge_radial', "https://res.cloudinary.com/numbershapes/image/upload/v1717188538/Opal/radial_gauge2_up4uap.png", optionsSmallAsset)
     .add("plant_full", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_full_jxoqya.png", optionsSmallAsset)
     .add("plant_one", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_one_mq9vzi.png", optionsSmallAsset)
     .add("plant_two", "https://res.cloudinary.com/numbershapes/image/upload/v1717428010/plant_two_jdjyfw.png", optionsSmallAsset)
     .add("plant_empty", "https://res.cloudinary.com/numbershapes/image/upload/v1717428009/plant_none_wduy6k.png", optionsSmallAsset)
-    .add("circle_white", "https://res.cloudinary.com/numbershapes/image/upload/v1717772496/circle_white_zqyw9u_zocrdy.svg", optionsSmallAsset)
+
     .add('particle_rock_1', 'https://res.cloudinary.com/numbershapes/image/upload/v1715625602/Opal/particle_rock_1_haiujp.svg', optionsSmallAsset)
     .add('particle_rock_2', 'https://res.cloudinary.com/numbershapes/image/upload/v1715697608/Opal/particle_rock_2_ma2hcc.svg', optionsSmallAsset)
     .add('counter_swoop_crooked_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1718158726/Opal/swooper2_byw3tx.png', optionsLargeAsset)
@@ -168,7 +171,6 @@ export const init = (app, setup) => {
     .add('counter_stick_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1717790841/Opal/stick_red_srf97k.png', optionsLargeAsset)
     .add('counter_oval_orange', 'https://res.cloudinary.com/numbershapes/image/upload/v1715706392/Opal/counter_oval_orange_cdrwvh.png', optionsSmallAsset)
     .add('small_star', 'https://res.cloudinary.com/numbershapes/image/upload/v1714758952/Opal/Asset_4_4x_sscyrd.png', optionsExtraSmallAsset)
-    .add('tile_rock', 'https://res.cloudinary.com/numbershapes/image/upload/v1717766942/Opal/rock_dark_2_tcmncq.png', optionsLargeAsset)
     .add('bolt_pink', 'https://res.cloudinary.com/numbershapes/image/upload/v1716396289/Opal/vial_pink_roid2z.svg', optionsSmallAsset)
     .add('bolt_red', 'https://res.cloudinary.com/numbershapes/image/upload/v1716395589/Opal/vial_red_seeyrx.svg', optionsSmallAsset)
     .add('bolt_yellow', 'https://res.cloudinary.com/numbershapes/image/upload/v1716395589/Opal/vial_yellow_cjglzh.svg', optionsSmallAsset)
@@ -192,12 +194,17 @@ export const init = (app, setup) => {
     .add("seed_blue", "https://res.cloudinary.com/numbershapes/image/upload/v1718302797/Opal/seed_blue_1_ri3uws.svg", optionsLargeAsset)
     .add("seed_red", "https://res.cloudinary.com/numbershapes/image/upload/v1718300945/Opal/seed_red_yognmc.svg", optionsLargeAsset)
     .add('white', 'https://res.cloudinary.com/numbershapes/image/upload/v1717771357/Opal/black_ms4izq.svg', optionsLargeAsset)
-    .add('stalagmite', 'https://res.cloudinary.com/numbershapes/image/upload/v1715356279/Opal/stalagmite_one_hyroie.svg', optionsLargeAsset)
+    //.add('stalagmite', 'https://res.cloudinary.com/numbershapes/image/upload/v1715356279/Opal/stalagmite_one_hyroie.svg', optionsLargeAsset)
   //.add('gem_green', 'https://res.cloudinary.com/numbershapes/image/upload/v1714484563/Opal/CleanGreenGem_qvxb0h.svg', optionsSmallAsset)
+*/
 
   LOADER.load((loader, resource) => {
+
     // Rocks
     TEXTURES['tile_rock'] = resource.tile_rock.texture
+    TEXTURES['circle_white'] = resource.circle_white.texture
+
+    /*
     TEXTURES['particle_rock_1'] = resource.particle_rock_1.texture
     TEXTURES['particle_rock_2'] = resource.particle_rock_2.texture
 
@@ -298,7 +305,7 @@ export const init = (app, setup) => {
 
     // Computing constants that depend on the aspect ratio of the textures.
     ASPECT_RATIO_PLASMA = TEXTURES.bolt_blue.width / TEXTURES.bolt_blue.height
-
+    */
   })
 
 
@@ -2102,8 +2109,13 @@ export const init = (app, setup) => {
     loadingText.y = setup.height / 2
     loadingText.anchor.set(0.5)
     app.stage.addChild(loadingText)
+    let i = 0
 
     LOADER.onProgress.add((e => {
+      //console.log(e)
+      console.log("LOADING TEXTURES")
+      i++
+      console.log("i",i)
       loadingText.text = "Loading... " + Math.round(e.progress) + "%"
       rect.x = setup.width / 2 - rect.width / 2
       rect.y = loadingText.y + rect.height;
@@ -2124,9 +2136,12 @@ export const init = (app, setup) => {
     })
   }
 
+
   function load() {
 
-    setup.openHighScoreModal()
+    ///setup.openHighScoreModal()
+
+    console.log("we made it load")
     initializeGameData()
 
     // GOTO: Initialize Game UI:
@@ -2166,14 +2181,20 @@ export const init = (app, setup) => {
     backGround.width = setup.width;
     backGround.height = setup.height;
 
-    topLeftCaveBackground = new PIXI.Sprite(TEXTURES.stalagmite);
-    topLeftCaveBackground.aspectRatio = TEXTURES.stalagmite.width / TEXTURES.stalagmite.height
+
+
+
+    topLeftCaveBackground = new PIXI.Sprite(TEXTURES.circle_white);
+    topLeftCaveBackground.aspectRatio = TEXTURES.circle_white.width / TEXTURES.circle_white.height;
     topLeftCaveBackground.x = 0;
     topLeftCaveBackground.width = MIN_DIM / 2
     topLeftCaveBackground.height = topLeftCaveBackground.width / topLeftCaveBackground.aspectRatio
     topLeftCaveBackground.y = -topLeftCaveBackground.height * 0.08
-    //app.stage.addChild(topLeftCaveBackground)
 
+    console.log("adding cave stuff");
+    app.stage.addChild(topLeftCaveBackground)
+
+        /*
     let scaleX = topLeftCaveBackground.scale.x
     let scaleY = topLeftCaveBackground.scale.y
     //console.log(scaleX, scaleY)
@@ -2332,137 +2353,9 @@ export const init = (app, setup) => {
     app.stage.addChild(radialProgressBar);
 
 
-
-    generateNumberShapeTextures(currentLevel.counter)
-
-
-    /*
-    Object.keys(NUMBER_CARDS).forEach((k, i) => {
-      let t = NUMBER_CARDS[k]
-      let sp = new PIXI.Sprite(t)
-      sp.width = CARD_WIDTH / 10
-      sp.height = CARD_WIDTH / 10
-      sp.x = i * CARD_WIDTH / 4
-      sp.y = CARD_WIDTH / 10
-      app.stage.addChild(sp)
-    })
-    */
-
-    currentPlanet = new PIXI.Sprite(TEXTURES.planet_pink_fire)
-    currentPlanet.aspectRatio = TEXTURES.planet_pink_fire.width / TEXTURES.planet_pink_fire.height
-    currentPlanet.anchor.set(0.5)
-    currentPlanet.width = setup.width / 1.5
-    currentPlanet.height = currentPlanet.width / currentPlanet.aspectRatio
-    currentPlanet.x = setup.width / 2
-    currentPlanet.y = setup.height + currentPlanet.height / 6
-    currentPlanet.alpha = 0
-    app.stage.addChild(currentPlanet)
-
-    boltBar.texture = generateBarTexture()
-    let planet_id = "planet_" + currentLevel.planet
-    currentPlanet.texture = TEXTURES[planet_id]
+*/
 
 
-    for (let i = 0; i < 2; i++) {
-      let b = new PIXI.Sprite(TEXTURES.seed_pink)
-      b.aspectRatio = TEXTURES.seed_pink.width / TEXTURES.seed_pink.height
-      b.width = radialProgressBar.width / 2
-      b.height = b.width / b.aspectRatio
-      beanDrops.push(b)
-    }
-
-
-    // #endregion GOTO_UI Definitions
-
-    // GOTO_BLAST
-
-
-    // Create UI Controllers 
-
-    for (let i = 0; i < 25; i++) {
-      let b = new Blast(TEXTURES.particle_rock_1, TEXTURES.particle_rock_2);
-      b.init();
-      b.x = setup.width / 8 + 100 * i * Math.random()
-      b.y = setup.height / 8 + 50 * i * Math.random()
-      b.alpha = 0
-      blasts.push(b)
-    }
-
-
-    // Create Progress Circles
-    for (let i = 0; i < 12; i++) {
-      let c = new PIXI.Sprite(TEXTURES.circle_white)
-      c.anchor.set(0.5)
-      progressCircles.push(c)
-      app.stage.addChild(c)
-    }
-
-    // Create Progress Circle BackGround
-
-    progressCircleBackGround = new PIXI.Sprite(TEXTURES.circle_white)
-    progressCircleBackGround.anchor.x = 0.5
-    progressCircleBackGround.anchor.y = 0.5
-    drawProgressCircles()
-
-    makeStars()
-    state.starPosition.span = setup.height
-    updateStars()
-
-
-    let stl = new Timeline({ paused: true })
-
-    showers = stars.map((s, i) => {
-      const options = { dt: 200, g: 4, v: 100, spread: 25 }
-      let shower = new Blast(TEXTURES.small_star, TEXTURES.small_star, options)
-      shower.init()
-      shower.x = s.x
-      shower.y = s.y
-      shower.width = s.width
-      shower.height = s.height
-      //app.stage.addChild(shower)
-      return shower
-    })
-
-
-
-
-    pool = new CardPool(currentPuzzle);
-    pool.loadPuzzle(currentPuzzle);
-
-    // GOTO_TIMELINE Function Calls 
-    buildGoToCaveTimeline()
-    buildLeaveCaveTimeline()
-    updateLayoutParams()
-    buildShowersTimeline()
-
-
-
-    LAYERS = {
-      cave: [backGround, topLeftCaveBackground, collectable, ...blasts, gaugeRadial, radialProgressBar, iconCollectable, lava, bottomLeftCaveBackground, shipOpal, topRightCaveBackground, bottomRightCaveBackground, livesGauge, livesBar, iconLives, scoreBackground, scoreText],
-      space: [backGround, ...stars, currentPlanet, ...blasts, livesGauge, livesBar, collectable, iconLives, shipOpal, startButton, gaugeRadial, radialProgressBar, iconCollectable, scoreBackground, scoreText],
-      start: [backGround, ...stars, ...showers, startButton, shipOpal],
-      end: [backGround, ...stars, ...showers, ...planetCarousel, startButton, currentPlanet, shipOpal, scoreText],
-    }
-
-    GROUPS = { caveElements: [lava, topLeftCaveBackground, bottomLeftCaveBackground, topRightCaveBackground, bottomRightCaveBackground], gauges: [boltGauge, livesGauge, boltBar, livesBar, iconLives, gaugeRadial, radialProgressBar, iconCollectable, ...progressCircles, progressCircleBackGround, scoreBackground, scoreText] }
-
-    layer(applicationStates.start)
-
-    generateRect(SIZE_CAROUSEL_HEIGHT, SIZE_CAROUSEL_HEIGHT * 1.5, 10, "rectangle_black_alpha")
-
-    draggingContainer = new DraggableContainer()
-    draggingContainer.lockY = true
-
-
-    // Define UI Elements 
-    SESSIONS.forEach((s, i) => {
-      let p = new PlanetSummary(s)
-      p.x = 0
-      p.y = setup.height / 2.5 - p.height / 2
-      planetCarousel.push(p)
-      p.alpha = 1
-      draggingContainer.addChild(p)
-    })
 
 
   }
